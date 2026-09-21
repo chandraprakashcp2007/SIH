@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: prahari-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://prahari:prahari_secret@postgres:5432/prahari_net
+      - SECRET_KEY=prahari-net-sih2026-super-secure-local-secret-key-change-in-prod-32bytes
+      - SIMULATION_MODE=true
+      - GATEWAY_MODE=SIMULATOR
+      - HOST=0.0.0.0
+      - PORT=8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: prahari-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: prahari-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: prahari
+      POSTGRES_PASSWORD: prahari_secret
+      POSTGRES_DB: prahari_net
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U prahari -d prahari_net"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

@@ -1,0 +1,465 @@
+﻿/* ============================================================
+   PRAHARI-NET
+   OBSIDIAN COMMAND CENTRE
+   Premium SIH UI Theme
+
+   Palette:
+   Obsidian      #090B0D
+   Carbon        #111417
+   Graphite      #171B1F
+   Champagne     #D6B36A
+   Emerald       #50C878
+   Amber         #F0A43B
+   Critical      #E85D5D
+   ============================================================ */
+
+:root {
+  --bg-0: #090b0d;
+  --bg-1: #0e1114;
+  --bg-2: #121619;
+
+  --surface-1: #15191d;
+  --surface-2: #1a1f24;
+  --surface-3: #20262c;
+
+  --border: rgba(255,255,255,.075);
+  --border-hi: rgba(214,179,106,.28);
+
+  --accent: #d6b36a;
+  --accent-bright: #eccb83;
+  --accent-soft: rgba(214,179,106,.10);
+
+  --emerald: #50c878;
+  --emerald-soft: rgba(80,200,120,.11);
+
+  --warning: #f0a43b;
+  --critical: #e85d5d;
+
+  --text-1: #f5f3ee;
+  --text-2: #b5b2aa;
+  --text-3: #777b80;
+
+  --shadow:
+    0 22px 70px rgba(0,0,0,.38);
+
+  --shadow-small:
+    0 8px 30px rgba(0,0,0,.24);
+}
+
+
+/* ===============================
+   BASE
+   =============================== */
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  background: var(--bg-0);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+
+  color: var(--text-1) !important;
+
+  background:
+    radial-gradient(
+      circle at 14% 0%,
+      rgba(214,179,106,.055),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 88% 10%,
+      rgba(80,200,120,.035),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #090b0d 0%,
+      #0c0f12 45%,
+      #090b0d 100%
+    ) !important;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+
+/* ===============================
+   REMOVE OLD BLUE/CYAN FEEL
+   =============================== */
+
+[class*="text-cyan"],
+[class*="text-blue"],
+[class*="text-sky"] {
+  color: var(--accent-bright) !important;
+}
+
+[class*="border-cyan"],
+[class*="border-blue"],
+[class*="border-sky"] {
+  border-color: rgba(214,179,106,.30) !important;
+}
+
+[class*="bg-cyan"],
+[class*="bg-blue"],
+[class*="bg-sky"] {
+  background-color: var(--accent) !important;
+}
+
+[class*="from-cyan"],
+[class*="from-blue"] {
+  --tw-gradient-from: #d6b36a !important;
+}
+
+[class*="to-cyan"],
+[class*="to-blue"] {
+  --tw-gradient-to: #9e7d3f !important;
+}
+
+
+/* ===============================
+   PAGE INTRO
+   =============================== */
+
+#root {
+  animation:
+    prahariPageIn .48s cubic-bezier(.18,.84,.32,1);
+}
+
+@keyframes prahariPageIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* ===============================
+   PANELS
+   =============================== */
+
+[class*="card"],
+[class*="Card"],
+[class*="panel"],
+[class*="Panel"],
+[class*="surface"],
+aside,
+header {
+  border-color: var(--border) !important;
+}
+
+[class*="shadow"] {
+  box-shadow: var(--shadow-small);
+}
+
+
+/* ===============================
+   BUTTONS
+   =============================== */
+
+button {
+  position: relative;
+
+  transition:
+    transform .16s ease,
+    box-shadow .20s ease,
+    filter .16s ease,
+    border-color .16s ease,
+    background .20s ease !important;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 9px 30px rgba(0,0,0,.22);
+}
+
+button:active:not(:disabled) {
+  transform:
+    translateY(0)
+    scale(.985);
+}
+
+
+/* Premium sheen */
+
+button::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border-radius: inherit;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent 25%,
+      rgba(255,255,255,.06) 48%,
+      transparent 68%
+    );
+
+  transform: translateX(-120%);
+
+  transition: transform .55s ease;
+}
+
+button:hover::after {
+  transform: translateX(120%);
+}
+
+
+/* ===============================
+   INPUTS
+   =============================== */
+
+input,
+textarea,
+select {
+  background:
+    rgba(18,22,25,.82) !important;
+
+  color:
+    var(--text-1) !important;
+
+  border:
+    1px solid var(--border) !important;
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background-color .18s ease !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+
+  border-color:
+    rgba(214,179,106,.55) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(214,179,106,.08),
+    0 12px 30px rgba(0,0,0,.20) !important;
+
+  background:
+    rgba(21,25,29,.98) !important;
+}
+
+
+/* ===============================
+   LOGIN CARD
+   =============================== */
+
+form {
+  animation:
+    prahariCardIn .55s cubic-bezier(.18,.84,.32,1);
+}
+
+@keyframes prahariCardIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(.995);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* ===============================
+   TABLE
+   =============================== */
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+tbody tr {
+  transition:
+    background-color .14s ease,
+    transform .14s ease;
+}
+
+tbody tr:hover {
+  background:
+    rgba(214,179,106,.025) !important;
+}
+
+
+/* ===============================
+   SCROLLBAR
+   =============================== */
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090b0d;
+}
+
+::-webkit-scrollbar-thumb {
+  background:
+    #37322a;
+
+  border-radius:
+    999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:
+    #5e5139;
+}
+
+
+/* ===============================
+   SELECTION
+   =============================== */
+
+::selection {
+  background:
+    rgba(214,179,106,.28);
+
+  color:
+    #fff;
+}
+
+
+/* ===============================
+   STATUS
+   =============================== */
+
+.prahari-normal {
+  color: var(--emerald);
+}
+
+.prahari-watch {
+  color: var(--warning);
+}
+
+.prahari-critical {
+  color: var(--critical);
+}
+
+.prahari-critical-pulse {
+  animation:
+    criticalPulse 1.9s ease-in-out infinite;
+}
+
+@keyframes criticalPulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(232,93,93,0);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 7px rgba(232,93,93,.09);
+  }
+
+}
+
+
+/* ===============================
+   DEVELOPMENT BADGE
+   =============================== */
+
+.prahari-demo-badge {
+  position: fixed;
+
+  right: 18px;
+  bottom: 18px;
+
+  z-index: 99999;
+
+  padding:
+    7px 11px;
+
+  border-radius:
+    7px;
+
+  border:
+    1px solid rgba(214,179,106,.30);
+
+  background:
+    rgba(12,14,16,.90);
+
+  color:
+    #d6b36a;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .075em;
+
+  backdrop-filter:
+    blur(16px);
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.34);
+
+  pointer-events:
+    none;
+}
+
+
+/* ===============================
+   MOBILE
+   =============================== */
+
+@media (max-width: 768px) {
+
+  input,
+  select,
+  button {
+    min-height: 44px;
+  }
+
+}
+
+
+/* ===============================
+   REDUCED MOTION
+   =============================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+}

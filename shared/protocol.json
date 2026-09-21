@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PrahariLoRaPacket",
+  "description": "Standardized serial / LoRa telemetry payload for PRAHARI-NET",
+  "type": "object",
+  "required": ["version", "node_id", "sequence", "timestamp", "metrics", "rssi"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "enum": [1]
+    },
+    "node_id": {
+      "type": "string",
+      "enum": ["JALA-01", "AGNI-02", "BHUMI-03"]
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "rssi": {
+      "type": "integer",
+      "minimum": -130,
+      "maximum": -20
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Node-specific sensor telemetry payload"
+    }
+  }
+}

@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#07111F] text-[#F1F5F9] font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Command centre custom dark scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0B1726;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #22364A;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #27C7E8;
+  }
+}
+
+/* Subtle controlled critical alert pulse */
+@keyframes critical-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+}
+
+.pulse-critical {
+  animation: critical-pulse 2s infinite ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid #27C7E8;
+  outline-offset: 2px;
+}
+
+/* Map custom styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background-color: #0B1726 !important;
+  font-family: inherit;
+}
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: #102033 !important;
+  color: #F1F5F9 !important;
+  border: 1px solid #22364A !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+
+/* =========================================================
+   PRAHARI_PREMIUM_COMMAND_CENTRE_V2
+   ========================================================= */
+
+.prahari-command-centre {
+  background:
+    radial-gradient(
+      circle at 35% 0%,
+      rgba(39, 199, 232, 0.045),
+      transparent 33%
+    ),
+    radial-gradient(
+      circle at 95% 15%,
+      rgba(139, 92, 246, 0.035),
+      transparent 28%
+    );
+}
+
+.prahari-command-centre select {
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.prahari-command-centre select:hover {
+  border-color: rgba(39, 199, 232, 0.34);
+}
+
+.prahari-command-centre select:focus {
+  border-color: rgba(39, 199, 232, 0.65);
+  box-shadow:
+    0 0 0 3px rgba(39, 199, 232, 0.08);
+}
+
+/* OpenStreetMap transformed into PRAHARI dark tactical map */
+.prahari-map-tiles {
+  filter:
+    invert(100%)
+    hue-rotate(180deg)
+    brightness(72%)
+    saturate(68%)
+    contrast(112%);
+}
+
+.leaflet-container {
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(39, 199, 232, 0.08),
+      transparent 58%
+    ),
+    #07111f;
+
+  font-family: inherit;
+  outline: none;
+
+  box-shadow:
+    inset 0 0 70px rgba(0, 0, 0, 0.25);
+}
+
+.leaflet-control-attribution {
+  background: rgba(7, 17, 31, 0.82) !important;
+  color: #73869b !important;
+  padding: 2px 7px !important;
+  backdrop-filter: blur(10px);
+  border-radius: 8px 0 0 0;
+}
+
+.leaflet-control-attribution a {
+  color: #9fb0c3 !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: rgba(16, 32, 51, 0.98);
+  color: #f1f5f9;
+}
+
+.leaflet-popup-content-wrapper {
+  border:
+    1px solid rgba(39, 199, 232, 0.20);
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.48),
+    0 0 0 1px rgba(39, 199, 232, 0.05);
+}
+
+.custom-node-marker {
+  transition:
+    transform 160ms ease,
+    filter 160ms ease;
+}
+
+.custom-node-marker:hover {
+  transform: scale(1.13);
+  filter: brightness(1.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-node-marker,
+  .prahari-command-centre select {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .prahari-command-centre {
+    padding-bottom: 5rem;
+  }
+}
+
+
+
+/* =========================================================
+   PRAHARI_MAP_TILE_RENDER_STABILITY
+   Prevent visible blank rectangles during pan / zoom
+   ========================================================= */
+
+.leaflet-container {
+  background: #07111f !important;
+
+  transform: translateZ(0);
+  backface-visibility: hidden;
+
+  contain: layout paint;
+}
+
+.leaflet-map-pane,
+.leaflet-tile-pane,
+.leaflet-tile-container {
+  backface-visibility: hidden;
+}
+
+.leaflet-tile-pane {
+  transform: translateZ(0);
+}
+
+.leaflet-tile {
+  image-rendering: auto;
+
+  backface-visibility: hidden;
+
+  will-change: transform;
+
+  /*
+    Leaflet fade is disabled in JS.
+    Keep loaded tiles fully opaque.
+  */
+  opacity: 1;
+}
+
+/*
+  Keep tactical dark appearance without interfering
+  with Leaflet's positioning or dimensions.
+*/
+.prahari-map-tiles {
+  filter:
+    invert(100%)
+    hue-rotate(180deg)
+    brightness(72%)
+    saturate(70%)
+    contrast(112%);
+}
+
+/*
+  Do not animate the tile image itself.
+  Animation can expose temporary rectangular gaps.
+*/
+.leaflet-tile {
+  transition: none !important;
+}
+

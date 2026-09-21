@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <!-- Outer Tactical Shield -->
+  <polygon points="24,3 43,10 43,26 24,45 5,26 5,10" fill="#0B1726" stroke="#22364A" stroke-width="2"/>
+  
+  <!-- Radar sweep rings -->
+  <circle cx="24" cy="22" r="14" stroke="#27C7E8" stroke-width="1" stroke-dasharray="2,2" opacity="0.4"/>
+  <circle cx="24" cy="22" r="8" stroke="#27C7E8" stroke-width="1" opacity="0.6"/>
+  
+  <!-- Central Pulse Core -->
+  <circle cx="24" cy="22" r="3" fill="#27C7E8"/>
+
+  <!-- Three Environmental Elemental Accents -->
+  <!-- Water Wave (Blue/Cyan - Bottom Left) -->
+  <path d="M12,28 C14,26 16,30 18,28 C20,26 22,29 23,27" stroke="#27C7E8" stroke-width="1.8" stroke-linecap="round"/>
+  
+  <!-- Fire Flame (Amber/Orange - Top Center) -->
+  <path d="M24,10 C26,14 28,16 27,18 C25,18 24,15 24,10 Z" fill="#F97316"/>
+  
+  <!-- Earth Contour / Landslide (Green - Bottom Right) -->
+  <path d="M26,30 L31,25 L36,30" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
