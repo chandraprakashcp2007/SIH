@@ -21,10 +21,17 @@ class GroundingVerifier:
         """
         patched = answer
 
-        # 1. Enforce Simulation Label if in simulation mode
-        if data_mode == "SIMULATION":
-            if "simulation" not in patched.lower() and "demo" not in patched.lower():
-                patched = f"*[SIMULATION DATA]* {patched}"
+        # 1. Enforce provenance label for every non-REAL mode.
+        mode = data_mode.upper().replace("-", "_")
+        labels = {
+            "SIMULATION": "SIMULATION DATA",
+            "EXTERNAL_DATA": "EXTERNAL DATA",
+            "REPLAY": "REPLAY DATA",
+            "PLANNED": "PLANNED — NO LIVE DATA",
+        }
+        label = labels.get(mode)
+        if label and label.lower() not in patched.lower():
+            patched = f"*[{label}]* {patched}"
 
         # 2. Check for missing data indications
         for tr in tool_results:

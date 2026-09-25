@@ -4,7 +4,8 @@ import { LiveMap } from '../components/map/LiveMap';
 import { IncidentFeed } from '../components/widgets/IncidentFeed';
 import { LiveNodeStrips } from '../components/widgets/LiveNodeStrips';
 import { NodeDetailDrawer } from '../components/widgets/NodeDetailDrawer';
-import { fetchNodes, fetchAlerts } from '../services/api';
+import { PanchaBhoothaOverview, type ElementStatus } from '../components/widgets/PanchaBhoothaOverview';
+import { fetchNodes, fetchAlerts, fetchElements } from '../services/api';
 import { wsClient } from '../services/websocket';
 import { Shield, Radio, Activity, Cpu, AlertTriangle, Layers } from 'lucide-react';
 
@@ -12,6 +13,7 @@ export const CommandCentre: React.FC = () => {
   const { summary } = useOutletContext<any>();
   const [nodes, setNodes] = useState<any[]>([]);
   const [alerts, setAlerts] = useState<any[]>([]);
+  const [elements, setElements] = useState<ElementStatus[]>([]);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [filterHazard, setFilterHazard] = useState<string>('ALL');
   const [filterSeverity, setFilterSeverity] = useState<string>('ALL');
@@ -32,13 +34,15 @@ export const CommandCentre: React.FC = () => {
 
       setLoadError(null);
 
-      const [nodeData, alertData] = await Promise.all([
+      const [nodeData, alertData, elementData] = await Promise.all([
         fetchNodes(),
         fetchAlerts(),
+        fetchElements(),
       ]);
 
       setNodes(nodeData);
       setAlerts(alertData);
+      setElements(elementData);
     } catch (err) {
       console.warn('Error loading command centre data:', err);
 
@@ -121,7 +125,7 @@ export const CommandCentre: React.FC = () => {
           <div className="min-w-0">
             <div className="text-[10px] text-text-muted uppercase">Fleet Status</div>
             <div className="font-bold text-xs text-text-primary truncate">
-              {summary?.nodes_online ?? 3} / {summary?.nodes_total ?? 3} Nodes Online
+              {summary?.nodes_online ?? 0} / {summary?.nodes_total ?? 0} Operational Nodes
             </div>
           </div>
         </div>
@@ -145,7 +149,7 @@ export const CommandCentre: React.FC = () => {
           <div className="min-w-0">
             <div className="text-[10px] text-text-muted uppercase">Gateway Link</div>
             <div className="font-bold text-xs text-text-primary truncate">
-              LoRa 868 MHz Healthy
+              {summary?.gateway_mode === 'REAL' ? 'USB Serial Hardware' : 'Windows Python / Simulator'}
             </div>
           </div>
         </div>
@@ -169,7 +173,7 @@ export const CommandCentre: React.FC = () => {
           <div className="min-w-0">
             <div className="text-[10px] text-text-muted uppercase">Fleet Avg Risk</div>
             <div className="font-bold text-xs text-text-primary truncate">
-              {summary?.average_risk ?? 12}% (Nominal)
+              {summary?.average_risk == null ? 'Awaiting evidence' : `${summary.average_risk}%`}
             </div>
           </div>
         </div>
@@ -186,6 +190,8 @@ export const CommandCentre: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {elements.length > 0 && <PanchaBhoothaOverview domains={elements} />}
 
       {/* 2. MAIN CENTER: MAP + RIGHT RAIL INCIDENT FEED */}
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-3 flex-1 min-h-[560px] xl:min-h-[620px]">

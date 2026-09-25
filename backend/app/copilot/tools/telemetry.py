@@ -31,7 +31,10 @@ async def get_latest_telemetry(db: AsyncSession, node_id: str) -> Dict[str, Any]
         "rssi": record.rssi,
         "battery_pct": record.battery_pct,
         "metrics": record.metrics,
-        "is_simulation": bool(record.is_simulation)
+        "is_simulation": bool(record.is_simulation),
+        "source_mode": record.source_mode,
+        "device_timestamp": record.device_timestamp.isoformat(),
+        "server_received_at": record.server_received_at.isoformat(),
     }
 
 

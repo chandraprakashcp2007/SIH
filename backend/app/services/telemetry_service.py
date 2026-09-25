@@ -2,7 +2,7 @@
 PRAHARI-NET Telemetry Ingestion & Real-Time Processing Service
 Processes packets from serial LoRa and simulator pipelines.
 """
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Dict, Any, List, Optional
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,6 +16,8 @@ from backend.app.ai.risk_engine import risk_engine
 from backend.app.services.alert_service import alert_service
 from backend.app.websocket.manager import ws_manager
 from backend.app.services.evidence_service import build_event_evidence
+from backend.app.domain.registry import DOMAIN_REGISTRY
+from backend.app.provenance import SourceMode, ValidationReason, resolve_source_mode
 import time
 
 
@@ -36,6 +38,21 @@ class TelemetryService:
         for counters in self._packet_counters.values():
             counters.update(total=0, lost=0)
 
+    @staticmethod
+    def _quarantined(node_id: str, sequence: int, source_mode: SourceMode, reason: ValidationReason) -> Dict[str, Any]:
+        return {
+            "status": "quarantined",
+            "node_id": node_id,
+            "sequence": sequence,
+            "processed_at": datetime.now(timezone.utc).isoformat(),
+            "risk_score": 0.0,
+            "risk_band": "WITHHELD",
+            "alerts_generated": 0,
+            "sensor_trust": {},
+            "source_mode": source_mode.value,
+            "reason_code": reason.value,
+        }
+
     async def ingest_packet(
         self,
         db: AsyncSession,
@@ -51,7 +68,30 @@ class TelemetryService:
         rssi = int(payload.get("rssi", -75))
         battery = float(payload.get("battery_pct", 100.0))
         metrics = payload.get("metrics", {})
-        is_simulation = bool(payload.get("is_simulation", False))
+        source_mode = resolve_source_mode(payload.get("source_mode"), payload.get("is_simulation"))
+        is_simulation = source_mode is SourceMode.SIMULATION
+        domain = DOMAIN_REGISTRY.get(node_id)
+        if domain is None:
+            return self._quarantined(node_id, sequence, source_mode, ValidationReason.INVALID_SCHEMA)
+        if domain.default_source_mode is SourceMode.PLANNED or source_mode is SourceMode.PLANNED:
+            return self._quarantined(node_id, sequence, source_mode, ValidationReason.PLANNED_NODE_TELEMETRY)
+        if source_mode is SourceMode.EXTERNAL_DATA:
+            return self._quarantined(node_id, sequence, source_mode, ValidationReason.INVALID_SOURCE_MODE)
+
+        now_utc = datetime.now(timezone.utc)
+        raw_device_timestamp = payload.get("timestamp")
+        try:
+            device_timestamp = datetime.fromisoformat(raw_device_timestamp.replace("Z", "+00:00")) if raw_device_timestamp else now_utc
+            if device_timestamp.tzinfo is None:
+                device_timestamp = device_timestamp.replace(tzinfo=timezone.utc)
+            device_timestamp = device_timestamp.astimezone(timezone.utc)
+        except (AttributeError, TypeError, ValueError):
+            return self._quarantined(node_id, sequence, source_mode, ValidationReason.INVALID_SCHEMA)
+        clock_drift_seconds = (now_utc - device_timestamp).total_seconds()
+        if clock_drift_seconds < -300:
+            return self._quarantined(node_id, sequence, source_mode, ValidationReason.FUTURE_TIMESTAMP)
+        if clock_drift_seconds > 86400 and source_mode is not SourceMode.REPLAY:
+            return self._quarantined(node_id, sequence, source_mode, ValidationReason.STALE_PACKET)
 
         # Check sequence gaps and duplicate detection
         last_seq = self._last_sequence.get(node_id)
@@ -64,6 +104,8 @@ class TelemetryService:
             elif sequence > last_seq + 1:
                 sequence_gap = sequence - (last_seq + 1)
                 self._packet_counters.setdefault(node_id, {"total": 0, "lost": 0})["lost"] += sequence_gap
+            elif sequence < last_seq and source_mode is not SourceMode.REPLAY:
+                return self._quarantined(node_id, sequence, source_mode, ValidationReason.OUT_OF_ORDER)
 
         if is_duplicate:
             return {
@@ -75,6 +117,8 @@ class TelemetryService:
                 "risk_band": "UNCHANGED",
                 "alerts_generated": 0,
                 "sensor_trust": {},
+                "source_mode": source_mode.value,
+                "reason_code": ValidationReason.DUPLICATE.value,
             }
 
         self._last_sequence[node_id] = sequence
@@ -83,6 +127,24 @@ class TelemetryService:
         total_pkts = self._packet_counters[node_id]["total"]
         lost_pkts = self._packet_counters[node_id]["lost"]
         packet_loss_pct = round((lost_pkts / max(1, total_pkts + lost_pkts)) * 100.0, 1)
+
+        # REPLAY records remain isolated from current risk, alert, and node state.
+        if source_mode is SourceMode.REPLAY:
+            db.add(TelemetryRecord(
+                node_id=node_id, sequence=sequence, timestamp=device_timestamp,
+                device_timestamp=device_timestamp, server_received_at=now_utc,
+                rssi=rssi, battery_pct=battery, raw_payload=payload, metrics=metrics,
+                is_simulation=0, source_mode=source_mode.value,
+                gateway_id=payload.get("gateway_id"), transport=payload.get("transport") or gateway_source,
+                clock_drift_seconds=clock_drift_seconds,
+            ))
+            await db.commit()
+            return {
+                "status": "stored_isolated", "node_id": node_id, "sequence": sequence,
+                "processed_at": now_utc.isoformat(), "risk_score": 0.0, "risk_band": "UNCHANGED",
+                "alerts_generated": 0, "sensor_trust": {}, "source_mode": source_mode.value,
+                "reason_code": None,
+            }
 
         # 1. Fetch recent telemetry history for dynamic derivatives and stuck checks
         hist_query = (
@@ -103,18 +165,22 @@ class TelemetryService:
             is_simulation=is_simulation
         )
 
-        now_utc = datetime.now(timezone.utc)
-
         # 3. Save Telemetry Record
         telemetry_rec = TelemetryRecord(
             node_id=node_id,
             sequence=sequence,
-            timestamp=now_utc,
+            timestamp=device_timestamp,
+            device_timestamp=device_timestamp,
+            server_received_at=now_utc,
             rssi=rssi,
             battery_pct=battery,
             raw_payload=payload,
             metrics=metrics,
-            is_simulation=1 if is_simulation else 0
+            is_simulation=1 if is_simulation else 0,
+            source_mode=source_mode.value,
+            gateway_id=payload.get("gateway_id"),
+            transport=payload.get("transport") or gateway_source,
+            clock_drift_seconds=clock_drift_seconds,
         )
         db.add(telemetry_rec)
 
@@ -162,11 +228,12 @@ class TelemetryService:
         node_query = select(Node).where(Node.id == node_id)
         node_res = await db.execute(node_query)
         node_obj = node_res.scalar_one_or_none()
-        if node_obj:
+        if node_obj and not (node_obj.source_mode == SourceMode.REAL.value and source_mode is not SourceMode.REAL):
             node_obj.last_seen = now_utc
             node_obj.battery_pct = battery
             node_obj.signal_rssi = rssi
             node_obj.packet_loss_pct = packet_loss_pct
+            node_obj.source_mode = source_mode.value
             if assessment["risk_band"] == "CRITICAL":
                 node_obj.status = "CRITICAL"
             elif assessment["risk_band"] == "WARNING":
@@ -189,6 +256,13 @@ class TelemetryService:
             network_state={"sequence_gap": sequence_gap, "packet_loss_pct": packet_loss_pct},
             processing_latency_ms=round((time.perf_counter() - processing_started) * 1000, 2),
         )
+        evidence["provenance"] = {
+            "source_mode": source_mode.value,
+            "device_timestamp": device_timestamp.isoformat(),
+            "server_received_at": now_utc.isoformat(),
+            "gateway_id": payload.get("gateway_id"),
+            "transport": payload.get("transport") or gateway_source,
+        }
         alert_item = await alert_service.evaluate_and_create_alert(
             db=db,
             node_id=node_id,
@@ -211,6 +285,9 @@ class TelemetryService:
             "rssi": rssi,
             "battery_pct": battery,
             "is_simulation": is_simulation
+            ,"source_mode": source_mode.value
+            ,"device_timestamp": device_timestamp.isoformat()
+            ,"server_received_at": now_utc.isoformat()
         })
 
         await ws_manager.broadcast_event("risk.updated", {
@@ -252,6 +329,8 @@ class TelemetryService:
             "risk_band": assessment["risk_band"],
             "alerts_generated": 1 if alert_item else 0,
             "sensor_trust": assessment["sensor_trust"]
+            ,"source_mode": source_mode.value
+            ,"reason_code": None
         }
 
 

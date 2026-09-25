@@ -238,7 +238,9 @@ class PrahariSimulator:
                 "metrics": node_metrics,
                 "rssi": rssi,
                 "battery_pct": battery,
-                "is_simulation": True
+                "is_simulation": True,
+                "source_mode": "SIMULATION",
+                "transport": "SIMULATOR"
             }
             packets[node_id] = packet
 

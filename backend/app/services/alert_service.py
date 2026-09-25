@@ -16,9 +16,9 @@ class AlertService:
     """Manages disaster incident lifecycle according to NDMA CAP standards."""
 
     HAZARD_MAP = {
-        "JALA-01": ("FLOOD", "Brahmaputra Basin - Sector 4"),
-        "AGNI-02": ("FIRE", "Similipal Forest Perimeter - Ridge A"),
-        "BHUMI-03": ("LANDSLIDE", "NH-58 Ghat Section Km 42")
+        "JALA-01": ("FLOOD", "SIMULATION DEMO LOCATION"),
+        "AGNI-02": ("FIRE", "SIMULATION DEMO LOCATION"),
+        "BHUMI-03": ("LANDSLIDE", "SIMULATION DEMO LOCATION")
     }
 
     async def evaluate_and_create_alert(

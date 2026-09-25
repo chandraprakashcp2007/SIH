@@ -118,6 +118,8 @@ async def list_nodes(db: AsyncSession = Depends(get_db)):
             "packet_loss_pct": n.packet_loss_pct,
             "last_seen": n.last_seen.isoformat(),
             "sensors_configured": n.sensors_configured,
+            "source_mode": n.source_mode,
+            "hardware_profile": n.hardware_profile or {},
             "latest_risk": {
                 "risk_score": latest_risk.risk_score if latest_risk else 0.0,
                 "risk_band": latest_risk.risk_band if latest_risk else "NORMAL",
@@ -131,6 +133,7 @@ async def list_nodes(db: AsyncSession = Depends(get_db)):
                 "risk_trend": latest_risk.risk_trend if latest_risk else "STABLE"
             } if latest_risk else None,
             "latest_metrics": latest_telem.metrics if latest_telem else {}
+            ,"latest_source_mode": latest_telem.source_mode if latest_telem else n.source_mode
         })
 
     return results
@@ -178,8 +181,11 @@ async def get_node(node_id: str, db: AsyncSession = Depends(get_db)):
         "packet_loss_pct": node.packet_loss_pct,
         "last_seen": node.last_seen.isoformat(),
         "sensors_configured": node.sensors_configured,
+        "source_mode": node.source_mode,
+        "hardware_profile": node.hardware_profile or {},
         "latest_risk": latest_risk,
-        "latest_metrics": latest_telem.metrics if latest_telem else {}
+        "latest_metrics": latest_telem.metrics if latest_telem else {},
+        "latest_source_mode": latest_telem.source_mode if latest_telem else node.source_mode
     }
 
 

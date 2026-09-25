@@ -8,24 +8,28 @@ Smart India Hackathon 2026 — Problem Statement SIH26178
 
 ## Overview
 
-PRAHARI-NET is an autonomous disaster intelligence and early warning command system designed for deployment in remote, disaster-prone sectors across India. Operating completely independent of public cloud and internet infrastructure, PRAHARI combines long-range LoRa RF telemetry, multi-sensor kinematic fusion, dynamic transducer trust verification, unsupervised anomaly detection (Isolation Forest), explainable causal risk assessment, and auditory alarm synthesis.
+PRAHARI-NET is a research prototype for local, explainable multi-hazard monitoring. It combines authenticated serial/simulated telemetry, multi-sensor fusion, sensor trust, anomaly detection, causal risk assessment, and local alerts. The current working gateway is Windows/Python; LoRa and a shared Raspberry Pi-class gateway are supported architectural targets, not claimed live deployments.
 
 ## Core Hardware Intelligence Nodes
 
 1. **JALA-01 (Flood Intelligence Node):**
-   - **Location:** Brahmaputra Basin - Sector 4 (Assam)
+   - **Location:** Simulation demo location unless a physical deployment is explicitly configured.
    - **Sensors:** Ultrasonic water level transceiver, tipping-bucket precipitation gauge, DHT22 ambient temperature/humidity.
    - **Metrics:** River level ($cm$), rate of rise ($cm/min$), acceleration ($cm/min^2$), rain intensity ($mm/hr$).
    - **Forecasting:** Polynomial kinematic flood threshold crossing window prediction.
 
 2. **AGNI-02 (Fire & Combustion Intelligence Node):**
-   - **Location:** Similipal Forest Perimeter - Ridge A (Odisha)
+   - **Location:** Simulation demo location; ESP32 field node planned.
    - **Sensors:** MQ-2 smoke/flammable gas detector, MQ-135 harmful air quality sensor, narrow-band optical infrared flame sensor, calibrated thermal probe.
    - **Metrics:** Raw ADC combustion signatures, smoke density index, plume growth rate, temperature spike ($^\circ C$).
    - **False Alarm Suppression:** Cross-sensor contradiction checking prevents single-sensor false triggers.
 
 3. **BHUMI-03 (Landslide & Slope Stability Node):**
-   - **Location:** NH-58 Ghat Section Km 42 (Uttarakhand)
+   - **Location:** Simulation demo location; ESP32 field node planned.
+
+4. **VAYU-04 (Air Intelligence):** Planned only; no live telemetry or risk score is fabricated.
+
+5. **AKASHA-05 (Atmospheric Intelligence):** Planned only; external meteorological integration is not yet configured.
    - **Sensors:** Dual-depth Total Water Soil (TWS) capacitance probes, MPU6050 6-axis MEMS inclinometer, piezoelectric geophone micro-seismic transducer.
    - **Metrics:** Upper/lower soil saturation ($%$), angular shear tilt delta ($\Delta ^\circ$), vibration RMS velocity ($mm/s$).
 

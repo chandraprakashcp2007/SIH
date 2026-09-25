@@ -17,7 +17,7 @@ class Node(Base):
     longitude = Column(Float, nullable=False)
     elevation_m = Column(Float, default=0.0)
     location_name = Column(String(128), nullable=False)
-    status = Column(String(32), default="ONLINE", nullable=False)  # ONLINE, DEGRADED, MAINTENANCE, OFFLINE
+    status = Column(String(32), default="OFFLINE", nullable=False)  # ONLINE, SIMULATION, DEGRADED, MAINTENANCE, OFFLINE
     firmware_version = Column(String(32), default="v1.4.2-lora")
     hardware_rev = Column(String(32), default="SX1276-ESP32-RevB")
     battery_pct = Column(Float, default=100.0)
@@ -27,4 +27,6 @@ class Node(Base):
     last_seen = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     sensors_configured = Column(JSON, default=list)  # list of active sensor names
     metadata_info = Column(JSON, default=dict)
+    source_mode = Column(String(32), default="SIMULATION", nullable=False, index=True)
+    hardware_profile = Column(JSON, default=dict)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)

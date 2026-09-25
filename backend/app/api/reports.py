@@ -28,7 +28,7 @@ async def export_csv(
     writer = csv.writer(output)
 
     if report_type == "telemetry":
-        writer.writerow(["Timestamp", "Node ID", "Sequence", "RSSI (dBm)", "Battery (%)", "Simulation", "Metrics"])
+        writer.writerow(["Device Timestamp", "Server Received", "Node ID", "Sequence", "RSSI (dBm)", "Battery (%)", "Source Mode", "Metrics"])
         query = select(TelemetryRecord)
         if node_id:
             query = query.where(TelemetryRecord.node_id == node_id)
@@ -36,7 +36,7 @@ async def export_csv(
         res = await db.execute(query)
         records = res.scalars().all()
         for r in records:
-            writer.writerow([r.timestamp.isoformat(), r.node_id, r.sequence, r.rssi, r.battery_pct, r.is_simulation, str(r.metrics)])
+            writer.writerow([r.device_timestamp.isoformat(), r.server_received_at.isoformat(), r.node_id, r.sequence, r.rssi, r.battery_pct, r.source_mode, str(r.metrics)])
         filename = f"prahari_telemetry_{node_id or 'all'}.csv"
 
     elif report_type == "alerts":

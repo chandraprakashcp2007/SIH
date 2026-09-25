@@ -25,6 +25,12 @@ export async function fetchNodes() {
   return fetchOperationalJson<any[]>('nodes', `${BASE_URL}/nodes`, { headers: getHeaders() });
 }
 
+export async function fetchElements() {
+  const res = await fetch(`${BASE_URL}/elements`, { headers: getHeaders() });
+  if (!res.ok) throw new Error('Failed to fetch Pancha Bhootha registry');
+  return res.json();
+}
+
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to fetch node ${id}`);

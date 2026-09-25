@@ -10,6 +10,7 @@ from backend.app.core.database import get_db
 from backend.app.schemas.telemetry import TelemetryIngestPayload, IngestResponse
 from backend.app.services.telemetry_service import telemetry_service
 from backend.app.models.telemetry import TelemetryRecord
+from backend.app.provenance import resolve_source_mode
 
 router = APIRouter(prefix="/telemetry", tags=["Telemetry"])
 
@@ -28,7 +29,9 @@ async def ingest_telemetry(
         result = await telemetry_service.ingest_packet(
             db=db,
             payload=payload.model_dump(),
-            gateway_source="SIMULATOR" if payload.is_simulation else "USB_SERIAL"
+            gateway_source=(payload.transport or (
+                "SIMULATOR" if resolve_source_mode(payload.source_mode, payload.is_simulation).value == "SIMULATION" else "USB_SERIAL"
+            ))
         )
         return result
     except Exception as e:
@@ -59,5 +62,8 @@ async def get_latest_telemetry(db: AsyncSession = Depends(get_db)):
                 "rssi": rec.rssi,
                 "battery_pct": rec.battery_pct,
                 "metrics": rec.metrics
+                ,"source_mode": rec.source_mode
+                ,"device_timestamp": rec.device_timestamp.isoformat()
+                ,"server_received_at": rec.server_received_at.isoformat()
             }
     return latest

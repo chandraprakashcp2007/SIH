@@ -4,7 +4,7 @@ Initializes SQLite schema, registers default credentials, and populates 3 core s
 """
 import asyncio
 from datetime import datetime, timezone, timedelta
-from sqlalchemy import select
+from sqlalchemy import select, text
 from backend.app.core.database import engine, Base, AsyncSessionLocal
 from backend.app.models.users import User
 from backend.app.models.nodes import Node
@@ -14,12 +14,39 @@ from backend.app.models.alerts import Alert
 from backend.app.models.audit import AuditLog
 from backend.app.models.copilot import ChatSession, ChatMessage, CopilotToolCall, CopilotFeedback, CopilotMetric
 from backend.app.core.security import hash_password
+from backend.app.domain.registry import DOMAIN_REGISTRY
 
 
 async def init_models():
     """Create all database tables using async engine."""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        if conn.dialect.name == "sqlite":
+            migrations = {
+                "telemetry_records": {
+                    "device_timestamp": "DATETIME",
+                    "server_received_at": "DATETIME",
+                    "source_mode": "VARCHAR(32) NOT NULL DEFAULT 'SIMULATION'",
+                    "gateway_id": "VARCHAR(64)",
+                    "transport": "VARCHAR(32)",
+                    "clock_drift_seconds": "FLOAT NOT NULL DEFAULT 0.0",
+                },
+                "nodes": {
+                    "source_mode": "VARCHAR(32) NOT NULL DEFAULT 'SIMULATION'",
+                    "hardware_profile": "JSON",
+                },
+            }
+            for table_name, columns in migrations.items():
+                existing = {row[1] for row in (await conn.execute(text(f"PRAGMA table_info({table_name})"))).all()}
+                for column_name, definition in columns.items():
+                    if column_name not in existing:
+                        await conn.execute(text(f"ALTER TABLE {table_name} ADD COLUMN {column_name} {definition}"))
+            await conn.execute(text(
+                "UPDATE telemetry_records SET device_timestamp = timestamp WHERE device_timestamp IS NULL"
+            ))
+            await conn.execute(text(
+                "UPDATE telemetry_records SET server_received_at = timestamp WHERE server_received_at IS NULL"
+            ))
 
 
 async def seed_data():
@@ -62,64 +89,81 @@ async def seed_data():
                 name="Brahmaputra Flood Intelligence",
                 node_type="FLOOD",
                 tagline="River Hydrodynamics & Surge Forecasting",
-                latitude=26.1850,
-                longitude=91.7539,
-                elevation_m=55.0,
-                location_name="Brahmaputra Basin - Sector 4",
-                status="ONLINE",
-                firmware_version="v1.4.2-lora",
-                hardware_rev="SX1276-ESP32-RevB",
+                latitude=0.0,
+                longitude=0.0,
+                elevation_m=0.0,
+                location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
+                status="SIMULATION",
+                firmware_version="ESP8266-PROTOTYPE",
+                hardware_rev="NodeMCU ESP8266 BENCH PROTOTYPE",
                 battery_pct=94.0,
-                solar_voltage=4.15,
+                solar_voltage=0.0,
                 signal_rssi=-76,
                 packet_loss_pct=0.2,
                 sensors_configured=["water_level_ultrasonic", "tipping_rain_gauge", "dht22_ambient"],
-                metadata_info={"channel_width_m": 450, "flood_warning_level_cm": 120}
+                metadata_info={"demo_location": True, "physical_location_verified": False, "flood_warning_level_cm": 120}
+                ,source_mode="SIMULATION"
             ),
             Node(
                 id="AGNI-02",
                 name="Similipal Forest Fire Node",
                 node_type="FIRE",
                 tagline="Atmospheric Combustion & Plume AI",
-                latitude=21.8485,
-                longitude=86.4250,
-                elevation_m=420.0,
-                location_name="Similipal Forest Perimeter - Ridge A",
-                status="ONLINE",
-                firmware_version="v1.4.2-lora",
-                hardware_rev="SX1276-ESP32-RevB",
+                latitude=0.0,
+                longitude=0.0,
+                elevation_m=0.0,
+                location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
+                status="SIMULATION",
+                firmware_version="PLANNED",
+                hardware_rev="ESP32 FIELD NODE - PLANNED",
                 battery_pct=91.0,
-                solar_voltage=4.08,
+                solar_voltage=0.0,
                 signal_rssi=-81,
                 packet_loss_pct=0.5,
                 sensors_configured=["mq2_smoke", "mq135_gas", "optical_flame_ir", "thermal_probe"],
-                metadata_info={"coverage_radius_km": 3.5, "vegetation_type": "Dry Deciduous"}
+                metadata_info={"demo_location": True, "physical_location_verified": False}
+                ,source_mode="SIMULATION"
             ),
             Node(
                 id="BHUMI-03",
                 name="NH-58 Landslide Inclinometer",
                 node_type="LANDSLIDE",
                 tagline="Pore Pressure & Slope Shear Dynamics",
-                latitude=30.1450,
-                longitude=78.3050,
-                elevation_m=1150.0,
-                location_name="NH-58 Ghat Section Km 42",
-                status="ONLINE",
-                firmware_version="v1.4.2-lora",
-                hardware_rev="SX1276-ESP32-RevB",
+                latitude=0.0,
+                longitude=0.0,
+                elevation_m=0.0,
+                location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
+                status="SIMULATION",
+                firmware_version="PLANNED",
+                hardware_rev="ESP32 FIELD NODE - PLANNED",
                 battery_pct=88.0,
-                solar_voltage=3.95,
+                solar_voltage=0.0,
                 signal_rssi=-84,
                 packet_loss_pct=0.8,
                 sensors_configured=["soil_moisture_tws_upper", "soil_moisture_tws_lower", "mpu6050_inclinometer", "geophone_vib"],
-                metadata_info={"slope_angle_deg": 38.5, "lithology": "Fissured Shale / Quartzite"}
+                metadata_info={"demo_location": True, "physical_location_verified": False}
+                ,source_mode="SIMULATION"
             )
         ]
 
         for n in nodes:
+            n.hardware_profile = DOMAIN_REGISTRY[n.id].hardware_profile.to_dict()
             existing = await db.execute(select(Node).where(Node.id == n.id))
-            if not existing.scalar_one_or_none():
+            existing_node = existing.scalar_one_or_none()
+            if not existing_node:
                 db.add(n)
+            elif existing_node.hardware_rev == "SX1276-ESP32-RevB":
+                existing_node.location_name = n.location_name
+                existing_node.latitude = 0.0
+                existing_node.longitude = 0.0
+                existing_node.elevation_m = 0.0
+                existing_node.status = "SIMULATION"
+                existing_node.firmware_version = n.firmware_version
+                existing_node.hardware_rev = n.hardware_rev
+                existing_node.solar_voltage = 0.0
+                existing_node.source_mode = "SIMULATION"
+                existing_node.metadata_info = n.metadata_info
+                existing_node.hardware_profile = n.hardware_profile
 
         # 3. Seed historical nominal records if empty
         t_check = await db.execute(select(TelemetryRecord).limit(1))
