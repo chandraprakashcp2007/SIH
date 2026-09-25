@@ -40,4 +40,16 @@ fix-prahari-map-zoom.cjs
 prahari-premium-patch.cjs
 
 Thumbs.db
-.DS_Store
+.DS_Store*.db-shm
+*.db-wal
+*.db-journal
+data/test_*.db*
+data/pytest_*.db*
+data/prahari_test_*.db*
+frontend/playwright-report/
+frontend/test-results/
+.coverage
+coverage.xml
+htmlcov/
+*.joblib.tmp
+*.model.tmp

@@ -1,8 +1,8 @@
-# PRAHARI-NET
+﻿# PRAHARI-NET
 
 **Predictive Resilient Autonomous Hazard & Risk Intelligence Network**  
-*SENSE • PREDICT • ALERT • PROTECT*  
-Smart India Hackathon 2026 — Problem Statement SIH26178
+*SENSE â€¢ PREDICT â€¢ ALERT â€¢ PROTECT*  
+Smart India Hackathon 2026 â€” Problem Statement SIH26178
 
 ---
 
@@ -26,12 +26,18 @@ PRAHARI-NET is a research prototype for local, explainable multi-hazard monitori
 
 3. **BHUMI-03 (Landslide & Slope Stability Node):**
    - **Location:** Simulation demo location; ESP32 field node planned.
+   - **Sensors:** Dual-depth soil-moisture probes, MPU6050 inclinometer, and vibration/geophone sensing are represented by the landslide prototype architecture.
+   - **Metrics:** Soil saturation, tilt delta, vibration RMS, and rainfall context.
+   - **Status:** Existing landslide risk engine available; field ESP32 deployment remains planned unless physically connected.
 
-4. **VAYU-04 (Air Intelligence):** Planned only; no live telemetry or risk score is fabricated.
+4. **VAYU-04 (Air Intelligence):**
+   - **Status:** Planned only.
+   - No live physical PM2.5, PM10, CO, VOC, or toxic-gas telemetry is claimed unless an appropriate physical sensor or trusted external source is configured.
 
-5. **AKASHA-05 (Atmospheric Intelligence):** Planned only; external meteorological integration is not yet configured.
-   - **Sensors:** Dual-depth Total Water Soil (TWS) capacitance probes, MPU6050 6-axis MEMS inclinometer, piezoelectric geophone micro-seismic transducer.
-   - **Metrics:** Upper/lower soil saturation ($%$), angular shear tilt delta ($\Delta ^\circ$), vibration RMS velocity ($mm/s$).
+5. **AKASHA-05 (Atmospheric Intelligence):**
+   - **Status:** Planned only.
+   - External meteorological and oceanographic integration is not yet configured.
+   - No live satellite, cyclone, wind, rainfall, or ocean observation is claimed until a real provider/import source is connected.
 
 ## Authoritative Risk & Safety Architecture
 
@@ -60,3 +66,4 @@ Run verification with:
 Set-Location frontend
 npm run test:e2e
 ```
+
