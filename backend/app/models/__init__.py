@@ -1,4 +1,4 @@
-"""
+﻿"""
 PRAHARI-NET Database Models Export
 """
 from backend.app.core.database import Base
@@ -9,6 +9,7 @@ from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.sensor_trust import SensorTrustLog
 from backend.app.models.network import GatewayPacketLog
+from backend.app.models.external_data import ExternalObservation, ExternalProviderState
 from backend.app.models.audit import AuditLog, SystemSetting
 from backend.app.models.copilot import (
     ChatSession,
@@ -27,6 +28,8 @@ __all__ = [
     "Alert",
     "SensorTrustLog",
     "GatewayPacketLog",
+    "ExternalObservation",
+    "ExternalProviderState",
     "AuditLog",
     "SystemSetting",
     "ChatSession",
@@ -35,3 +38,4 @@ __all__ = [
     "CopilotFeedback",
     "CopilotMetric",
 ]
+

@@ -1,4 +1,4 @@
-"""
+﻿"""
 PRAHARI-NET Database Initialization & Demo Seeder
 Initializes SQLite schema, registers default credentials, and populates 3 core sensor nodes.
 """
@@ -267,3 +267,4 @@ async def seed_data():
 
 if __name__ == "__main__":
     asyncio.run(seed_data())
+
