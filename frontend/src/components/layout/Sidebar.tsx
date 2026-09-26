@@ -49,6 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
 
     { section: 'INTELLIGENCE' },
     { to: '/predictions', label: 'Predictions', icon: TrendingUp },
+    { to: '/evidence-gate', label: 'Evidence Gate', icon: ShieldCheck },
     { to: '/analytics', label: 'Analytics', icon: BarChart2 },
     { to: '/ai', label: 'AI Intelligence', icon: BrainCircuit },
     { to: '/external-data', label: 'External Data', icon: CloudDownload },

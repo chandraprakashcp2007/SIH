@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
 
+test.afterEach(async ({ page }) => {
+  // Let in-flight authenticated reads release SQLite sessions before the
+  // browser context is torn down and its requests are cancelled.
+  await page.waitForTimeout(1000);
+});
+
 async function login(page: any, username = 'admin') {
   await page.goto('/login');
   await expect(page.getByText('DEV AUTH BYPASS')).toBeVisible();

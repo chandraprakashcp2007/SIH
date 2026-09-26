@@ -2,6 +2,7 @@
 PRAHARI-NET Async Database Engine & Session Management
 Smart India Hackathon 2026 - Problem Statement SIH26178
 """
+import asyncio
 import os
 from pathlib import Path
 from typing import AsyncGenerator
@@ -48,5 +49,15 @@ Base = declarative_base()
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
     """Dependency for providing transactional database session."""
-    async with AsyncSessionLocal() as session:
+    session = AsyncSessionLocal()
+    try:
         yield session
+    finally:
+        # Client disconnects cancel request scopes. Shielding cleanup prevents
+        # aiosqlite rollback/close from being interrupted halfway through.
+        close_task = asyncio.create_task(session.close())
+        try:
+            await asyncio.shield(close_task)
+        except asyncio.CancelledError:
+            await close_task
+            raise

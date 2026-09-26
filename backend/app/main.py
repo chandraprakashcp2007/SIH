@@ -37,6 +37,7 @@ from backend.app.api.external_data import router as external_data_router
 from backend.app.api.interop import router as interop_router
 from backend.app.api.geo import router as geo_router
 from backend.app.api.observations import router as observations_router
+from backend.app.api.evidence_gate import router as evidence_gate_router
 
 configure_logging()
 logger = logging.getLogger("prahari.main")
@@ -105,6 +106,7 @@ app.include_router(external_data_router, prefix=settings.API_V1_STR, dependencie
 app.include_router(interop_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 app.include_router(geo_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 app.include_router(observations_router, prefix=settings.API_V1_STR, dependencies=authenticated)
+app.include_router(evidence_gate_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 
 
 @app.get("/")

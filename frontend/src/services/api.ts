@@ -57,6 +57,12 @@ export async function fetchObservationAggregate(nodeId: string, observedProperty
   return res.json();
 }
 
+export async function fetchEvidenceGateEvaluations() {
+  const res = await fetch(`${BASE_URL}/evidence-gate/evaluations`, { headers: getHeaders() });
+  if (!res.ok) throw new Error(`Failed to load Evidence Gate evaluations (HTTP ${res.status})`);
+  return res.json();
+}
+
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to fetch node ${id}`);

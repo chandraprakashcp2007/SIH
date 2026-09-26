@@ -83,7 +83,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | 1 | Canonical Observation/provenance foundation and legacy adapter | Implemented: additive table creation, legacy adapter, payload hashing and read-only SensorThings subset; provenance regression passes |
 | 2 | Dataset registry, GeoJSON engine, five distinct domain map read models/pages | Implemented: persisted registry/feature schema, backend-derived risk GeoJSON, five dedicated routes, truthful layer states and E2E coverage |
 | 3 | Sensor health/trust history and server-side graph aggregation | Implemented: persisted health snapshots, fleet API/UI, health events and 15m–7d database aggregation |
-| 4 | Evidence items, fusion, hazard policies, 15-check gate, decay | mandatory checks prevent publication |
+| 4 | Evidence items, fusion, hazard policies, 15-check gate, decay | Implemented: persisted evidence/evaluations, severity policies, confidence decay, provenance isolation and why-withheld UI |
 | 5 | Cross-hazard, compound risk and regional consensus | no statistical-causality claims; isolation tests pass |
 | 6 | JALA topology, downstream threat, predictions, time-to-impact | unavailable travel time stays unavailable |
 | 7 | Digital twin, hazard/uncertainty boundaries and blind spots | confidence/uncertainty displayed separately |

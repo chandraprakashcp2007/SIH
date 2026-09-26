@@ -17,5 +17,6 @@ describe('Sidebar', () => {
     for (const [label, href] of Object.entries(links)) {
       expect(screen.getByRole('link', { name: label })).toHaveAttribute('href', href);
     }
+    expect(screen.getByRole('link', { name: 'Evidence Gate' })).toHaveAttribute('href', '/evidence-gate');
   });
 });
