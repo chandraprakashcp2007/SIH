@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { fetchPredictions } from '../services/api';
+import { evaluateJalaDownstreamThreats, fetchJalaDownstreamIntelligence, fetchPredictions } from '../services/api';
 import { wsClient } from '../services/websocket';
 import { TrendingUp, Clock, AlertCircle, ShieldCheck, ArrowUpRight, Droplets, Flame, Mountain } from 'lucide-react';
 
 export const PredictionsPage: React.FC = () => {
   const [predictions, setPredictions] = useState<any[]>([]);
+  const [jala, setJala] = useState<any>({ topology: null, threats: [] });
 
   const loadPredictions = async () => {
     try {
@@ -17,6 +18,7 @@ export const PredictionsPage: React.FC = () => {
 
   useEffect(() => {
     loadPredictions();
+    fetchJalaDownstreamIntelligence().then(setJala).catch(() => undefined);
     const unsub = wsClient.subscribe('risk.updated', loadPredictions);
     return () => unsub();
   }, []);
@@ -39,6 +41,12 @@ export const PredictionsPage: React.FC = () => {
           Kinematic trajectory forecasting and honest time-to-threshold extrapolations without false precision.
         </p>
       </div>
+
+      <section className="rounded-lg border border-border-subtle bg-bg-secondary p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="text-sm font-bold">JALA Downstream Threat Intelligence</h2><p className="mt-1 text-xs text-text-muted">Network propagation requires an authoritative topology and a validated travel-time basis for every reported reach.</p></div><button className="rounded border border-accent-info px-3 py-1.5 text-xs text-accent-info" onClick={async () => { const threat = await evaluateJalaDownstreamThreats(); setJala((current: any) => ({ ...current, threats: [threat, ...current.threats] })); }}>Evaluate downstream</button></div>
+        <div className="mt-3 grid gap-3 md:grid-cols-3"><div className="rounded bg-bg-surface p-3 text-xs"><div className="text-text-muted">Topology</div><strong>{jala.topology?.status || 'LOADING'}</strong></div><div className="rounded bg-bg-surface p-3 text-xs"><div className="text-text-muted">Time to impact</div><strong>{jala.threats[0]?.time_to_impact_state || 'UNAVAILABLE'}</strong></div><div className="rounded bg-bg-surface p-3 text-xs"><div className="text-text-muted">Travel time</div><strong>{jala.threats[0]?.travel_time_minutes == null ? 'UNAVAILABLE' : `${jala.threats[0].travel_time_minutes} min`}</strong></div></div>
+        {(jala.threats[0]?.reason || jala.topology?.reason) && <p className="mt-3 rounded border border-amber-400/20 bg-amber-400/5 p-2 text-xs text-amber-100">{jala.threats[0]?.reason || jala.topology?.reason}</p>}
+      </section>
 
       {/* Prediction Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -14,6 +14,7 @@ from backend.app.models.geospatial import GeoDataset, GeoFeature  # noqa: F401
 from backend.app.models.sensor_health import SensorHealthSnapshot  # noqa: F401
 from backend.app.models.evidence_gate import EvidenceItem, EvidenceGateEvaluation  # noqa: F401
 from backend.app.models.cross_hazard import CrossHazardRelationship, CompoundRiskAssessment, ConsensusAssessment  # noqa: F401
+from backend.app.models.jala_topology import RiverTopologyDataset, DownstreamThreatAssessment  # noqa: F401
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.audit import AuditLog

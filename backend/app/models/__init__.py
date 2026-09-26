@@ -10,6 +10,7 @@ from backend.app.models.geospatial import GeoDataset, GeoFeature
 from backend.app.models.sensor_health import SensorHealthSnapshot
 from backend.app.models.evidence_gate import EvidenceItem, EvidenceGateEvaluation
 from backend.app.models.cross_hazard import CrossHazardRelationship, CompoundRiskAssessment, ConsensusAssessment
+from backend.app.models.jala_topology import RiverTopologyDataset, DownstreamThreatAssessment
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.sensor_trust import SensorTrustLog
@@ -38,6 +39,8 @@ __all__ = [
     "CrossHazardRelationship",
     "CompoundRiskAssessment",
     "ConsensusAssessment",
+    "RiverTopologyDataset",
+    "DownstreamThreatAssessment",
     "RiskAssessment",
     "Alert",
     "SensorTrustLog",

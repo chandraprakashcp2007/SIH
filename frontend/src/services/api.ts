@@ -85,6 +85,21 @@ export async function reevaluateCrossHazards() {
   return res.json();
 }
 
+export async function fetchJalaDownstreamIntelligence() {
+  const [topology, threats] = await Promise.all([
+    fetch(`${BASE_URL}/jala/topology`, { headers: getHeaders() }),
+    fetch(`${BASE_URL}/jala/downstream-threats`, { headers: getHeaders() }),
+  ]);
+  if (!topology.ok || !threats.ok) throw new Error('Failed to load JALA downstream intelligence');
+  return { topology: await topology.json(), threats: await threats.json() };
+}
+
+export async function evaluateJalaDownstreamThreats() {
+  const res = await fetch(`${BASE_URL}/jala/downstream-threats/evaluate`, { method: 'POST', headers: getHeaders() });
+  if (!res.ok) throw new Error('JALA downstream evaluation failed');
+  return res.json();
+}
+
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to fetch node ${id}`);

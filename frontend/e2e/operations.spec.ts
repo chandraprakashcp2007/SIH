@@ -68,3 +68,13 @@ test('cross-hazard intelligence exposes rule provenance and consensus limits', a
   await expect(page.getByText('TRANSPARENT_RULE').first()).toBeVisible();
   await expect(page.getByText('INSUFFICIENT_NEIGHBOURS').first()).toBeVisible();
 });
+
+test('JALA downstream intelligence withholds unvalidated travel time', async ({ page }) => {
+  await login(page);
+  await openNavItem(page, 'Predictions');
+  await expect(page.getByText('JALA Downstream Threat Intelligence')).toBeVisible();
+  await page.getByRole('button', { name: 'Evaluate downstream' }).click();
+  await expect(page.getByText('NOT_CONFIGURED').first()).toBeVisible();
+  await expect(page.getByText('UNAVAILABLE').first()).toBeVisible();
+  await expect(page.getByText(/validated topology and travel-time basis/i)).toBeVisible();
+});

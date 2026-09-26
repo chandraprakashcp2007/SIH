@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.app.core.database import get_db
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.telemetry import TelemetryRecord
+from backend.app.models.jala_topology import DownstreamThreatAssessment
 from backend.app.ai.prediction import prediction_engine
 
 router = APIRouter(prefix="/predictions", tags=["Predictions"])
@@ -28,6 +29,9 @@ async def get_predictions(db: AsyncSession = Depends(get_db)):
 
     for n in nodes:
         nid = n["id"]
+        downstream = None
+        if nid == "JALA-01":
+            downstream = (await db.execute(select(DownstreamThreatAssessment).order_by(desc(DownstreamThreatAssessment.evaluated_at)).limit(1))).scalar_one_or_none()
         # Fetch last 10 risk assessments
         res = await db.execute(
             select(RiskAssessment)
@@ -51,6 +55,8 @@ async def get_predictions(db: AsyncSession = Depends(get_db)):
                 "threshold_crossing_window": "INSUFFICIENT DATA",
                 "model_source": "RULE_FUSION",
                 "last_execution": None
+                ,"downstream_time_to_impact": downstream.travel_time_minutes if downstream else None
+                ,"downstream_time_state": downstream.time_to_impact_state if downstream else "UNAVAILABLE"
             })
             continue
 
@@ -77,6 +83,8 @@ async def get_predictions(db: AsyncSession = Depends(get_db)):
             "threshold_crossing_window": latest.estimated_crossing_time or "NO THRESHOLD CROSSING DETECTED",
             "model_source": latest.model_source,
             "last_execution": latest.timestamp.isoformat()
+            ,"downstream_time_to_impact": downstream.travel_time_minutes if downstream else None
+            ,"downstream_time_state": downstream.time_to_impact_state if downstream else "UNAVAILABLE"
         })
 
     return results

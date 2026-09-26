@@ -85,7 +85,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | 3 | Sensor health/trust history and server-side graph aggregation | Implemented: persisted health snapshots, fleet API/UI, health events and 15m–7d database aggregation |
 | 4 | Evidence items, fusion, hazard policies, 15-check gate, decay | Implemented: persisted evidence/evaluations, severity policies, confidence decay, provenance isolation and why-withheld UI |
 | 5 | Cross-hazard, compound risk and regional consensus | Implemented: persisted configured reevaluation relationships, versioned transparent compound rules, typed cascade events and truthful INSUFFICIENT_NEIGHBOURS consensus; no statistical-causality claims |
-| 6 | JALA topology, downstream threat, predictions, time-to-impact | unavailable travel time stays unavailable |
+| 6 | JALA topology, downstream threat, predictions, time-to-impact | Implemented: persisted topology/downstream assessment interfaces, prediction integration, typed update event and operator visualization; without validated topology parameters travel time remains UNAVAILABLE |
 | 7 | Digital twin, hazard/uncertainty boundaries and blind spots | confidence/uncertainty displayed separately |
 | 8 | Impact, dependencies, evacuation and safe zones | routes never claim guaranteed safety |
 | 9 | CAP 1.2 export, multilingual templates, delivery proof | XML schema/contract and delivery-state tests pass |
