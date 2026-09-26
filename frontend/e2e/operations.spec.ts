@@ -35,3 +35,20 @@ test('admin can drive flood and recovery scenarios', async ({ page }) => {
   await expect(page.getByText(/FLOOD_RAMP|Flood Water Ramp/i).first()).toBeVisible();
   await page.getByRole('button', { name: /Reset/i }).first().click();
 });
+
+test('five dedicated domain intelligence maps expose truthful layer states', async ({ page }) => {
+  await login(page);
+  const domains = [
+    ['jala', 'JALA River & Flood Intelligence'],
+    ['agni', 'AGNI Fire Intelligence'],
+    ['bhumi', 'BHUMI Terrain & Landslide Intelligence'],
+    ['vayu', 'VAYU Air & Smoke Intelligence'],
+    ['akasha', 'AKASHA Weather Intelligence'],
+  ];
+  for (const [path, heading] of domains) {
+    await page.goto(`/live/${path}`);
+    await expect(page.getByRole('heading', { name: heading })).toBeVisible();
+    await expect(page.getByText('Operational layers')).toBeVisible();
+    await expect(page.getByText(/Data limitation:/)).toBeVisible();
+  }
+});

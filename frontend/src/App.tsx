@@ -24,6 +24,11 @@ const CalibrationPage = load(() => import('./pages/CalibrationPage'), 'Calibrati
 const SystemReadinessPage = load(() => import('./pages/SystemReadinessPage'), 'SystemReadinessPage');
 const ExternalDataPage = load(() => import('./pages/ExternalDataPage'), 'ExternalDataPage');
 const DatasetManagerPage = load(() => import('./pages/DatasetManagerPage'), 'DatasetManagerPage');
+const JalaIntelligencePage = load(() => import('./pages/DomainIntelligencePage'), 'JalaIntelligencePage');
+const AgniIntelligencePage = load(() => import('./pages/DomainIntelligencePage'), 'AgniIntelligencePage');
+const BhumiIntelligencePage = load(() => import('./pages/DomainIntelligencePage'), 'BhumiIntelligencePage');
+const VayuIntelligencePage = load(() => import('./pages/DomainIntelligencePage'), 'VayuIntelligencePage');
+const AkashaIntelligencePage = load(() => import('./pages/DomainIntelligencePage'), 'AkashaIntelligencePage');
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   localStorage.getItem('prahari_token') ? <>{children}</> : <Navigate to="/login" replace />;
@@ -35,6 +40,11 @@ export function App() {
     <Route path="/login" element={<Login />} />
     <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
       <Route index element={<CommandCentre />} /><Route path="map" element={<MapPage />} />
+      <Route path="live/jala" element={<JalaIntelligencePage />} />
+      <Route path="live/agni" element={<AgniIntelligencePage />} />
+      <Route path="live/bhumi" element={<BhumiIntelligencePage />} />
+      <Route path="live/vayu" element={<VayuIntelligencePage />} />
+      <Route path="live/akasha" element={<AkashaIntelligencePage />} />
       <Route path="nodes" element={<Nodes />} /><Route path="nodes/:nodeId" element={<NodeDetail />} />
       <Route path="alerts" element={<AlertCentre />} /><Route path="predictions" element={<PredictionsPage />} />
       <Route path="analytics" element={<AnalyticsPage />} /><Route path="network" element={<NetworkPage />} />

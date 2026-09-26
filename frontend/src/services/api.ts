@@ -31,6 +31,18 @@ export async function fetchElements() {
   return res.json();
 }
 
+export async function fetchGeoDomain(domain: string) {
+  const res = await fetch(`${BASE_URL}/geo/domains/${encodeURIComponent(domain)}`, { headers: getHeaders() });
+  if (!res.ok) throw new Error(`Failed to load ${domain} geo-intelligence (HTTP ${res.status})`);
+  return res.json();
+}
+
+export async function fetchGeoDatasets() {
+  const res = await fetch(`${BASE_URL}/geo/datasets`, { headers: getHeaders() });
+  if (!res.ok) throw new Error(`Failed to load geospatial dataset registry (HTTP ${res.status})`);
+  return res.json();
+}
+
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to fetch node ${id}`);

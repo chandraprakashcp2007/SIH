@@ -9,12 +9,12 @@ Status vocabulary: DONE, PARTIAL, NOT_CONFIGURED, PLANNED, BLOCKED. This file is
 | Provenance isolation | DONE | DONE | DONE | PARTIAL | DONE | DONE | DONE | PARTIAL | REAL/SIMULATION/EXTERNAL_DATA/REPLAY/PLANNED; UI coverage incomplete |
 | Canonical Observation | DONE | DONE | DONE | PLANNED | PARTIAL | DONE | DONE | PARTIAL | Legacy telemetry adapter persists per-property observations; physical field validation remains pending |
 | SensorThings subset | DONE | DONE | DONE | N/A | PARTIAL | DONE | DONE | PARTIAL | Read-only Things, Locations, Sensors, Datastreams and Observations mapping; not a complete SensorThings server |
-| Geospatial dataset registry | PARTIAL | PARTIAL | PARTIAL | PARTIAL | NOT_CONFIGURED | PARTIAL | PARTIAL | PLANNED | External dataset metadata exists; full layer/STAC registry absent |
-| JALA map | PARTIAL | PARTIAL | PARTIAL | PARTIAL | NOT_CONFIGURED | DONE | PARTIAL | PLANNED | Shared map only; no validated river/basin/forecast datasets |
-| AGNI map | PARTIAL | PARTIAL | PARTIAL | PARTIAL | NOT_CONFIGURED | DONE | PARTIAL | PLANNED | FIRMS not configured |
-| BHUMI map | PARTIAL | PARTIAL | PARTIAL | PARTIAL | NOT_CONFIGURED | DONE | PARTIAL | PLANNED | DEM unavailable |
-| VAYU map | PARTIAL | PARTIAL | PARTIAL | PARTIAL | NOT_CONFIGURED | DONE | PARTIAL | PLANNED | PM values are simulation only; no calibrated PM hardware |
-| AKASHA map | PARTIAL | PARTIAL | PARTIAL | PARTIAL | NOT_CONFIGURED | DONE | PARTIAL | PLANNED | Weather providers not configured |
+| Geospatial dataset registry | DONE | DONE | DONE | PARTIAL | PARTIAL | DONE | DONE | PARTIAL | Registry and GeoJSON feature store implemented; STAC expansion remains Phase 17 |
+| JALA map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route and backend layers; river/basin/forecast datasets unavailable |
+| AGNI map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route; FIRMS remains NOT_CONFIGURED |
+| BHUMI map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route; DEM remains NOT_CONFIGURED |
+| VAYU map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route; PM values visibly simulation-only |
+| AKASHA map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route; authoritative weather providers remain NOT_CONFIGURED |
 | Historical graphs | DONE | DONE | DONE | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | Persisted history; required aggregation windows incomplete |
 | Sensor trust | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Fleet digital twin/fault history incomplete |
 | Evidence fusion | PARTIAL | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | DONE | PLANNED | Immediate risk evidence exists; canonical evidence item graph absent |

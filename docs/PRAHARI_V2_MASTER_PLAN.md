@@ -81,7 +81,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 |---|---|---|
 | 0 | Forensics, isolated tests, master plan, feature matrix | 98 backend; 9 frontend; build; E2E blocker documented |
 | 1 | Canonical Observation/provenance foundation and legacy adapter | Implemented: additive table creation, legacy adapter, payload hashing and read-only SensorThings subset; provenance regression passes |
-| 2 | Dataset registry, GeoJSON engine, five distinct domain map read models/pages | five pages render truthful empty/data states |
+| 2 | Dataset registry, GeoJSON engine, five distinct domain map read models/pages | Implemented: persisted registry/feature schema, backend-derived risk GeoJSON, five dedicated routes, truthful layer states and E2E coverage |
 | 3 | Sensor health/trust history and server-side graph aggregation | range and fault tests pass |
 | 4 | Evidence items, fusion, hazard policies, 15-check gate, decay | mandatory checks prevent publication |
 | 5 | Cross-hazard, compound risk and regional consensus | no statistical-causality claims; isolation tests pass |
