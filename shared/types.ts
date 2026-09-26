@@ -3,7 +3,7 @@
  * Smart India Hackathon 2026 - Problem Statement SIH26178
  */
 
-export type HazardType = 'FLOOD' | 'FIRE' | 'LANDSLIDE';
+export type HazardType = 'FLOOD' | 'FIRE' | 'LANDSLIDE' | 'AIR_QUALITY' | 'EXTREME_WEATHER';
 
 export type RiskBand = 'NORMAL' | 'WATCH' | 'WARNING' | 'CRITICAL';
 
@@ -17,7 +17,7 @@ export type ModelSource = 'RULE_FUSION' | 'ANOMALY_MODEL' | 'SUPERVISED_MODEL' |
 
 export interface BaseNodeTelemetry {
   version: number;
-  node_id: 'JALA-01' | 'AGNI-02' | 'BHUMI-03';
+  node_id: 'JALA-01' | 'AGNI-02' | 'BHUMI-03' | 'VAYU-04' | 'AKASHA-05';
   sequence: number;
   timestamp: string;
   rssi: number;

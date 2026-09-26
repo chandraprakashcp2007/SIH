@@ -1,4 +1,4 @@
-const CACHE_NAME = 'prahari-shell-v2';
+const CACHE_NAME = 'prahari-shell-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

@@ -37,7 +37,14 @@ NODE_MAP = {
     "landslide": "BHUMI-03",
     "tilt": "BHUMI-03",
     "slope": "BHUMI-03",
-    "inclinometer": "BHUMI-03"
+    "inclinometer": "BHUMI-03",
+    "vayu": "VAYU-04",
+    "vayu-04": "VAYU-04",
+    "air quality": "VAYU-04",
+    "akasha": "AKASHA-05",
+    "akasha-05": "AKASHA-05",
+    "atmosphere": "AKASHA-05",
+    "weather": "AKASHA-05",
 }
 
 
@@ -65,7 +72,7 @@ class IntentMatch:
 
 def extract_node_entity(q: str) -> Optional[str]:
     """Extract node ID from query text."""
-    explicit_id = re.search(r'\b(jala|agni|bhumi)-\d+\b', q, re.IGNORECASE)
+    explicit_id = re.search(r'\b(jala|agni|bhumi|vayu|akasha)-\d+\b', q, re.IGNORECASE)
     if explicit_id:
         return explicit_id.group(0).upper()
     for key, val in NODE_MAP.items():
@@ -97,7 +104,13 @@ def classify_intent(query: str, session_node: Optional[str] = None) -> IntentMat
     # 1. COMPARISON
     if ("compare" in q or "versus" in q or " vs " in q or "difference between" in q) and ("risk" in q or "node" in q or "health" in q or "rssi" in q or "battery" in q):
         nodes_found = []
-        for n_key, n_val in [("jala", "JALA-01"), ("agni", "AGNI-02"), ("bhumi", "BHUMI-03")]:
+        for n_key, n_val in [
+            ("jala", "JALA-01"),
+            ("agni", "AGNI-02"),
+            ("bhumi", "BHUMI-03"),
+            ("vayu", "VAYU-04"),
+            ("akasha", "AKASHA-05"),
+        ]:
             if n_key in q:
                 nodes_found.append(n_val)
         return IntentMatch(

@@ -44,6 +44,21 @@ def test_why_bhumi_intent():
     assert match.entities.get("node_id") == "BHUMI-03"
 
 
+@pytest.mark.parametrize(
+    ("query", "intent", "node_id"),
+    [
+        ("VAYU status", INTENT_NODE_STATUS, "VAYU-04"),
+        ("AKASHA telemetry", INTENT_TELEMETRY_QUERY, "AKASHA-05"),
+        ("Show vayu-04 readings", INTENT_TELEMETRY_QUERY, "VAYU-04"),
+        ("Why is akasha-05 in warning?", INTENT_NODE_STATUS, "AKASHA-05"),
+    ],
+)
+def test_vayu_and_akasha_direct_queries_route_to_node_tools(query, intent, node_id):
+    match = classify_intent(query)
+    assert match.intent == intent
+    assert match.entities.get("node_id") == node_id
+
+
 def test_weakest_rssi_intent():
     match = classify_intent("Which node has the weakest LoRa signal?")
     assert match.intent == INTENT_NETWORK_QUERY

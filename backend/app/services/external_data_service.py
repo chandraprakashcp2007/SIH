@@ -1,4 +1,4 @@
-﻿"""
+"""
 Provider-neutral external environmental-data architecture.
 
 IMPORTANT:
@@ -180,6 +180,11 @@ class ExternalDataService:
 
         if provider not in PROVIDER_REGISTRY:
             raise ValueError(f"Unknown external provider: {provider}")
+
+        if state == ProviderState.CONNECTED and not successful:
+            raise ValueError(
+                "CONNECTED requires a verified successful provider retrieval"
+            )
 
         item = await db.get(ExternalProviderState, provider)
 

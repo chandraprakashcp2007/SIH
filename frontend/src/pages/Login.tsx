@@ -77,7 +77,7 @@ export const Login: React.FC = () => {
         </div>
 
         {/* 5 Node Capabilities Strip */}
-        <div className="relative z-10 grid grid-cols-5 gap-3 border-t border-[#22364A] pt-6 text-xs">
+        <div className="relative z-10 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3 border-t border-[#22364A] pt-6 text-xs">
           <div>
             <div className="font-bold text-accent-info">JALA-01</div>
             <div className="text-[11px] text-text-muted mt-0.5">
@@ -187,6 +187,7 @@ export const Login: React.FC = () => {
           </form>
 
           {/* Seed Demo Account Quick Selectors */}
+          {devBypass && (
           <div className="pt-4 border-t border-border-subtle text-xs space-y-2">
             <span className="text-[10px] uppercase font-semibold text-text-muted tracking-wider block">
               Fast Jury Demo Credentials
@@ -218,6 +219,7 @@ export const Login: React.FC = () => {
               Password for all demo accounts: <code className="text-accent-info font-mono">prahari2026!</code>
             </p>
           </div>
+          )}
         </div>
       </div>
     </div>

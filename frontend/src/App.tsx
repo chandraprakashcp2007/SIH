@@ -22,6 +22,8 @@ const SettingsPage = load(() => import('./pages/SettingsPage'), 'SettingsPage');
 const DemoWalkthroughPage = load(() => import('./pages/DemoWalkthroughPage'), 'DemoWalkthroughPage');
 const CalibrationPage = load(() => import('./pages/CalibrationPage'), 'CalibrationPage');
 const SystemReadinessPage = load(() => import('./pages/SystemReadinessPage'), 'SystemReadinessPage');
+const ExternalDataPage = load(() => import('./pages/ExternalDataPage'), 'ExternalDataPage');
+const DatasetManagerPage = load(() => import('./pages/DatasetManagerPage'), 'DatasetManagerPage');
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   localStorage.getItem('prahari_token') ? <>{children}</> : <Navigate to="/login" replace />;
@@ -41,6 +43,7 @@ export function App() {
       <Route path="logs" element={<SystemLogsPage />} /><Route path="simulator" element={<SimulatorPage />} />
       <Route path="settings" element={<SettingsPage />} /><Route path="calibration" element={<CalibrationPage />} />
       <Route path="readiness" element={<SystemReadinessPage />} /><Route path="copilot" element={<AiIntelligencePage />} />
+      <Route path="external-data" element={<ExternalDataPage />} /><Route path="datasets" element={<DatasetManagerPage />} />
       <Route path="demo" element={<DemoWalkthroughPage />} />
     </Route>
     <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,8 +1,8 @@
-﻿# PRAHARI-NET
+# PRAHARI-NET
 
 **Predictive Resilient Autonomous Hazard & Risk Intelligence Network**  
-*SENSE â€¢ PREDICT â€¢ ALERT â€¢ PROTECT*  
-Smart India Hackathon 2026 â€” Problem Statement SIH26178
+*SENSE • PREDICT • ALERT • PROTECT*
+Smart India Hackathon 2026 — Problem Statement SIH26178
 
 ---
 
@@ -14,7 +14,7 @@ PRAHARI-NET is a research prototype for local, explainable multi-hazard monitori
 
 1. **JALA-01 (Flood Intelligence Node):**
    - **Location:** Simulation demo location unless a physical deployment is explicitly configured.
-   - **Sensors:** Ultrasonic water level transceiver, tipping-bucket precipitation gauge, DHT22 ambient temperature/humidity.
+   - **Sensors:** Ultrasonic water level transceiver, tipping-bucket precipitation gauge, DHT11 ambient temperature/humidity.
    - **Metrics:** River level ($cm$), rate of rise ($cm/min$), acceleration ($cm/min^2$), rain intensity ($mm/hr$).
    - **Forecasting:** Polynomial kinematic flood threshold crossing window prediction.
 
@@ -66,4 +66,3 @@ Run verification with:
 Set-Location frontend
 npm run test:e2e
 ```
-

@@ -105,11 +105,11 @@ class ToolRegistry:
         self.register(ToolDefinition(
             name="get_node_status",
             handler=get_node_status,
-            description="Retrieve detailed status, current risk score, band, and explanation for a node (JALA-01, AGNI-02, BHUMI-03).",
+            description="Retrieve detailed status, current risk score, band, and explanation for a node (JALA-01, AGNI-02, BHUMI-03, VAYU-04, AKASHA-05).",
             parameters={
                 "type": "object",
                 "properties": {
-                    "node_id": {"type": "string", "description": "Node identifier: JALA-01, AGNI-02, or BHUMI-03"}
+                    "node_id": {"type": "string", "description": "Node identifier: JALA-01, AGNI-02, BHUMI-03, VAYU-04, or AKASHA-05"}
                 },
                 "required": ["node_id"]
             },
@@ -133,7 +133,7 @@ class ToolRegistry:
             parameters={
                 "type": "object",
                 "properties": {
-                    "node_id": {"type": "string", "description": "Node identifier: JALA-01, AGNI-02, or BHUMI-03"}
+                    "node_id": {"type": "string", "description": "Node identifier: JALA-01, AGNI-02, BHUMI-03, VAYU-04, or AKASHA-05"}
                 },
                 "required": ["node_id"]
             },

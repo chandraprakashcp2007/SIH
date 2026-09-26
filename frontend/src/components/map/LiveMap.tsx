@@ -75,6 +75,12 @@ export const LiveMap: React.FC<LiveMapProps> = ({
     const map = L.map(mapContainerRef.current, {
       center: [22.5, 79.0],
       zoom: 5,
+      minZoom: 4,
+      maxBounds: [
+        [5.0, 67.0],
+        [38.5, 98.5],
+      ],
+      maxBoundsViscosity: 0.72,
       zoomControl: false,
 
       // Smooth PRAHARI map behaviour
@@ -98,67 +104,34 @@ export const LiveMap: React.FC<LiveMapProps> = ({
       URL is constructed this way to prevent terminals/editors
       from accidentally converting it into Markdown.
     */
-    // Keyless map chain:
-    // CARTO Dark -> OpenStreetMap -> local tactical grid.
-    const primaryLayer = L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-      {
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-        subdomains: 'abcd',
-        minZoom: 3,
-        maxZoom: 19,
-        keepBuffer: 6,
-        updateWhenIdle: true,
-        detectRetina: false,
-        className: 'prahari-map-dark-native',
-      }
-    );
-
-    const fallbackLayer = L.tileLayer(
+    // PRAHARI map uses the public OpenStreetMap tile endpoint.
+    // No private API token is embedded in the frontend.
+    const baseLayer = L.tileLayer(
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
         attribution: '&copy; OpenStreetMap contributors',
-        minZoom: 3,
+        minZoom: 4,
         maxZoom: 18,
-        keepBuffer: 6,
+        keepBuffer: 5,
         updateWhenIdle: true,
         detectRetina: false,
-        className: 'prahari-map-tiles',
+        className: 'prahari-map-osm-dark',
       }
     );
 
-    let primaryFailures = 0;
-    let fallbackEnabled = false;
-
-    primaryLayer.on('tileerror', () => {
-      primaryFailures += 1;
-
-      if (primaryFailures >= 2 && !fallbackEnabled) {
-        fallbackEnabled = true;
-
-        if (map.hasLayer(primaryLayer)) {
-          map.removeLayer(primaryLayer);
-        }
-
-        fallbackLayer.addTo(map);
-      }
-    });
-
-    primaryLayer.on('load', () => {
+    baseLayer.on('load', () => {
       setOfflineTilesActive(false);
-      window.requestAnimationFrame(() => map.invalidateSize(false));
+
+      window.requestAnimationFrame(() => {
+        map.invalidateSize(false);
+      });
     });
 
-    fallbackLayer.on('load', () => {
-      setOfflineTilesActive(false);
-      window.requestAnimationFrame(() => map.invalidateSize(false));
-    });
-
-    fallbackLayer.on('tileerror', () => {
+    baseLayer.on('tileerror', () => {
       setOfflineTilesActive(true);
     });
 
-    primaryLayer.addTo(map);
+    baseLayer.addTo(map);
 
     /*
       Once zoom/pan finishes, correct the Leaflet viewport.
@@ -251,6 +224,16 @@ export const LiveMap: React.FC<LiveMapProps> = ({
       else if (riskBand === 'WARNING') markerColor = '#F97316';
       else if (riskBand === 'WATCH') markerColor = '#EAB308';
 
+      const markerLabel =
+        ({
+          'JALA-01': 'J',
+          'AGNI-02': 'AG',
+          'BHUMI-03': 'B',
+          'VAYU-04': 'V',
+          'AKASHA-05': 'AK',
+        } as Record<string, string>)[node.id] ||
+        node.id.slice(0, 2);
+
       const iconHtml = `
         <div style="
           width: 34px;
@@ -267,7 +250,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({
           font-size: 11px;
           cursor: pointer;
         ">
-          ${node.id.split('-')[0][0]}
+          ${markerLabel}
         </div>
       `;
 
@@ -340,7 +323,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({
               bounds.pad(0.28),
               {
                 padding: [48, 48],
-                maxZoom: 8,
+                maxZoom: 6,
                 animate: true,
                 duration: 0.65,
               }
@@ -376,7 +359,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({
       bounds.pad(0.28),
       {
         padding: [48, 48],
-        maxZoom: 8,
+        maxZoom: 6,
         animate: true,
         duration: 0.65,
       }
@@ -398,7 +381,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({
 
     map.flyTo(
       position,
-      Math.max(map.getZoom(), 8),
+      Math.max(map.getZoom(), 7),
       {
         animate: true,
         duration: 0.65,
@@ -409,7 +392,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({
   }, [selectedNodeId]);
 
   return (
-    <div className="relative w-full h-full min-h-[560px] xl:min-h-[620px] bg-bg-secondary rounded-lg border border-border-subtle overflow-hidden">
+    <div className="relative w-full h-full min-h-[420px] lg:min-h-[460px] xl:min-h-[500px] bg-bg-secondary rounded-lg border border-border-subtle overflow-hidden">
       {/* Offline Tactical Grid Backdrop Fallback (visible if tiles fail) */}
       <div
         className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
@@ -475,6 +458,9 @@ export const LiveMap: React.FC<LiveMapProps> = ({
           <span className="w-2.5 h-2.5 rounded-full bg-hazard-critical animate-pulse"></span>
           <span>Critical</span>
         </div>
+      </div>
+      <div className="absolute bottom-3 right-3 z-10 rounded bg-bg-surface/90 border border-border-subtle px-2 py-1 text-[9px] font-semibold tracking-wide text-text-muted">
+        DEMO COORDINATES · NON-FIELD DEPLOYMENT
       </div>
     </div>
   );

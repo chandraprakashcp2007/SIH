@@ -4,7 +4,7 @@
 
 ### 1. Baseline Nominal State
 - Open Command Centre at `http://localhost:5173`.
-- Observe 3 nodes online: JALA-01 (Flood), AGNI-02 (Fire), BHUMI-03 (Landslide).
+- Observe the five Pancha Bhootha software domains: JALA-01 (Flood), AGNI-02 (Fire), BHUMI-03 (Landslide), VAYU-04 (Air), and AKASHA-05 (Atmosphere).
 - Click floating Copilot trigger (bottom-right).
 - Type: `How is the system?`
 - **Expected:** Copilot responds in $< 150ms$: all nodes nominal, 0 active alarms, Local Edge armed.

@@ -8,7 +8,7 @@
 ## Physical Transducers
 1. **Ultrasonic Range Transceiver (AJ-SR04M Waterproof):** Measures distance to river water surface with $\pm 2mm$ precision.
 2. **Tipping-Bucket Rain Gauge:** 0.2mm resolution rain collector measuring instantaneous precipitation rate ($mm/hr$).
-3. **DHT22 Temperature & Humidity:** Ambient atmospheric sensors for sound velocity temperature compensation.
+3. **DHT11 Temperature & Humidity:** Ambient atmospheric sensors for sound velocity temperature compensation.
 
 ## Hydrological Thresholds
 - **Nominal River Baseline:** $30.0 - 50.0\text{ cm}$

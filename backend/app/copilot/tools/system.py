@@ -26,11 +26,25 @@ async def get_system_summary(db: AsyncSession) -> Dict[str, Any]:
     )
     active_alerts = alerts_res.scalars().all()
 
-    risks_res = await db.execute(
-        select(RiskAssessment).order_by(desc(RiskAssessment.timestamp)).limit(3)
+    risks = []
+
+    for node in nodes:
+        risk_result = await db.execute(
+            select(RiskAssessment)
+            .where(RiskAssessment.node_id == node.id)
+            .order_by(desc(RiskAssessment.timestamp))
+            .limit(1)
+        )
+
+        latest = risk_result.scalar_one_or_none()
+
+        if latest is not None:
+            risks.append(latest)
+
+    avg_risk = (
+        round(sum(item.risk_score for item in risks) / len(risks), 1)
+        if risks else 0.0
     )
-    risks = risks_res.scalars().all()
-    avg_risk = round(sum(r.risk_score for r in risks) / max(1, len(risks)), 1) if risks else 0.0
 
     gateway = await get_gateway_state(db)
     return {

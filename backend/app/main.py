@@ -1,4 +1,4 @@
-﻿"""
+"""
 PRAHARI-NET Main Application Server Entrypoint
 FastAPI REST + Real-time WebSockets
 """
@@ -96,7 +96,7 @@ app.include_router(reports_router, prefix=settings.API_V1_STR, dependencies=auth
 app.include_router(settings_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 app.include_router(logs_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 app.include_router(readiness_router, prefix=settings.API_V1_STR, dependencies=authenticated)
-app.include_router(calibration_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
+app.include_router(calibration_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 app.include_router(elements_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 app.include_router(external_data_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 
@@ -106,7 +106,7 @@ async def root():
     """Root platform metadata."""
     return {
         "platform": "PRAHARI-NET",
-        "tagline": "SENSE â€¢ PREDICT â€¢ ALERT â€¢ PROTECT",
+        "tagline": "SENSE • PREDICT • ALERT • PROTECT",
         "status": "OPERATIONAL",
         "mode": "LOCAL_EDGE",
         "api_docs": f"{settings.API_V1_STR}/docs",
@@ -154,4 +154,3 @@ def authenticate_websocket_token(token: str | None):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("backend.app.main:app", host=settings.HOST, port=settings.PORT, reload=False)
-

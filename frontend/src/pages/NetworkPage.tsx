@@ -36,10 +36,10 @@ export const NetworkPage: React.FC = () => {
       <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle">
         <h1 className="text-base font-bold text-text-primary flex items-center space-x-2">
           <Radio className="w-5 h-5 text-accent-info" />
-          <span>LoRa Sub-GHz RF Network & Topology Inspection</span>
+          <span>Gateway & Transport Topology Inspection</span>
         </h1>
         <p className="text-xs text-text-muted mt-0.5">
-          End-to-end packet audit: Physical nodes → SX1276 LoRa Concentrator → FastAPI Ingestion Engine.
+          End-to-end packet audit across the configured node source, transport, gateway and FastAPI ingestion engine.
         </p>
       </div>
 
@@ -50,7 +50,7 @@ export const NetworkPage: React.FC = () => {
         </h3>
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* 3 Edge Nodes */}
+          {/* Registered Environmental Nodes */}
           <div className="space-y-2 w-full md:w-56">
             {network.nodes?.map((n: any) => (
               <div
@@ -73,7 +73,7 @@ export const NetworkPage: React.FC = () => {
             <div className="w-9 h-9 rounded bg-accent-info/20 text-accent-info mx-auto mb-2 flex items-center justify-center">
               <Cpu className="w-5 h-5" />
             </div>
-            <div className="text-xs font-bold text-text-primary">PRAHARI LoRa Gateway</div>
+            <div className="text-xs font-bold text-text-primary">PRAHARI Edge Gateway</div>
             <div className="text-[11px] font-mono text-accent-info mt-0.5">{network.serial_port} @ {network.baud_rate}</div>
             <div className="text-[10px] text-text-muted mt-1 uppercase">Mode: {network.gateway_mode}</div>
           </div>
@@ -86,7 +86,7 @@ export const NetworkPage: React.FC = () => {
               <Server className="w-5 h-5" />
             </div>
             <div className="text-xs font-bold text-text-primary">Local Command Engine</div>
-            <div className="text-[11px] font-mono text-accent-ai mt-0.5">FastAPI + SQLite WAL</div>
+            <div className="text-[11px] font-mono text-accent-ai mt-0.5">FastAPI + Configured Database</div>
             <div className="text-[10px] text-text-muted mt-1">Clients: {network.websocket_clients} active</div>
           </div>
         </div>

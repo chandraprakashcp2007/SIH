@@ -194,9 +194,9 @@ export const CommandCentre: React.FC = () => {
       {elements.length > 0 && <PanchaBhoothaOverview domains={elements} />}
 
       {/* 2. MAIN CENTER: MAP + RIGHT RAIL INCIDENT FEED */}
-      <div className="grid grid-cols-1 lg:grid-cols-10 gap-3 flex-1 min-h-[560px] xl:min-h-[620px]">
+      <div className="grid grid-cols-1 lg:grid-cols-10 gap-3 flex-none min-h-[420px] lg:min-h-[460px] xl:min-h-[500px]">
         {/* Large Tactical Live Map (2 cols on large screen) */}
-        <div className="lg:col-span-7 flex flex-col h-full min-h-[560px] xl:min-h-[620px]">
+        <div className="lg:col-span-7 flex flex-col h-[420px] lg:h-[460px] xl:h-[500px]">
           {/* Map Tactical Filter Bar */}
           <div className="bg-gradient-to-r from-bg-secondary via-bg-surface to-bg-secondary px-3.5 py-2 rounded-t-xl border-t border-x border-border-subtle flex items-center justify-between text-xs shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
             <span className="font-semibold text-text-primary text-[11px] uppercase tracking-wider">
@@ -242,7 +242,7 @@ export const CommandCentre: React.FC = () => {
         </div>
 
         {/* Right Rail: Active Incident Triage Feed */}
-        <div className="lg:col-span-3 h-full min-h-[420px] lg:min-h-[560px] xl:min-h-[620px]">
+        <div className="lg:col-span-3 h-[420px] lg:h-[460px] xl:h-[500px]">
           <IncidentFeed
             alerts={alerts}
             onRefresh={loadData}

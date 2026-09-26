@@ -132,3 +132,12 @@ async def test_unknown_provider_is_rejected():
                 parameter="invalid",
                 raw_value={"invalid": True},
             )
+
+
+@pytest.mark.asyncio
+async def test_connected_provider_requires_verified_successful_retrieval():
+    async with AsyncSessionLocal() as db:
+        with pytest.raises(ValueError, match="verified successful"):
+            await external_data_service.update_provider_state(
+                db, "IMD", ProviderState.CONNECTED, successful=False
+            )

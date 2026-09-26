@@ -6,6 +6,7 @@ import pytest_asyncio
 from backend.app.core.database import AsyncSessionLocal
 from backend.app.copilot.tool_registry import tool_registry
 from backend.app.copilot.tool_executor import tool_executor
+from backend.app.copilot.tools.predictions import get_predictions
 
 
 REQUIRED_TOOLS = [
@@ -85,3 +86,13 @@ async def test_gateway_tool_reports_derived_freshness():
     assert res.success is True
     assert res.data["status"] in {"CONNECTED", "STALE", "OFFLINE"}
     assert "last_packet_age_seconds" in res.data
+
+
+@pytest.mark.asyncio
+async def test_prediction_without_history_abstains_instead_of_claiming_nominal():
+    async with AsyncSessionLocal() as db:
+        predictions = await get_predictions(db)
+    item = next(entry for entry in predictions if entry["node_id"] == "VAYU-04")
+    assert item["status"] == "INSUFFICIENT_EVIDENCE"
+    assert item["current_risk"] is None
+    assert item["crossing_window"] == "AWAITING VERIFIED OBSERVATION"

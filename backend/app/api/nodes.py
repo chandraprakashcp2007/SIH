@@ -36,14 +36,31 @@ async def system_summary(db: AsyncSession = Depends(get_db)):
     # If internet outage scenario is simulated, show LOCAL_EDGE
     network_mode = "LOCAL_EDGE" if prahari_sim.internet_outage else "ONLINE"
 
-    # Average risk score across active nodes
-    risks_res = await db.execute(
-        select(RiskAssessment)
-        .order_by(desc(RiskAssessment.timestamp))
-        .limit(3)
+    # Fleet average uses the latest assessment from each registered node.
+    latest_risks = []
+
+    for node in nodes:
+        risk_result = await db.execute(
+            select(RiskAssessment)
+            .where(RiskAssessment.node_id == node.id)
+            .order_by(desc(RiskAssessment.timestamp))
+            .limit(1)
+        )
+
+        latest = risk_result.scalar_one_or_none()
+
+        if latest is not None:
+            latest_risks.append(latest)
+
+    avg_risk = (
+        round(
+            sum(item.risk_score for item in latest_risks)
+            / len(latest_risks),
+            1,
+        )
+        if latest_risks
+        else None
     )
-    latest_risks = risks_res.scalars().all()
-    avg_risk = round(sum(r.risk_score for r in latest_risks) / max(1, len(latest_risks)), 1)
 
     gateway = await get_gateway_state(db)
     return {

@@ -9,9 +9,9 @@ from backend.app.core.database import Base
 class Node(Base):
     __tablename__ = "nodes"
 
-    id = Column(String(32), primary_key=True)  # JALA-01, AGNI-02, BHUMI-03
+    id = Column(String(32), primary_key=True)  # Pancha Bhootha node identifiers
     name = Column(String(64), nullable=False)
-    node_type = Column(String(32), nullable=False)  # FLOOD, FIRE, LANDSLIDE
+    node_type = Column(String(32), nullable=False)  # FLOOD, FIRE, LANDSLIDE, AIR_QUALITY, WEATHER, AIR_QUALITY, WEATHER
     tagline = Column(String(128), nullable=True)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)

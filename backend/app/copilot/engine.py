@@ -208,8 +208,8 @@ class CopilotEngine:
         elif "how prahari works" in q or "explain prahari" in q or "architecture" in q:
             return (
                 f"### PRAHARI-NET Operational Pipeline\n"
-                f"1. **Sense:** Three specialized nodes (JALA-01, AGNI-02, BHUMI-03) collect local environmental data.\n"
-                f"2. **Transmit:** Encrypted telemetry frames sent over 868MHz/433MHz LoRa to PRAHARI Gateway.\n"
+                f"1. **Sense:** Five environmental intelligence domains (JALA-01, AGNI-02, BHUMI-03, VAYU-04, AKASHA-05) collect local environmental data.\n"
+                f"2. **Transmit:** Provenance-labelled telemetry is delivered through the configured transport to the PRAHARI edge gateway; USB serial is the current verified hardware path and LoRa remains an optional field transport.\n"
                 f"3. **Validate:** Sensor Trust Engine evaluates bounds, frozen values, and cross-sensor contradictions.\n"
                 f"4. **Analyze:** Hybrid Risk Engine calculates 1st/2nd derivatives, runs Isolation Forest anomaly detection, and computes multi-sensor fusion.\n"
                 f"5. **Explain & Alert:** Automatically generates human 'WHY?' explanations and sounds calibrated alerts.\n"

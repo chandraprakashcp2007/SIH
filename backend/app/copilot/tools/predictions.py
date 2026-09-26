@@ -13,9 +13,11 @@ from backend.app.ai.prediction import prediction_engine
 async def get_predictions(db: AsyncSession) -> List[Dict[str, Any]]:
     """Retrieve predictive hazard trajectory and threshold crossing estimates."""
     nodes = [
-        {"id": "JALA-01", "name": "Brahmaputra Flood Basin", "hazard": "FLOOD"},
-        {"id": "AGNI-02", "name": "Similipal Forest Perimeter", "hazard": "FIRE"},
-        {"id": "BHUMI-03", "name": "NH-58 Landslide Ghat", "hazard": "LANDSLIDE"}
+        {"id": "JALA-01", "name": "JALA Flood Intelligence", "hazard": "FLOOD"},
+        {"id": "AGNI-02", "name": "AGNI Fire Intelligence", "hazard": "FIRE"},
+        {"id": "BHUMI-03", "name": "BHUMI Slope Intelligence", "hazard": "LANDSLIDE"},
+        {"id": "VAYU-04", "name": "VAYU Air Intelligence", "hazard": "AIR_QUALITY"},
+        {"id": "AKASHA-05", "name": "AKASHA Atmospheric Intelligence", "hazard": "EXTREME_WEATHER"}
     ]
     results = []
 
@@ -34,10 +36,11 @@ async def get_predictions(db: AsyncSession) -> List[Dict[str, Any]]:
             results.append({
                 "node_id": nid,
                 "hazard": n["hazard"],
-                "status": "NOMINAL",
-                "current_risk": 0.0,
-                "projected_change": 0.0,
-                "crossing_window": "NO THRESHOLD CROSSING DETECTED"
+                "status": "INSUFFICIENT_EVIDENCE",
+                "current_risk": None,
+                "projected_change": None,
+                "crossing_window": "AWAITING VERIFIED OBSERVATION",
+                "withholding_reason": "At least two persisted risk assessments are required for a trajectory.",
             })
             continue
 

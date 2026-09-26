@@ -31,11 +31,11 @@ export const LiveNodeStrips: React.FC<LiveNodeStripsProps> = ({ nodes }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-2">
       {/* JALA-01 STRIP */}
       <div
         onClick={() => navigate('/nodes/JALA-01')}
-        className="bg-bg-secondary p-3 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
+        className="bg-bg-secondary p-2.5 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
@@ -88,7 +88,7 @@ export const LiveNodeStrips: React.FC<LiveNodeStripsProps> = ({ nodes }) => {
       {/* AGNI-02 STRIP */}
       <div
         onClick={() => navigate('/nodes/AGNI-02')}
-        className="bg-bg-secondary p-3 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
+        className="bg-bg-secondary p-2.5 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
@@ -141,7 +141,7 @@ export const LiveNodeStrips: React.FC<LiveNodeStripsProps> = ({ nodes }) => {
       {/* BHUMI-03 STRIP */}
       <div
         onClick={() => navigate('/nodes/BHUMI-03')}
-        className="bg-bg-secondary p-3 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
+        className="bg-bg-secondary p-2.5 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
@@ -194,7 +194,7 @@ export const LiveNodeStrips: React.FC<LiveNodeStripsProps> = ({ nodes }) => {
       {/* VAYU-04 STRIP */}
       <div
         onClick={() => navigate('/nodes/VAYU-04')}
-        className="bg-bg-secondary p-3 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
+        className="bg-bg-secondary p-2.5 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
@@ -251,7 +251,7 @@ export const LiveNodeStrips: React.FC<LiveNodeStripsProps> = ({ nodes }) => {
       {/* AKASHA-05 STRIP */}
       <div
         onClick={() => navigate('/nodes/AKASHA-05')}
-        className="bg-bg-secondary p-3 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
+        className="bg-bg-secondary p-2.5 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">

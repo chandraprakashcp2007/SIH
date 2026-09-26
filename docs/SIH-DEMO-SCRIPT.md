@@ -11,7 +11,7 @@
 ### [00:00 – 00:45] Minute 1: Problem Identity & Edge Sovereignty
 1. **Introduction:**  
    *"Respected jury members, in environmental disasters across India—from Assam flash floods to Uttarakhand landslides and Odisha forest fires—reactive disaster response arrives too late. Furthermore, cellular towers and internet cables are often the very first infrastructure severed during extreme weather. We present **PRAHARI-NET** (Predictive Resilient Autonomous Hazard & Risk Intelligence Network)."*
-2. **Key Metric:** Point out the top bar: **"LOCAL EDGE MODE"**, **"LoRa SX1276 Healthy"**, **"3/3 Nodes Online"**. Emphasize that the entire system—sensing, LoRa packet ingestion, hybrid physical AI, WebSocket stream, and command dashboard—operates 100% locally on this field laptop without requiring internet access.
+2. **Key Metric:** Point out the top bar: **"LOCAL EDGE MODE"**, the verified **Windows Python / Simulator** or **USB Serial Hardware** gateway state, and **"5/5 Software Domains Available"**. Explain that the current prototype path operates locally without internet; LoRa remains an optional planned field transport.
 
 ### [00:45 – 01:45] Minute 2: JALA-01 Flood Escalation & Prediction
 1. **Action:** On `/demo`, click Step 2 (**FLOOD RAMP**) then Step 3 (**FLASH FLOOD**).

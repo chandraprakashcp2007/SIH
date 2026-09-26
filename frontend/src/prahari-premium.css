@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    PRAHARI-NET
    OBSIDIAN COMMAND CENTRE
    Premium SIH UI Theme
@@ -387,53 +387,6 @@ tbody tr:hover {
 
 
 /* ===============================
-   DEVELOPMENT BADGE
-   =============================== */
-
-.prahari-demo-badge {
-  position: fixed;
-
-  right: 18px;
-  bottom: 18px;
-
-  z-index: 99999;
-
-  padding:
-    7px 11px;
-
-  border-radius:
-    7px;
-
-  border:
-    1px solid rgba(214,179,106,.30);
-
-  background:
-    rgba(12,14,16,.90);
-
-  color:
-    #d6b36a;
-
-  font-size:
-    10px;
-
-  font-weight:
-    800;
-
-  letter-spacing:
-    .075em;
-
-  backdrop-filter:
-    blur(16px);
-
-  box-shadow:
-    0 12px 35px rgba(0,0,0,.34);
-
-  pointer-events:
-    none;
-}
-
-
-/* ===============================
    MOBILE
    =============================== */
 
@@ -462,4 +415,31 @@ tbody tr:hover {
     transition-duration: .01ms !important;
   }
 
+}
+
+
+/* ===============================
+   KEYLESS DARK MAP
+   OpenStreetMap tiles are visually adapted to the
+   PRAHARI dark operations-console theme.
+   =============================== */
+
+.prahari-map-osm-dark {
+  filter:
+    brightness(.70)
+    saturate(.72)
+    contrast(1.18)
+    hue-rotate(175deg)
+    invert(.88);
+}
+
+/* ============================================================
+   PRAHARI KEYLESS INDIA MAP
+   ============================================================ */
+
+.prahari-osm-tiles {
+  filter:
+    brightness(.68)
+    saturate(.74)
+    contrast(1.20);
 }

@@ -80,3 +80,51 @@ def test_websocket_token_validation_rejects_missing_or_tampered_token():
 def test_websocket_token_validation_accepts_signed_token():
     token = create_access_token({"sub": "operator", "role": "OPERATOR"})
     assert authenticate_websocket_token(token)["sub"] == "operator"
+
+
+def role_headers(role: str):
+    token = create_access_token({"sub": role.lower(), "role": role})
+    return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("role", ["ADMIN", "OPERATOR", "VIEWER"])
+async def test_authenticated_operational_roles_can_read_calibration(role):
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.get("/api/calibration", headers=role_headers(role))
+    assert response.status_code == 200
+    assert set(response.json()["nodes"]) == {
+        "JALA-01", "AGNI-02", "BHUMI-03", "VAYU-04", "AKASHA-05"
+    }
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("role", ["OPERATOR", "VIEWER"])
+async def test_non_admin_cannot_write_calibration(role):
+    payload = {"node_id": "JALA-01", "values": {"water_level_offset_cm": 1.0}}
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.put("/api/calibration", headers=role_headers(role), json=payload)
+    assert response.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_admin_can_write_calibration_and_invalid_inputs_are_rejected():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        accepted = await client.put(
+            "/api/calibration",
+            headers=role_headers("ADMIN"),
+            json={"node_id": "JALA-01", "values": {"water_level_offset_cm": 1.25}},
+        )
+        unknown = await client.put(
+            "/api/calibration",
+            headers=role_headers("ADMIN"),
+            json={"node_id": "UNKNOWN", "values": {"offset": 1.0}},
+        )
+        invalid_key = await client.put(
+            "/api/calibration",
+            headers=role_headers("ADMIN"),
+            json={"node_id": "JALA-01", "values": {"unsafe_key": 1.0}},
+        )
+    assert accepted.status_code == 200
+    assert unknown.status_code == 404
+    assert invalid_key.status_code == 422

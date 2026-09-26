@@ -27,7 +27,7 @@ async def run_stress_benchmark():
     errors = 0
     start_total = time.perf_counter()
 
-    nodes = ["JALA-01", "AGNI-02", "BHUMI-03"]
+    nodes = ["JALA-01", "AGNI-02", "BHUMI-03", "VAYU-04", "AKASHA-05"]
 
     async with httpx.AsyncClient(timeout=10.0) as client:
         auth = await client.post(f"{BASE_URL}/api/auth/login", json={"username": "gateway", "password": "benchmark"})
@@ -44,7 +44,7 @@ async def run_stress_benchmark():
             return
 
         for seq in range(1, NUM_PACKETS + 1):
-            node_id = nodes[seq % 3]
+            node_id = nodes[(seq - 1) % len(nodes)]
 
             if node_id == "JALA-01":
                 metrics = {
@@ -62,13 +62,28 @@ async def run_stress_benchmark():
                     "flame_detected": False,
                     "camera_fire_confidence": 0.0
                 }
-            else:
+            elif node_id == "BHUMI-03":
                 metrics = {
                     "soil_moisture_upper_pct": 30.0 + (seq % 30) * 0.5,
                     "soil_moisture_lower_pct": 35.0,
                     "tilt_delta_deg": 0.15,
                     "vibration_rms": 0.5,
                     "rain_context": 6.0
+                }
+            elif node_id == "VAYU-04":
+                metrics = {
+                    "pm2_5": 18.0 + (seq % 12),
+                    "pm10": 32.0 + (seq % 18),
+                    "co_ppm": 1.2,
+                    "voc_index": 72.0,
+                }
+            else:
+                metrics = {
+                    "rain_intensity": 2.0 + (seq % 8),
+                    "pressure_hpa": 1008.0 - (seq % 5),
+                    "pressure_change_3h_hpa": -0.8,
+                    "wind_speed_kmh": 18.0,
+                    "wind_gust_kmh": 27.0,
                 }
 
             payload = {

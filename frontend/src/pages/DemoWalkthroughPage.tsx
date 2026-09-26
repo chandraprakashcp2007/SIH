@@ -13,7 +13,7 @@ export const DemoWalkthroughPage: React.FC = () => {
       num: 1,
       title: 'Nominal Baseline Fleet State',
       scenario: 'ALL_NORMAL',
-      desc: 'All 3 edge nodes report green nominal baseline telemetry over LoRa.',
+      desc: 'All five Pancha Bhootha software domains report a nominal evidence-aware baseline.',
       expected: 'JALA < 40cm, AGNI MQ-2 ~115, BHUMI tilt ~0.12° (Risk < 25% NORMAL)',
       hazard: 'ALL',
     },
@@ -94,7 +94,7 @@ export const DemoWalkthroughPage: React.FC = () => {
       title: 'Full Recovery & Factory Reset',
       scenario: 'RECOVERY',
       desc: 'WAN connectivity restored; queued sync items processed; nominal baseline restored.',
-      expected: 'All 3 nodes online, zero unacknowledged alarms, green healthy status.',
+      expected: 'Five software domains available, zero unacknowledged alarms, green healthy status.',
       hazard: 'ALL',
     },
   ];

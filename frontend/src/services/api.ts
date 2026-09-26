@@ -308,7 +308,7 @@ export async function fetchReadiness() {
 
 export async function fetchCalibration() {
   const res = await fetch(`${BASE_URL}/calibration`, { headers: getHeaders() });
-  if (!res.ok) throw new Error('Failed to load calibration');
+  if (!res.ok) throw new Error(`Failed to load calibration (HTTP ${res.status}): ${(await res.text()) || res.statusText}`);
   return res.json();
 }
 
@@ -316,7 +316,19 @@ export async function saveCalibration(nodeId: string, values: Record<string, num
   const res = await fetch(`${BASE_URL}/calibration`, {
     method: 'PUT', headers: getHeaders(), body: JSON.stringify({ node_id: nodeId, values }),
   });
-  if (!res.ok) throw new Error('Failed to save calibration');
+  if (!res.ok) throw new Error(`Failed to save calibration (HTTP ${res.status}): ${(await res.text()) || res.statusText}`);
+  return res.json();
+}
+
+export async function fetchExternalProviderStatus() {
+  const res = await fetch(`${BASE_URL}/external/status`, { headers: getHeaders() });
+  if (!res.ok) throw new Error(`Failed to load external providers (HTTP ${res.status})`);
+  return res.json();
+}
+
+export async function fetchExternalObservations() {
+  const res = await fetch(`${BASE_URL}/external/observations?limit=50`, { headers: getHeaders() });
+  if (!res.ok) throw new Error(`Failed to load external observations (HTTP ${res.status})`);
   return res.json();
 }
 

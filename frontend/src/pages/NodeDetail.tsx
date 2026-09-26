@@ -6,6 +6,8 @@ import {
   Droplets,
   Flame,
   Mountain,
+  Wind,
+  CloudRain,
   Battery,
   Radio,
   Activity,
@@ -113,6 +115,8 @@ export const NodeDetail: React.FC = () => {
   const isJala = node.node_type === 'FLOOD';
   const isAgni = node.node_type === 'FIRE';
   const isBhumi = node.node_type === 'LANDSLIDE';
+  const isVayu = node.node_type === 'AIR_QUALITY';
+  const isAkasha = node.node_type === 'WEATHER';
 
   return (
     <div className="p-4 space-y-4 max-w-7xl mx-auto select-text">
@@ -174,6 +178,27 @@ export const NodeDetail: React.FC = () => {
           >
             BHUMI-03
           </button>
+          <button
+            onClick={() => navigate('/nodes/VAYU-04')}
+            className={`px-2.5 py-1 rounded border text-xs font-semibold ${
+              nodeId === 'VAYU-04'
+                ? 'bg-sky-500/20 border-sky-500 text-sky-300'
+                : 'bg-bg-surface border-border-subtle text-text-muted'
+            }`}
+          >
+            VAYU-04
+          </button>
+
+          <button
+            onClick={() => navigate('/nodes/AKASHA-05')}
+            className={`px-2.5 py-1 rounded border text-xs font-semibold ${
+              nodeId === 'AKASHA-05'
+                ? 'bg-violet-500/20 border-violet-500 text-violet-300'
+                : 'bg-bg-surface border-border-subtle text-text-muted'
+            }`}
+          >
+            AKASHA-05
+          </button>
         </div>
       </div>
 
@@ -192,7 +217,7 @@ export const NodeDetail: React.FC = () => {
         <div className="bg-bg-secondary p-3 rounded-lg border border-border-subtle flex items-center space-x-3">
           <Radio className="w-5 h-5 text-accent-info shrink-0" />
           <div>
-            <div className="text-[10px] text-text-muted uppercase">LoRa RF RSSI</div>
+            <div className="text-[10px] text-text-muted uppercase">Signal / Transport RSSI</div>
             <div className="font-mono font-bold text-xs text-text-primary">
               {node.signal_rssi ?? -76} dBm
             </div>
@@ -461,6 +486,89 @@ export const NodeDetail: React.FC = () => {
                 <div className="h-full bg-hazard-normal" style={{ width: '22%' }} />
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 4. VAYU-04 AIR QUALITY PANEL */}
+      {isVayu && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle">
+            <div className="flex items-center gap-2 mb-3">
+              <Wind className="w-4 h-4 text-sky-300" />
+              <h3 className="text-xs font-bold uppercase tracking-wider">
+                Air Quality Intelligence
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[
+                ['PM2.5', latestMetrics.pm2_5, 'µg/m³'],
+                ['PM10', latestMetrics.pm10, 'µg/m³'],
+                ['CO', latestMetrics.co_ppm, 'ppm'],
+                ['VOC', latestMetrics.voc_index, 'index'],
+              ].map(([name, value, unit]) => (
+                <div key={String(name)} className="bg-bg-surface border border-border-subtle rounded p-3">
+                  <div className="text-[10px] text-text-muted">{name}</div>
+                  <div className="font-mono font-bold mt-1">
+                    {typeof value === 'number' ? value.toFixed(1) : '—'}
+                    <span className="ml-1 text-[9px] text-text-muted">{unit}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle">
+            <div className="text-xs font-bold uppercase tracking-wider mb-2">
+              Decision Context
+            </div>
+            <p className="text-[11px] text-text-secondary leading-relaxed">
+              PRAHARI combines particulate and gas indicators with sensor trust.
+              The displayed risk is an engineering evidence score and is not presented
+              as a statutory AQI.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* 5. AKASHA-05 ATMOSPHERIC PANEL */}
+      {isAkasha && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle">
+            <div className="flex items-center gap-2 mb-3">
+              <CloudRain className="w-4 h-4 text-violet-300" />
+              <h3 className="text-xs font-bold uppercase tracking-wider">
+                Atmospheric Intelligence
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[
+                ['Rain', latestMetrics.rain_intensity, 'mm/h'],
+                ['Wind', latestMetrics.wind_speed_kmh, 'km/h'],
+                ['Gust', latestMetrics.wind_gust_kmh, 'km/h'],
+                ['Pressure', latestMetrics.pressure_hpa, 'hPa'],
+              ].map(([name, value, unit]) => (
+                <div key={String(name)} className="bg-bg-surface border border-border-subtle rounded p-3">
+                  <div className="text-[10px] text-text-muted">{name}</div>
+                  <div className="font-mono font-bold mt-1">
+                    {typeof value === 'number' ? value.toFixed(1) : '—'}
+                    <span className="ml-1 text-[9px] text-text-muted">{unit}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle">
+            <div className="text-xs font-bold uppercase tracking-wider mb-2">
+              Cross-Hazard Context
+            </div>
+            <p className="text-[11px] text-text-secondary leading-relaxed">
+              Increasing rainfall, wind and pressure-change evidence can trigger
+              reevaluation of related JALA flood and BHUMI landslide conditions.
+            </p>
           </div>
         </div>
       )}

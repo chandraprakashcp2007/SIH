@@ -7,6 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.core.database import get_db
+from backend.app.api.auth import require_roles
 from backend.app.models.audit import AuditLog, SystemSetting
 
 router = APIRouter(prefix="/calibration", tags=["Calibration"])
@@ -44,7 +45,11 @@ async def get_calibration(db: AsyncSession = Depends(get_db)):
 
 
 @router.put("")
-async def update_calibration(req: CalibrationUpdate, db: AsyncSession = Depends(get_db)):
+async def update_calibration(
+    req: CalibrationUpdate,
+    db: AsyncSession = Depends(get_db),
+    _admin=Depends(require_roles("ADMIN")),
+):
     if req.node_id not in DEFAULT_CALIBRATION:
         raise HTTPException(status_code=404, detail="Unknown node")
     allowed = set(DEFAULT_CALIBRATION[req.node_id])

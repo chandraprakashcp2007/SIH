@@ -81,7 +81,7 @@ Hardware gateway (after setting `SERIAL_PORT`, credentials, and `DEV_AUTH_BYPASS
 1. Run `scripts\start-dev.ps1`, open the frontend, and point out the visible DEV AUTH BYPASS label.
 2. Sign in as `admin` with any non-empty password. Explain that production uses normal database authentication when bypass is disabled.
 3. Open **System Readiness** and confirm live gateway, database, nodes, risk, alert, PWA, Copilot and simulator checks.
-4. Open **Command Centre** and show JALA-01, AGNI-02 and BHUMI-03 live telemetry plus WebSocket updates.
+4. Open **Command Centre** and show JALA-01, AGNI-02, BHUMI-03, VAYU-04 and AKASHA-05 live telemetry plus WebSocket updates.
 5. Open **Simulator**, engage **Flood Water Ramp**, and watch JALA risk/evidence evolve. Demonstrate alert acknowledgement with the operator/admin role.
 6. Engage **False Smoke Sensor Spike** and explain cross-sensor trust suppression; then engage **Confirmed Fire**. With vision disabled, no camera confidence is fabricated.
 7. Engage **Internet Severed (Local Edge)** and show the explicit LOCAL EDGE state while local telemetry/risk continues. Use browser offline mode to show cached data is labeled CACHED rather than LIVE.

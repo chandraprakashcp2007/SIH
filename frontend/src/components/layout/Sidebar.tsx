@@ -23,7 +23,9 @@ import {
   ChevronRight,
   Terminal,
   Gauge,
-  ShieldCheck
+  ShieldCheck,
+  Database,
+  CloudDownload
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -37,6 +39,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
     { to: '/', label: 'Command Centre', icon: LayoutDashboard },
     { to: '/map', label: 'Live Map', icon: MapIcon },
     { to: '/nodes', label: 'All Nodes', icon: Server },
+    { section: 'PANCHA BHOOTHAM' },
     { to: '/nodes/JALA-01', label: 'JALA (Flood)', icon: Droplets, indent: true },
     { to: '/nodes/AGNI-02', label: 'AGNI (Fire)', icon: Flame, indent: true },
     { to: '/nodes/BHUMI-03', label: 'BHUMI (Landslide)', icon: Mountain, indent: true },
@@ -48,6 +51,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
     { to: '/predictions', label: 'Predictions', icon: TrendingUp },
     { to: '/analytics', label: 'Analytics', icon: BarChart2 },
     { to: '/ai', label: 'AI Intelligence', icon: BrainCircuit },
+    { to: '/external-data', label: 'External Data', icon: CloudDownload },
+    { to: '/datasets', label: 'Dataset Manager', icon: Database },
 
     { section: 'INFRASTRUCTURE' },
     { to: '/network', label: 'Network & RF', icon: Radio },
@@ -68,7 +73,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
 
   return (
     <aside
-      className={`bg-bg-secondary border-r border-border-subtle flex flex-col transition-all duration-200 z-20 select-none ${
+      className={`h-full min-h-0 bg-bg-secondary border-r border-border-subtle flex flex-col transition-all duration-200 z-20 select-none ${
         collapsed ? 'w-16' : 'w-64'
       }`}
     >

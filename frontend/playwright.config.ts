@@ -9,7 +9,7 @@ export default defineConfig({
     { name: 'mobile-chromium', use: { ...devices['Pixel 5'] } },
   ],
   webServer: [
-    { command: '.\\.venv\\Scripts\\python.exe -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000', cwd: '..', url: 'http://127.0.0.1:8000/', reuseExistingServer: true },
-    { command: 'npm run dev -- --host 127.0.0.1', cwd: '.', url: 'http://127.0.0.1:5173/', reuseExistingServer: true },
+    { command: '.\\.venv\\Scripts\\python.exe -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8011', cwd: '..', url: 'http://127.0.0.1:8011/', reuseExistingServer: false, env: { DATABASE_URL: 'sqlite+aiosqlite:///./data/prahari_e2e_isolated.db', DEV_AUTH_BYPASS: 'true' } },
+    { command: 'npm run dev -- --host 127.0.0.1', cwd: '.', url: 'http://127.0.0.1:5173/', reuseExistingServer: false, env: { VITE_BACKEND_URL: 'http://127.0.0.1:8011' } },
   ],
 });

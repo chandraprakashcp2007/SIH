@@ -12,7 +12,7 @@
 
 ## 1. Frame Architecture
 
-The PRAHARI gateway receives newline-delimited (`\n`) JSON frames emitted by the SX1276/ESP32 receiver node.
+The PRAHARI gateway receives newline-delimited (`\n`) JSON frames emitted by the configured gateway transport. USB serial is the verified prototype path; LoRa is an optional field transport when physically integrated.
 
 ### 1.1 JSON Packet Schema
 ```json
@@ -42,7 +42,7 @@ The PRAHARI gateway receives newline-delimited (`\n`) JSON frames emitted by the
 | Field | Type | Required | Units / Range | Description |
 |---|---|---|---|---|
 | `version` | Integer | Yes | `1` | Protocol revision schema |
-| `node_id` | String | Yes | `JALA-01`, `AGNI-02`, `BHUMI-03` | Unique node identifier |
+| `node_id` | String | Yes | `JALA-01`, `AGNI-02`, `BHUMI-03`, `VAYU-04`, `AKASHA-05` | Unique node identifier |
 | `sequence` | Integer | Yes | `0` to `4,294,967,295` | Monotonic 32-bit packet counter |
 | `timestamp` | String | Optional | ISO-8601 | Local GPS/RTC timestamp |
 | `rssi` | Integer | Yes | `-130` to `-20` dBm | Received Signal Strength Indication |
