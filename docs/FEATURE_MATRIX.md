@@ -31,7 +31,7 @@ Status vocabulary: DONE, PARTIAL, NOT_CONFIGURED, PLANNED, BLOCKED. This file is
 | CAP 1.2 | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Schema-contract CAP-compatible XML with English/Hindi templates and lifecycle mapping; official delivery channels remain NOT_CONFIGURED and never report delivery without provider receipts |
 | External providers | PARTIAL | DONE | DONE | DONE | NOT_CONFIGURED | N/A | DONE | PLANNED | Registrations/manual import foundation; no verified live provider |
 | Offline continuity | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Persisted checksum-idempotent store-and-forward queue, replay-safe acknowledgement, derived link/energy policies and explicit stale cache labels; hardware transports retain truthful capability states |
-| Secure telemetry | PARTIAL | PARTIAL | PARTIAL | PARTIAL | NOT_CONFIGURED | PARTIAL | PARTIAL | PLANNED | JWT gateway auth exists; signatures/nonces/key rotation absent |
+| Secure telemetry + audit chain | DONE | DONE | DONE | DONE | NOT_CONFIGURED | PARTIAL | DONE | PARTIAL | Canonical HMAC envelopes, server-side key configuration, persisted nonce replay defense, security events and verifiable hash chain; physical device keys remain NOT_CONFIGURED |
 | Model registry | PLANNED | PLANNED | PLANNED | PLANNED | NOT_CONFIGURED | PLANNED | PLANNED | PLANNED | No validated artifacts |
 | Scenario Lab | PARTIAL | PARTIAL | DONE | DONE | N/A | DONE | DONE | PARTIAL | Existing simulator is labelled; comparison isolation incomplete |
 | Recovery + damage | PLANNED | PLANNED | PLANNED | PLANNED | NOT_CONFIGURED | PLANNED | PLANNED | PLANNED | Phase 15 |

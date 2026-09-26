@@ -30,7 +30,8 @@ import {
   Box,
   Route,
   Languages,
-  WifiOff
+  WifiOff,
+  Shield
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -60,6 +61,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
     { to: '/impact', label: 'Impact & Evacuation', icon: Route },
     { to: '/cap', label: 'CAP Warning Centre', icon: Languages },
     { to: '/continuity', label: 'Offline Continuity', icon: WifiOff },
+    { to: '/security', label: 'Security Event Centre', icon: Shield },
     { to: '/analytics', label: 'Analytics', icon: BarChart2 },
     { to: '/ai', label: 'AI Intelligence', icon: BrainCircuit },
     { to: '/external-data', label: 'External Data', icon: CloudDownload },

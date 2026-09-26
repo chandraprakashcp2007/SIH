@@ -44,6 +44,7 @@ from backend.app.api.digital_twin import router as digital_twin_router
 from backend.app.api.impact import router as impact_router
 from backend.app.api.cap import router as cap_router
 from backend.app.api.continuity import router as continuity_router
+from backend.app.api.security import router as security_router
 
 configure_logging()
 logger = logging.getLogger("prahari.main")
@@ -119,6 +120,7 @@ app.include_router(digital_twin_router, prefix=settings.API_V1_STR, dependencies
 app.include_router(impact_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 app.include_router(cap_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 app.include_router(continuity_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
+app.include_router(security_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN", "GATEWAY"))])
 
 
 @app.get("/")
