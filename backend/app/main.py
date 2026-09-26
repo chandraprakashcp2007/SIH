@@ -40,6 +40,7 @@ from backend.app.api.observations import router as observations_router
 from backend.app.api.evidence_gate import router as evidence_gate_router
 from backend.app.api.cross_hazard import router as cross_hazard_router
 from backend.app.api.jala import router as jala_router
+from backend.app.api.digital_twin import router as digital_twin_router
 
 configure_logging()
 logger = logging.getLogger("prahari.main")
@@ -111,6 +112,7 @@ app.include_router(observations_router, prefix=settings.API_V1_STR, dependencies
 app.include_router(evidence_gate_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 app.include_router(cross_hazard_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 app.include_router(jala_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
+app.include_router(digital_twin_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 
 
 @app.get("/")

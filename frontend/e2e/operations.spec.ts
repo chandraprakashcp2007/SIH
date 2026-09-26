@@ -78,3 +78,13 @@ test('JALA downstream intelligence withholds unvalidated travel time', async ({ 
   await expect(page.getByText('UNAVAILABLE').first()).toBeVisible();
   await expect(page.getByText(/validated topology and travel-time basis/i)).toBeVisible();
 });
+
+test('digital twin exposes uncertainty and blind spots separately', async ({ page }) => {
+  await login(page);
+  await openNavItem(page, 'Digital Twin');
+  await page.getByRole('button', { name: 'Refresh twin' }).click();
+  await expect(page.getByText('Confidence', { exact: false }).first()).toBeVisible();
+  await expect(page.getByText('Uncertainty', { exact: false }).first()).toBeVisible();
+  await expect(page.getByText('Blind spots:', { exact: false }).first()).toBeVisible();
+  await expect(page.getByText('NOT_CONFIGURED').first()).toBeVisible();
+});

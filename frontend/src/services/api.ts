@@ -99,6 +99,8 @@ export async function evaluateJalaDownstreamThreats() {
   if (!res.ok) throw new Error('JALA downstream evaluation failed');
   return res.json();
 }
+export async function fetchDigitalTwins() { const r=await fetch(`${BASE_URL}/digital-twin`,{headers:getHeaders()}); if(!r.ok) throw new Error('Failed to load digital twins'); return r.json(); }
+export async function refreshDigitalTwins() { const r=await fetch(`${BASE_URL}/digital-twin/refresh`,{method:'POST',headers:getHeaders()}); if(!r.ok) throw new Error('Failed to refresh digital twins'); return r.json(); }
 
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });

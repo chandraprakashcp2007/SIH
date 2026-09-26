@@ -23,6 +23,7 @@ Status vocabulary: DONE, PARTIAL, NOT_CONFIGURED, PLANNED, BLOCKED. This file is
 | Cross-hazard cascades | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Persisted configured reevaluation relationships, typed event, evidence references and explicit non-causation UI; authoritative field inputs unavailable |
 | Compound risk | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Versioned transparent band rules; no arithmetic risk-score blending; field validation unavailable |
 | Regional consensus | DONE | DONE | DONE | DONE | NOT_CONFIGURED | PARTIAL | DONE | PARTIAL | Weighting interface persisted; current topology truthfully reports INSUFFICIENT_NEIGHBOURS instead of manufacturing peers |
+| Operational digital twin | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Persisted snapshots and events; confidence/uncertainty shown separately and missing validated boundary layers exposed as blind spots |
 | Upstream propagation | DONE | DONE | DONE | DONE | NOT_CONFIGURED | PARTIAL | DONE | PARTIAL | River topology registry, downstream assessment/event and UI implemented; authoritative topology remains NOT_CONFIGURED |
 | Time-to-impact | DONE | DONE | DONE | DONE | NOT_CONFIGURED | PARTIAL | DONE | PARTIAL | Downstream travel time is UNAVAILABLE until imported reaches carry validated travel-time parameters; legacy local threshold projection remains explicitly separate |
 | Alerts | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Local lifecycle only |
