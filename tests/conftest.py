@@ -7,5 +7,5 @@ import os
 
 
 os.environ["DATABASE_URL"] = (
-    "sqlite+aiosqlite:///./data/prahari_pytest_isolated.db"
+    f"sqlite+aiosqlite:///./data/prahari_pytest_{os.getpid()}.db"
 )

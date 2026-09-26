@@ -34,6 +34,7 @@ from backend.app.api.readiness import router as readiness_router
 from backend.app.api.calibration import router as calibration_router
 from backend.app.api.elements import router as elements_router
 from backend.app.api.external_data import router as external_data_router
+from backend.app.api.interop import router as interop_router
 
 configure_logging()
 logger = logging.getLogger("prahari.main")
@@ -99,6 +100,7 @@ app.include_router(readiness_router, prefix=settings.API_V1_STR, dependencies=au
 app.include_router(calibration_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 app.include_router(elements_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 app.include_router(external_data_router, prefix=settings.API_V1_STR, dependencies=authenticated)
+app.include_router(interop_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 
 
 @app.get("/")

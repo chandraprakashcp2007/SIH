@@ -80,7 +80,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | Phase | Deliverable | Acceptance gate |
 |---|---|---|
 | 0 | Forensics, isolated tests, master plan, feature matrix | 98 backend; 9 frontend; build; E2E blocker documented |
-| 1 | Canonical Observation/provenance foundation and legacy adapter | provenance invariants and additive migration pass |
+| 1 | Canonical Observation/provenance foundation and legacy adapter | Implemented: additive table creation, legacy adapter, payload hashing and read-only SensorThings subset; provenance regression passes |
 | 2 | Dataset registry, GeoJSON engine, five distinct domain map read models/pages | five pages render truthful empty/data states |
 | 3 | Sensor health/trust history and server-side graph aggregation | range and fault tests pass |
 | 4 | Evidence items, fusion, hazard policies, 15-check gate, decay | mandatory checks prevent publication |
@@ -107,4 +107,3 @@ Every phase is a separate commit and additive migration. Rollback disables new r
 ## 7. External blockers
 
 Authoritative datasets, provider credentials/licences, physical ESP32/sensors, LoRa/SIM800L validation, official alert-delivery authority, production database, Railway access, DNS/TLS and deployment permission are external dependencies. Their interfaces, tests and NOT_CONFIGURED states can be implemented locally; they cannot be truthfully marked connected or production-verified without those dependencies.
-

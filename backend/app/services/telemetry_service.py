@@ -16,6 +16,7 @@ from backend.app.ai.risk_engine import risk_engine
 from backend.app.services.alert_service import alert_service
 from backend.app.websocket.manager import ws_manager
 from backend.app.services.evidence_service import build_event_evidence
+from backend.app.services.observation_service import adapt_legacy_metrics
 from backend.app.domain.registry import DOMAIN_REGISTRY
 from backend.app.provenance import SourceMode, ValidationReason, resolve_source_mode
 import time
@@ -132,6 +133,7 @@ class TelemetryService:
 
         # REPLAY records remain isolated from current risk, alert, and node state.
         if source_mode is SourceMode.REPLAY:
+            replay_node = await db.get(Node, node_id)
             db.add(TelemetryRecord(
                 node_id=node_id, sequence=sequence, timestamp=device_timestamp,
                 device_timestamp=device_timestamp, server_received_at=now_utc,
@@ -140,6 +142,13 @@ class TelemetryService:
                 gateway_id=payload.get("gateway_id"), transport=payload.get("transport") or gateway_source,
                 clock_drift_seconds=clock_drift_seconds,
             ))
+            if replay_node:
+                db.add_all(adapt_legacy_metrics(
+                    node=replay_node, metrics=metrics, payload=payload,
+                    sequence_number=sequence, timestamp=device_timestamp,
+                    received_at=now_utc, source=payload.get("transport") or gateway_source,
+                    provenance=source_mode,
+                ))
             await db.commit()
             return {
                 "status": "stored_isolated", "node_id": node_id, "sequence": sequence,
@@ -244,6 +253,16 @@ class TelemetryService:
                 node_obj.status = "WATCH"
             else:
                 node_obj.status = "ONLINE"
+
+        if node_obj:
+            db.add_all(adapt_legacy_metrics(
+                node=node_obj, metrics=metrics, payload=payload,
+                sequence_number=sequence, timestamp=device_timestamp,
+                received_at=now_utc,
+                source=payload.get("transport") or gateway_source,
+                provenance=source_mode,
+                trust_scores=assessment["sensor_trust"],
+            ))
 
         # 8. Alert Lifecycle Evaluation
         evidence = build_event_evidence(

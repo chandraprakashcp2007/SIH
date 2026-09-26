@@ -5,6 +5,7 @@ from backend.app.core.database import Base
 from backend.app.models.users import User
 from backend.app.models.nodes import Node
 from backend.app.models.telemetry import TelemetryRecord
+from backend.app.models.observations import Observation
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.sensor_trust import SensorTrustLog
@@ -24,6 +25,7 @@ __all__ = [
     "User",
     "Node",
     "TelemetryRecord",
+    "Observation",
     "RiskAssessment",
     "Alert",
     "SensorTrustLog",
