@@ -58,3 +58,13 @@ test('five dedicated domain intelligence maps expose truthful layer states', asy
     await expect(page.getByText(/Data limitation:/)).toBeVisible();
   }
 });
+
+test('cross-hazard intelligence exposes rule provenance and consensus limits', async ({ page }) => {
+  await login(page);
+  await openNavItem(page, 'Cross-Hazard Intelligence');
+  await expect(page.getByRole('heading', { name: 'Cross-Hazard Intelligence' })).toBeVisible();
+  await page.getByRole('button', { name: 'Reevaluate' }).click();
+  await expect(page.getByText('CONFIGURED_RELATIONSHIP').first()).toBeVisible();
+  await expect(page.getByText('TRANSPARENT_RULE').first()).toBeVisible();
+  await expect(page.getByText('INSUFFICIENT_NEIGHBOURS').first()).toBeVisible();
+});

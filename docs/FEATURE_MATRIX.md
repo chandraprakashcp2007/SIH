@@ -20,8 +20,9 @@ Status vocabulary: DONE, PARTIAL, NOT_CONFIGURED, PLANNED, BLOCKED. This file is
 | Evidence fusion | PARTIAL | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | DONE | PLANNED | Immediate risk evidence exists; canonical evidence item graph absent |
 | Evidence Gate | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Persisted 15-check hazard/severity policies, confidence decay and why-withheld explanations; authoritative/model evidence remains unavailable where not configured |
 | Predictions | PARTIAL | DONE | DONE | DONE | NOT_CONFIGURED | DONE | PARTIAL | PLANNED | Deterministic heuristics; MODEL NOT VALIDATED |
-| Cross-hazard cascades | PLANNED | PLANNED | PLANNED | PLANNED | NOT_CONFIGURED | PLANNED | PLANNED | PLANNED | Phase 5 |
-| Compound risk | PLANNED | PLANNED | PLANNED | PLANNED | NOT_CONFIGURED | PLANNED | PLANNED | PLANNED | Phase 5 |
+| Cross-hazard cascades | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Persisted configured reevaluation relationships, typed event, evidence references and explicit non-causation UI; authoritative field inputs unavailable |
+| Compound risk | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Versioned transparent band rules; no arithmetic risk-score blending; field validation unavailable |
+| Regional consensus | DONE | DONE | DONE | DONE | NOT_CONFIGURED | PARTIAL | DONE | PARTIAL | Weighting interface persisted; current topology truthfully reports INSUFFICIENT_NEIGHBOURS instead of manufacturing peers |
 | Upstream propagation | PLANNED | PLANNED | PLANNED | PLANNED | NOT_CONFIGURED | PLANNED | PLANNED | PLANNED | River topology/flow parameters absent |
 | Time-to-impact | PARTIAL | PARTIAL | PARTIAL | PARTIAL | NOT_CONFIGURED | PARTIAL | PARTIAL | PLANNED | Existing crossing estimate is not a validated hydrodynamic model |
 | Alerts | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Local lifecycle only |

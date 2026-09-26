@@ -30,6 +30,7 @@ const BhumiIntelligencePage = load(() => import('./pages/DomainIntelligencePage'
 const VayuIntelligencePage = load(() => import('./pages/DomainIntelligencePage'), 'VayuIntelligencePage');
 const AkashaIntelligencePage = load(() => import('./pages/DomainIntelligencePage'), 'AkashaIntelligencePage');
 const EvidenceGatePage = load(() => import('./pages/EvidenceGatePage'), 'EvidenceGatePage');
+const CrossHazardPage = load(() => import('./pages/CrossHazardPage'), 'CrossHazardPage');
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   localStorage.getItem('prahari_token') ? <>{children}</> : <Navigate to="/login" replace />;
@@ -49,6 +50,7 @@ export function App() {
       <Route path="nodes" element={<Nodes />} /><Route path="nodes/:nodeId" element={<NodeDetail />} />
       <Route path="alerts" element={<AlertCentre />} /><Route path="predictions" element={<PredictionsPage />} />
       <Route path="evidence-gate" element={<EvidenceGatePage />} />
+      <Route path="cascades" element={<CrossHazardPage />} />
       <Route path="analytics" element={<AnalyticsPage />} /><Route path="network" element={<NetworkPage />} />
       <Route path="health" element={<DeviceHealthPage />} /><Route path="ai" element={<AiIntelligencePage />} />
       <Route path="events" element={<EventHistoryPage />} /><Route path="reports" element={<ReportsPage />} />

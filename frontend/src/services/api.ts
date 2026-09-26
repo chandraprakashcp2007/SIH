@@ -63,6 +63,28 @@ export async function fetchEvidenceGateEvaluations() {
   return res.json();
 }
 
+export async function fetchCrossHazardIntelligence() {
+  const [relationships, compoundRisks, consensus] = await Promise.all([
+    fetch(`${BASE_URL}/cascades`, { headers: getHeaders() }),
+    fetch(`${BASE_URL}/compound-risk`, { headers: getHeaders() }),
+    fetch(`${BASE_URL}/consensus`, { headers: getHeaders() }),
+  ]);
+  for (const response of [relationships, compoundRisks, consensus]) {
+    if (!response.ok) throw new Error(`Failed to load cross-hazard intelligence (HTTP ${response.status})`);
+  }
+  return {
+    relationships: await relationships.json(),
+    compoundRisks: await compoundRisks.json(),
+    consensus: await consensus.json(),
+  };
+}
+
+export async function reevaluateCrossHazards() {
+  const res = await fetch(`${BASE_URL}/cascades/reevaluate`, { method: 'POST', headers: getHeaders() });
+  if (!res.ok) throw new Error(`Cross-hazard reevaluation failed (HTTP ${res.status})`);
+  return res.json();
+}
+
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to fetch node ${id}`);
