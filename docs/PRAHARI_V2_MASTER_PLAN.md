@@ -87,7 +87,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | 5 | Cross-hazard, compound risk and regional consensus | Implemented: persisted configured reevaluation relationships, versioned transparent compound rules, typed cascade events and truthful INSUFFICIENT_NEIGHBOURS consensus; no statistical-causality claims |
 | 6 | JALA topology, downstream threat, predictions, time-to-impact | Implemented: persisted topology/downstream assessment interfaces, prediction integration, typed update event and operator visualization; without validated topology parameters travel time remains UNAVAILABLE |
 | 7 | Digital twin, hazard/uncertainty boundaries and blind spots | Implemented: persisted twin snapshots/events and UI keep observed location, hazard boundary, uncertainty boundary, confidence, uncertainty and blind spots separate; unvalidated boundaries remain NOT_CONFIGURED |
-| 8 | Impact, dependencies, evacuation and safe zones | routes never claim guaranteed safety |
+| 8 | Impact, dependencies, evacuation and safe zones | Implemented: persisted asset/dependency schemas and impact/evacuation assessments, typed events and operational UI; unavailable authoritative inputs yield null exposure and no route/safe-zone geometry, and routes never claim guaranteed safety |
 | 9 | CAP 1.2 export, multilingual templates, delivery proof | XML schema/contract and delivery-state tests pass |
 | 10 | Offline queue, continuity, adaptive network/energy policies | idempotent reconnect and stale labels pass |
 | 11 | Signed telemetry, replay defense, security centre, audit chain | replay fixture rejected without REAL mutation |

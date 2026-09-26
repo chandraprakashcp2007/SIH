@@ -88,3 +88,4 @@ test('digital twin exposes uncertainty and blind spots separately', async ({ pag
   await expect(page.getByText('Blind spots:', { exact: false }).first()).toBeVisible();
   await expect(page.getByText('NOT_CONFIGURED').first()).toBeVisible();
 });
+test('impact intelligence withholds exposure and safe-route claims',async({page})=>{await login(page);await openNavItem(page,'Impact & Evacuation');await page.getByRole('button',{name:'Evaluate current state'}).click();await expect(page.getByText('Population exposed: UNAVAILABLE')).toBeVisible();await expect(page.getByText('Guaranteed safe: NO')).toBeVisible();await expect(page.getByText('Verified zones: 0')).toBeVisible()});

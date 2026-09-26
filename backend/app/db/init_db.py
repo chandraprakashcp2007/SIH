@@ -16,6 +16,7 @@ from backend.app.models.evidence_gate import EvidenceItem, EvidenceGateEvaluatio
 from backend.app.models.cross_hazard import CrossHazardRelationship, CompoundRiskAssessment, ConsensusAssessment  # noqa: F401
 from backend.app.models.jala_topology import RiverTopologyDataset, DownstreamThreatAssessment  # noqa: F401
 from backend.app.models.digital_twin import DigitalTwinSnapshot  # noqa: F401
+from backend.app.models.impact import InfrastructureAsset, InfrastructureDependency, ImpactAssessment, EvacuationAssessment, SafeZoneAssessment  # noqa: F401
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.audit import AuditLog

@@ -12,6 +12,7 @@ from backend.app.models.evidence_gate import EvidenceItem, EvidenceGateEvaluatio
 from backend.app.models.cross_hazard import CrossHazardRelationship, CompoundRiskAssessment, ConsensusAssessment
 from backend.app.models.jala_topology import RiverTopologyDataset, DownstreamThreatAssessment
 from backend.app.models.digital_twin import DigitalTwinSnapshot
+from backend.app.models.impact import InfrastructureAsset, InfrastructureDependency, ImpactAssessment, EvacuationAssessment, SafeZoneAssessment
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.sensor_trust import SensorTrustLog
@@ -43,6 +44,7 @@ __all__ = [
     "RiverTopologyDataset",
     "DownstreamThreatAssessment",
     "DigitalTwinSnapshot",
+    "InfrastructureAsset", "InfrastructureDependency", "ImpactAssessment", "EvacuationAssessment", "SafeZoneAssessment",
     "RiskAssessment",
     "Alert",
     "SensorTrustLog",

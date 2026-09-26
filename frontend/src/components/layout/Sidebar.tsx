@@ -27,7 +27,8 @@ import {
   Database,
   CloudDownload,
   GitBranch,
-  Box
+  Box,
+  Route
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -54,6 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
     { to: '/evidence-gate', label: 'Evidence Gate', icon: ShieldCheck },
     { to: '/cascades', label: 'Cross-Hazard Intelligence', icon: GitBranch },
     { to: '/digital-twin', label: 'Digital Twin', icon: Box },
+    { to: '/impact', label: 'Impact & Evacuation', icon: Route },
     { to: '/analytics', label: 'Analytics', icon: BarChart2 },
     { to: '/ai', label: 'AI Intelligence', icon: BrainCircuit },
     { to: '/external-data', label: 'External Data', icon: CloudDownload },

@@ -20,5 +20,6 @@ describe('Sidebar', () => {
     expect(screen.getByRole('link', { name: 'Evidence Gate' })).toHaveAttribute('href', '/evidence-gate');
     expect(screen.getByRole('link', { name: 'Cross-Hazard Intelligence' })).toHaveAttribute('href', '/cascades');
     expect(screen.getByRole('link', { name: 'Digital Twin' })).toHaveAttribute('href', '/digital-twin');
+    expect(screen.getByRole('link', { name: 'Impact & Evacuation' })).toHaveAttribute('href', '/impact');
   });
 });

@@ -101,6 +101,9 @@ export async function evaluateJalaDownstreamThreats() {
 }
 export async function fetchDigitalTwins() { const r=await fetch(`${BASE_URL}/digital-twin`,{headers:getHeaders()}); if(!r.ok) throw new Error('Failed to load digital twins'); return r.json(); }
 export async function refreshDigitalTwins() { const r=await fetch(`${BASE_URL}/digital-twin/refresh`,{method:'POST',headers:getHeaders()}); if(!r.ok) throw new Error('Failed to refresh digital twins'); return r.json(); }
+export async function evaluateImpact(){const r=await fetch(`${BASE_URL}/impact/evaluate`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Impact evaluation failed');return r.json()}
+export async function evaluateEvacuation(){const r=await fetch(`${BASE_URL}/evacuation/evaluate`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Evacuation evaluation failed');return r.json()}
+export async function fetchSafeZones(){const r=await fetch(`${BASE_URL}/safe-zones`,{headers:getHeaders()});if(!r.ok)throw new Error('Safe-zone registry unavailable');return r.json()}
 
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
