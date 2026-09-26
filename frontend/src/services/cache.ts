@@ -1,6 +1,7 @@
 export type CachedOperationalData<T> = {
   data: T;
   source: 'CACHED';
+  stale: true;
   fetchedAt: string;
   ageSeconds: number;
 };
@@ -20,6 +21,7 @@ export function readOperationalCache<T>(key: string): CachedOperationalData<T> |
     return {
       data: parsed.data,
       source: 'CACHED',
+      stale: true,
       fetchedAt: parsed.fetchedAt,
       ageSeconds: Math.max(0, Math.round((Date.now() - new Date(parsed.fetchedAt).getTime()) / 1000)),
     };

@@ -30,7 +30,7 @@ Status vocabulary: DONE, PARTIAL, NOT_CONFIGURED, PLANNED, BLOCKED. This file is
 | Alerts | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Local lifecycle only |
 | CAP 1.2 | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Schema-contract CAP-compatible XML with English/Hindi templates and lifecycle mapping; official delivery channels remain NOT_CONFIGURED and never report delivery without provider receipts |
 | External providers | PARTIAL | DONE | DONE | DONE | NOT_CONFIGURED | N/A | DONE | PLANNED | Registrations/manual import foundation; no verified live provider |
-| Offline PWA cache | PARTIAL | N/A | N/A | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | Read cache exists; durable mutation/outbound queue absent |
+| Offline continuity | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Persisted checksum-idempotent store-and-forward queue, replay-safe acknowledgement, derived link/energy policies and explicit stale cache labels; hardware transports retain truthful capability states |
 | Secure telemetry | PARTIAL | PARTIAL | PARTIAL | PARTIAL | NOT_CONFIGURED | PARTIAL | PARTIAL | PLANNED | JWT gateway auth exists; signatures/nonces/key rotation absent |
 | Model registry | PLANNED | PLANNED | PLANNED | PLANNED | NOT_CONFIGURED | PLANNED | PLANNED | PLANNED | No validated artifacts |
 | Scenario Lab | PARTIAL | PARTIAL | DONE | DONE | N/A | DONE | DONE | PARTIAL | Existing simulator is labelled; comparison isolation incomplete |

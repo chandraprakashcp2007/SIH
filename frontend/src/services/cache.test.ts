@@ -9,7 +9,7 @@ describe('operational cache', () => {
     writeOperationalCache('nodes', [{ id: 'JALA-01' }]);
     vi.setSystemTime(new Date('2026-09-21T10:01:00Z'));
     expect(readOperationalCache('nodes')).toEqual({
-      data: [{ id: 'JALA-01' }], source: 'CACHED', fetchedAt: '2026-09-21T10:00:00.000Z', ageSeconds: 60,
+      data: [{ id: 'JALA-01' }], source: 'CACHED', stale: true, fetchedAt: '2026-09-21T10:00:00.000Z', ageSeconds: 60,
     });
     vi.useRealTimers();
   });

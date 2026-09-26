@@ -34,6 +34,7 @@ const CrossHazardPage = load(() => import('./pages/CrossHazardPage'), 'CrossHaza
 const DigitalTwinPage = load(() => import('./pages/DigitalTwinPage'), 'DigitalTwinPage');
 const ImpactIntelligencePage = load(() => import('./pages/ImpactIntelligencePage'), 'ImpactIntelligencePage');
 const CAPCentrePage = load(() => import('./pages/CAPCentrePage'), 'CAPCentrePage');
+const ContinuityPage = load(() => import('./pages/ContinuityPage'), 'ContinuityPage');
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   localStorage.getItem('prahari_token') ? <>{children}</> : <Navigate to="/login" replace />;
@@ -57,6 +58,7 @@ export function App() {
       <Route path="digital-twin" element={<DigitalTwinPage />} />
       <Route path="impact" element={<ImpactIntelligencePage />} />
       <Route path="cap" element={<CAPCentrePage />} />
+      <Route path="continuity" element={<ContinuityPage />} />
       <Route path="analytics" element={<AnalyticsPage />} /><Route path="network" element={<NetworkPage />} />
       <Route path="health" element={<DeviceHealthPage />} /><Route path="ai" element={<AiIntelligencePage />} />
       <Route path="events" element={<EventHistoryPage />} /><Route path="reports" element={<ReportsPage />} />

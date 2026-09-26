@@ -14,6 +14,7 @@ from backend.app.models.jala_topology import RiverTopologyDataset, DownstreamThr
 from backend.app.models.digital_twin import DigitalTwinSnapshot
 from backend.app.models.impact import InfrastructureAsset, InfrastructureDependency, ImpactAssessment, EvacuationAssessment, SafeZoneAssessment
 from backend.app.models.cap import CAPExport, DeliveryAttempt
+from backend.app.models.continuity import OutboundQueueItem, ContinuitySnapshot
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.sensor_trust import SensorTrustLog
@@ -47,6 +48,7 @@ __all__ = [
     "DigitalTwinSnapshot",
     "InfrastructureAsset", "InfrastructureDependency", "ImpactAssessment", "EvacuationAssessment", "SafeZoneAssessment",
     "CAPExport", "DeliveryAttempt",
+    "OutboundQueueItem", "ContinuitySnapshot",
     "RiskAssessment",
     "Alert",
     "SensorTrustLog",

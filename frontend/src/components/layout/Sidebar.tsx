@@ -29,7 +29,8 @@ import {
   GitBranch,
   Box,
   Route,
-  Languages
+  Languages,
+  WifiOff
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -58,6 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
     { to: '/digital-twin', label: 'Digital Twin', icon: Box },
     { to: '/impact', label: 'Impact & Evacuation', icon: Route },
     { to: '/cap', label: 'CAP Warning Centre', icon: Languages },
+    { to: '/continuity', label: 'Offline Continuity', icon: WifiOff },
     { to: '/analytics', label: 'Analytics', icon: BarChart2 },
     { to: '/ai', label: 'AI Intelligence', icon: BrainCircuit },
     { to: '/external-data', label: 'External Data', icon: CloudDownload },
