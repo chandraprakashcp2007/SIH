@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Droplets, Flame, Mountain, ArrowUpRight, ShieldCheck, AlertTriangle } from 'lucide-react';
+import { Droplets, Flame, Mountain, Wind, CloudRain, ArrowUpRight, ShieldCheck, AlertTriangle } from 'lucide-react';
 
 interface LiveNodeStripsProps {
   nodes: any[];
@@ -14,6 +14,8 @@ export const LiveNodeStrips: React.FC<LiveNodeStripsProps> = ({ nodes }) => {
   const jala = getNode('JALA-01');
   const agni = getNode('AGNI-02');
   const bhumi = getNode('BHUMI-03');
+  const vayu = getNode('VAYU-04');
+  const akasha = getNode('AKASHA-05');
 
   const getRiskBadge = (riskBand: string = 'NORMAL', score: number = 0) => {
     let color = 'bg-hazard-normal/20 text-hazard-normal border-hazard-normal/40';
@@ -29,7 +31,7 @@ export const LiveNodeStrips: React.FC<LiveNodeStripsProps> = ({ nodes }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
       {/* JALA-01 STRIP */}
       <div
         onClick={() => navigate('/nodes/JALA-01')}
@@ -185,6 +187,120 @@ export const LiveNodeStrips: React.FC<LiveNodeStripsProps> = ({ nodes }) => {
           <span className="truncate">
             Slope Equilibrium: <strong className="text-hazard-normal">STABLE</strong>
           </span>
+          <ArrowUpRight className="w-3.5 h-3.5 text-text-muted" />
+        </div>
+      </div>
+
+      {/* VAYU-04 STRIP */}
+      <div
+        onClick={() => navigate('/nodes/VAYU-04')}
+        className="bg-bg-secondary p-3 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
+      >
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center space-x-2">
+            <div className="w-7 h-7 rounded bg-sky-500/15 text-sky-300 flex items-center justify-center">
+              <Wind className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-text-primary">
+                VAYU-04
+                <span className="ml-1 text-[10px] text-text-muted font-normal">
+                  AIR
+                </span>
+              </div>
+              <div className="text-[10px] text-text-muted">
+                Air Quality Intelligence
+              </div>
+            </div>
+          </div>
+          {getRiskBadge(
+            vayu.latest_risk?.risk_band,
+            vayu.latest_risk?.risk_score
+          )}
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 bg-bg-surface p-2 rounded border border-border-subtle text-center text-xs">
+          <div>
+            <div className="text-[10px] text-text-muted">PM2.5</div>
+            <div className="font-mono font-semibold text-text-primary">
+              {vayu.latest_metrics?.pm2_5?.toFixed?.(1) ?? '—'}
+            </div>
+          </div>
+
+          <div>
+            <div className="text-[10px] text-text-muted">PM10</div>
+            <div className="font-mono font-semibold text-text-primary">
+              {vayu.latest_metrics?.pm10?.toFixed?.(1) ?? '—'}
+            </div>
+          </div>
+
+          <div>
+            <div className="text-[10px] text-text-muted">CO</div>
+            <div className="font-mono font-semibold text-text-primary">
+              {vayu.latest_metrics?.co_ppm?.toFixed?.(1) ?? '—'}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-2 text-[10px] text-text-secondary flex items-center justify-between">
+          <span>VAYU Environmental Node</span>
+          <ArrowUpRight className="w-3.5 h-3.5 text-text-muted" />
+        </div>
+      </div>
+
+      {/* AKASHA-05 STRIP */}
+      <div
+        onClick={() => navigate('/nodes/AKASHA-05')}
+        className="bg-bg-secondary p-3 rounded-lg border border-border-subtle hover:border-accent-info/50 cursor-pointer transition-all flex flex-col justify-between"
+      >
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center space-x-2">
+            <div className="w-7 h-7 rounded bg-violet-500/15 text-violet-300 flex items-center justify-center">
+              <CloudRain className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-text-primary">
+                AKASHA-05
+                <span className="ml-1 text-[10px] text-text-muted font-normal">
+                  ATMOSPHERE
+                </span>
+              </div>
+              <div className="text-[10px] text-text-muted">
+                Weather Intelligence
+              </div>
+            </div>
+          </div>
+          {getRiskBadge(
+            akasha.latest_risk?.risk_band,
+            akasha.latest_risk?.risk_score
+          )}
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 bg-bg-surface p-2 rounded border border-border-subtle text-center text-xs">
+          <div>
+            <div className="text-[10px] text-text-muted">Rain</div>
+            <div className="font-mono font-semibold text-text-primary">
+              {akasha.latest_metrics?.rain_intensity?.toFixed?.(1) ?? '—'}
+            </div>
+          </div>
+
+          <div>
+            <div className="text-[10px] text-text-muted">Wind</div>
+            <div className="font-mono font-semibold text-text-primary">
+              {akasha.latest_metrics?.wind_speed_kmh?.toFixed?.(1) ?? '—'}
+            </div>
+          </div>
+
+          <div>
+            <div className="text-[10px] text-text-muted">Pressure</div>
+            <div className="font-mono font-semibold text-text-primary">
+              {akasha.latest_metrics?.pressure_hpa?.toFixed?.(0) ?? '—'}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-2 text-[10px] text-text-secondary flex items-center justify-between">
+          <span>AKASHA Environmental Node</span>
           <ArrowUpRight className="w-3.5 h-3.5 text-text-muted" />
         </div>
       </div>

@@ -89,8 +89,8 @@ async def seed_data():
                 name="Brahmaputra Flood Intelligence",
                 node_type="FLOOD",
                 tagline="River Hydrodynamics & Surge Forecasting",
-                latitude=0.0,
-                longitude=0.0,
+                latitude=26.1445,
+                longitude=91.7362,
                 elevation_m=0.0,
                 location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
                 status="SIMULATION",
@@ -109,8 +109,8 @@ async def seed_data():
                 name="Similipal Forest Fire Node",
                 node_type="FIRE",
                 tagline="Atmospheric Combustion & Plume AI",
-                latitude=0.0,
-                longitude=0.0,
+                latitude=21.9497,
+                longitude=86.72,
                 elevation_m=0.0,
                 location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
                 status="SIMULATION",
@@ -129,8 +129,8 @@ async def seed_data():
                 name="NH-58 Landslide Inclinometer",
                 node_type="LANDSLIDE",
                 tagline="Pore Pressure & Slope Shear Dynamics",
-                latitude=0.0,
-                longitude=0.0,
+                latitude=30.3165,
+                longitude=78.0322,
                 elevation_m=0.0,
                 location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
                 status="SIMULATION",
@@ -150,8 +150,8 @@ async def seed_data():
                 name="VAYU Air Intelligence",
                 node_type="AIR_QUALITY",
                 tagline="Air Quality & Hazardous Gas Intelligence",
-                latitude=20.5937,
-                longitude=78.9629,
+                latitude=28.6139,
+                longitude=77.209,
                 elevation_m=0.0,
                 location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
                 status="SIMULATION",
@@ -173,8 +173,8 @@ async def seed_data():
                 name="AKASHA Atmospheric Intelligence",
                 node_type="WEATHER",
                 tagline="Rain, Pressure, Wind & Severe Weather Intelligence",
-                latitude=17.3850,
-                longitude=78.4867,
+                latitude=13.0827,
+                longitude=80.2707,
                 elevation_m=0.0,
                 location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
                 status="SIMULATION",
@@ -204,10 +204,10 @@ async def seed_data():
             existing_node = existing.scalar_one_or_none()
             if not existing_node:
                 db.add(n)
-            elif existing_node.hardware_rev == "SX1276-ESP32-RevB":
+            elif existing_node.source_mode != "REAL":
                 existing_node.location_name = n.location_name
-                existing_node.latitude = 0.0
-                existing_node.longitude = 0.0
+                existing_node.latitude = n.latitude
+                existing_node.longitude = n.longitude
                 existing_node.elevation_m = 0.0
                 existing_node.status = "SIMULATION"
                 existing_node.firmware_version = n.firmware_version

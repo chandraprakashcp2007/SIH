@@ -71,43 +71,46 @@ export const Login: React.FC = () => {
               Predictive Resilient Autonomous Hazard & Risk Intelligence Network
             </h2>
             <p className="text-xs text-text-secondary leading-relaxed pt-2">
-              Pancha Bhootha environmental intelligence unifies Water, Fire, Earth, Air and Atmosphere through provenance-aware sensing, local edge analysis and explainable multi-hazard decisions.
+              Empowering communities to shift from reactive disaster response to proactive risk prevention through localized multi-sensor LoRa networks, hybrid physical AI, and autonomous local edge computing.
             </p>
           </div>
         </div>
 
-        {/* Pancha Bhootha Capabilities */}
-        <div className="relative z-10 border-t border-[#22364A] pt-5">
-          <div className="mb-3">
-            <div className="text-[10px] uppercase tracking-[0.20em] text-accent-info font-bold">
-              PANCHA BHOOTHA INTELLIGENCE
-            </div>
-            <div className="text-[11px] text-text-muted">
-              Water • Fire • Earth • Air • Atmosphere
+        {/* 5 Node Capabilities Strip */}
+        <div className="relative z-10 grid grid-cols-5 gap-3 border-t border-[#22364A] pt-6 text-xs">
+          <div>
+            <div className="font-bold text-accent-info">JALA-01</div>
+            <div className="text-[11px] text-text-muted mt-0.5">
+              Flood & River Surge Hydrodynamics
             </div>
           </div>
 
-          <div className="grid grid-cols-2 xl:grid-cols-5 gap-2 text-xs">
-            {[
-              ['JALA-01','WATER','Flood & Surge','text-cyan-300'],
-              ['AGNI-02','FIRE','Fire & Smoke','text-orange-300'],
-              ['BHUMI-03','EARTH','Slope Stability','text-emerald-300'],
-              ['VAYU-04','AIR','Air Quality','text-sky-300'],
-              ['AKASHA-05','ATMOSPHERE','Weather','text-violet-300'],
-            ].map(([id, element, desc, color]) => (
-              <div
-                key={id}
-                className="rounded-lg border border-[#22364A] bg-[#07111F]/60 p-2.5"
-              >
-                <div className={`font-bold ${color}`}>{id}</div>
-                <div className="text-[9px] tracking-widest text-text-muted">
-                  {element}
-                </div>
-                <div className="text-[10px] text-text-secondary mt-1">
-                  {desc}
-                </div>
-              </div>
-            ))}
+          <div>
+            <div className="font-bold text-hazard-warning">AGNI-02</div>
+            <div className="text-[11px] text-text-muted mt-0.5">
+              Fire, Smoke & Gas AI Inference
+            </div>
+          </div>
+
+          <div>
+            <div className="font-bold text-hazard-normal">BHUMI-03</div>
+            <div className="text-[11px] text-text-muted mt-0.5">
+              Geotechnical Slope & Landslide Shear
+            </div>
+          </div>
+
+          <div>
+            <div className="font-bold text-cyan-300">VAYU-04</div>
+            <div className="text-[11px] text-text-muted mt-0.5">
+              Air Quality & Gas Intelligence
+            </div>
+          </div>
+
+          <div>
+            <div className="font-bold text-violet-300">AKASHA-05</div>
+            <div className="text-[11px] text-text-muted mt-0.5">
+              Atmospheric & Weather Intelligence
+            </div>
           </div>
         </div>
       </div>

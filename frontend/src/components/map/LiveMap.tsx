@@ -19,6 +19,33 @@ interface NodeMapData {
   latest_metrics?: any;
 }
 
+const DEMO_NODE_COORDS: Record<string, [number, number]> = {
+  "JALA-01": [26.1445, 91.7362],   // Assam
+  "AGNI-02": [21.9497, 86.7200],   // Odisha
+  "BHUMI-03": [30.3165, 78.0322],  // Uttarakhand
+  "VAYU-04": [28.6139, 77.2090],   // Delhi
+  "AKASHA-05": [13.0827, 80.2707], // Chennai
+};
+
+const resolveMapPosition = (node: NodeMapData): [number, number] => {
+  const lat = Number(node.latitude);
+  const lon = Number(node.longitude);
+
+  const validIndiaCoordinate =
+    Number.isFinite(lat) &&
+    Number.isFinite(lon) &&
+    lat >= 6 &&
+    lat <= 38 &&
+    lon >= 68 &&
+    lon <= 98;
+
+  if (validIndiaCoordinate) {
+    return [lat, lon];
+  }
+
+  return DEMO_NODE_COORDS[node.id] || [22.5, 79.0];
+};
+
 interface LiveMapProps {
   nodes: NodeMapData[];
   selectedNodeId?: string;
@@ -46,8 +73,8 @@ export const LiveMap: React.FC<LiveMapProps> = ({
 
     // Center on Northern/Eastern India monitoring corridor
     const map = L.map(mapContainerRef.current, {
-      center: [26.2, 85.5],
-      zoom: 6,
+      center: [22.5, 79.0],
+      zoom: 5,
       zoomControl: false,
 
       // Smooth PRAHARI map behaviour
@@ -213,6 +240,8 @@ export const LiveMap: React.FC<LiveMapProps> = ({
     });
 
     filtered.forEach((node) => {
+      const position = resolveMapPosition(node);
+
       const riskBand = node.latest_risk?.risk_band || 'NORMAL';
       const riskScore = node.latest_risk?.risk_score ?? 0;
 
@@ -250,10 +279,10 @@ export const LiveMap: React.FC<LiveMapProps> = ({
       });
 
       if (markersRef.current[node.id]) {
-        markersRef.current[node.id].setLatLng([node.latitude, node.longitude]);
+        markersRef.current[node.id].setLatLng(position);
         markersRef.current[node.id].setIcon(customIcon);
       } else {
-        const marker = L.marker([node.latitude, node.longitude], { icon: customIcon }).addTo(map);
+        const marker = L.marker(position, { icon: customIcon }).addTo(map);
 
         marker.on('click', () => {
           if (onSelectNode) onSelectNode(node.id);
