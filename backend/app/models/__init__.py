@@ -7,6 +7,7 @@ from backend.app.models.nodes import Node
 from backend.app.models.telemetry import TelemetryRecord
 from backend.app.models.observations import Observation
 from backend.app.models.geospatial import GeoDataset, GeoFeature
+from backend.app.models.sensor_health import SensorHealthSnapshot
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.sensor_trust import SensorTrustLog
@@ -29,6 +30,7 @@ __all__ = [
     "Observation",
     "GeoDataset",
     "GeoFeature",
+    "SensorHealthSnapshot",
     "RiskAssessment",
     "Alert",
     "SensorTrustLog",

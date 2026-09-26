@@ -17,6 +17,7 @@ from backend.app.services.alert_service import alert_service
 from backend.app.websocket.manager import ws_manager
 from backend.app.services.evidence_service import build_event_evidence
 from backend.app.services.observation_service import adapt_legacy_metrics
+from backend.app.services.sensor_health_service import health_snapshots
 from backend.app.domain.registry import DOMAIN_REGISTRY
 from backend.app.provenance import SourceMode, ValidationReason, resolve_source_mode
 import time
@@ -254,15 +255,23 @@ class TelemetryService:
             else:
                 node_obj.status = "ONLINE"
 
+        health_items = []
         if node_obj:
-            db.add_all(adapt_legacy_metrics(
+            canonical_observations = adapt_legacy_metrics(
                 node=node_obj, metrics=metrics, payload=payload,
                 sequence_number=sequence, timestamp=device_timestamp,
                 received_at=now_utc,
                 source=payload.get("transport") or gateway_source,
                 provenance=source_mode,
                 trust_scores=assessment["sensor_trust"],
-            ))
+            )
+            db.add_all(canonical_observations)
+            health_items = health_snapshots(
+                node=node_obj, observations=canonical_observations,
+                trust_scores=assessment["sensor_trust"], battery_pct=battery,
+                rssi=rssi, provenance=source_mode.value, recorded_at=now_utc,
+            )
+            db.add_all(health_items)
 
         # 8. Alert Lifecycle Evaluation
         evidence = build_event_evidence(
@@ -332,6 +341,17 @@ class TelemetryService:
             "estimated_crossing_time": assessment.get("estimated_crossing_time"),
             "risk_trend": assessment.get("risk_trend")
         })
+
+        if health_items:
+            await ws_manager.broadcast_event("sensor.health.changed", {
+                "node_id": node_id,
+                "sensors": [{"sensor_id": item.sensor_id, "state": item.state,
+                             "trust_score": item.trust_score,
+                             "reason_codes": item.reason_codes,
+                             "provenance": item.provenance}
+                            for item in health_items],
+                "timestamp": now_utc.isoformat(),
+            })
 
         if node_obj:
             await ws_manager.broadcast_event("node.status_changed", {

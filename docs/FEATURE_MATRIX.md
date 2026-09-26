@@ -15,8 +15,8 @@ Status vocabulary: DONE, PARTIAL, NOT_CONFIGURED, PLANNED, BLOCKED. This file is
 | BHUMI map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route; DEM remains NOT_CONFIGURED |
 | VAYU map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route; PM values visibly simulation-only |
 | AKASHA map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route; authoritative weather providers remain NOT_CONFIGURED |
-| Historical graphs | DONE | DONE | DONE | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | Persisted history; required aggregation windows incomplete |
-| Sensor trust | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Fleet digital twin/fault history incomplete |
+| Historical graphs | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Database aggregation supports 15m, 1h, 6h, 24h and 7d; legacy node charts remain compatible |
+| Sensor trust | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Persisted per-sensor snapshots, reason codes and fleet dashboard; calibrated field validation pending |
 | Evidence fusion | PARTIAL | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | DONE | PLANNED | Immediate risk evidence exists; canonical evidence item graph absent |
 | Evidence Gate | PLANNED | PLANNED | PLANNED | PLANNED | NOT_CONFIGURED | PLANNED | PLANNED | PLANNED | No persisted hazard-specific 15-check policy engine |
 | Predictions | PARTIAL | DONE | DONE | DONE | NOT_CONFIGURED | DONE | PARTIAL | PLANNED | Deterministic heuristics; MODEL NOT VALIDATED |

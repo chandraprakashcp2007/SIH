@@ -43,6 +43,20 @@ export async function fetchGeoDatasets() {
   return res.json();
 }
 
+export async function fetchSensorHealth(nodeId?: string) {
+  const query = nodeId ? `?node_id=${encodeURIComponent(nodeId)}` : '';
+  const res = await fetch(`${BASE_URL}/sensor-health${query}`, { headers: getHeaders() });
+  if (!res.ok) throw new Error(`Failed to load sensor health (HTTP ${res.status})`);
+  return res.json();
+}
+
+export async function fetchObservationAggregate(nodeId: string, observedProperty: string, range = '1h') {
+  const params = new URLSearchParams({ node_id: nodeId, observed_property: observedProperty, range });
+  const res = await fetch(`${BASE_URL}/observations/aggregate?${params}`, { headers: getHeaders() });
+  if (!res.ok) throw new Error(`Failed to load observation history (HTTP ${res.status})`);
+  return res.json();
+}
+
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to fetch node ${id}`);

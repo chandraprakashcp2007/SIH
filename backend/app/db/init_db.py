@@ -11,6 +11,7 @@ from backend.app.models.nodes import Node
 from backend.app.models.telemetry import TelemetryRecord
 from backend.app.models.observations import Observation  # noqa: F401
 from backend.app.models.geospatial import GeoDataset, GeoFeature  # noqa: F401
+from backend.app.models.sensor_health import SensorHealthSnapshot  # noqa: F401
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.audit import AuditLog
