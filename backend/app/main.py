@@ -42,6 +42,7 @@ from backend.app.api.cross_hazard import router as cross_hazard_router
 from backend.app.api.jala import router as jala_router
 from backend.app.api.digital_twin import router as digital_twin_router
 from backend.app.api.impact import router as impact_router
+from backend.app.api.cap import router as cap_router
 
 configure_logging()
 logger = logging.getLogger("prahari.main")
@@ -115,6 +116,7 @@ app.include_router(cross_hazard_router, prefix=settings.API_V1_STR, dependencies
 app.include_router(jala_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 app.include_router(digital_twin_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 app.include_router(impact_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
+app.include_router(cap_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 
 
 @app.get("/")

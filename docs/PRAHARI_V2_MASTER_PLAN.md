@@ -88,7 +88,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | 6 | JALA topology, downstream threat, predictions, time-to-impact | Implemented: persisted topology/downstream assessment interfaces, prediction integration, typed update event and operator visualization; without validated topology parameters travel time remains UNAVAILABLE |
 | 7 | Digital twin, hazard/uncertainty boundaries and blind spots | Implemented: persisted twin snapshots/events and UI keep observed location, hazard boundary, uncertainty boundary, confidence, uncertainty and blind spots separate; unvalidated boundaries remain NOT_CONFIGURED |
 | 8 | Impact, dependencies, evacuation and safe zones | Implemented: persisted asset/dependency schemas and impact/evacuation assessments, typed events and operational UI; unavailable authoritative inputs yield null exposure and no route/safe-zone geometry, and routes never claim guaranteed safety |
-| 9 | CAP 1.2 export, multilingual templates, delivery proof | XML schema/contract and delivery-state tests pass |
+| 9 | CAP 1.2 export, multilingual templates, delivery proof | Implemented: persisted validated CAP-compatible XML exports, English/Hindi information blocks, lifecycle mapping, delivery-attempt proof states/events and operator UI; official providers remain NOT_CONFIGURED |
 | 10 | Offline queue, continuity, adaptive network/energy policies | idempotent reconnect and stale labels pass |
 | 11 | Signed telemetry, replay defense, security centre, audit chain | replay fixture rejected without REAL mutation |
 | 12 | Dataset manager, model registry, drift/abstention | unvalidated/OOD models abstain |

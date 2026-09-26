@@ -104,6 +104,8 @@ export async function refreshDigitalTwins() { const r=await fetch(`${BASE_URL}/d
 export async function evaluateImpact(){const r=await fetch(`${BASE_URL}/impact/evaluate`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Impact evaluation failed');return r.json()}
 export async function evaluateEvacuation(){const r=await fetch(`${BASE_URL}/evacuation/evaluate`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Evacuation evaluation failed');return r.json()}
 export async function fetchSafeZones(){const r=await fetch(`${BASE_URL}/safe-zones`,{headers:getHeaders()});if(!r.ok)throw new Error('Safe-zone registry unavailable');return r.json()}
+export async function fetchCAPCentre(){const [s,e,d]=await Promise.all([fetch(`${BASE_URL}/cap/status`,{headers:getHeaders()}),fetch(`${BASE_URL}/cap/exports`,{headers:getHeaders()}),fetch(`${BASE_URL}/cap/deliveries`,{headers:getHeaders()})]);if(!s.ok||!e.ok||!d.ok)throw new Error('CAP centre unavailable');return {status:await s.json(),exports:await e.json(),deliveries:await d.json()}}
+export async function exportCAP(alertId:string,languages=['en-IN','hi-IN']){const r=await fetch(`${BASE_URL}/cap/alerts/${encodeURIComponent(alertId)}/export`,{method:'POST',headers:getHeaders(),body:JSON.stringify({languages})});if(!r.ok)throw new Error(`CAP export failed (HTTP ${r.status})`);return r.json()}
 
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
