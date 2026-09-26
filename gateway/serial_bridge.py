@@ -54,7 +54,7 @@ class SerialBridge:
         required = ["version", "node_id", "sequence", "metrics", "rssi"]
         if not all(k in data for k in required):
             return False
-        if data["node_id"] not in ["JALA-01", "AGNI-02", "BHUMI-03"]:
+        if data["node_id"] not in ["JALA-01", "AGNI-02", "BHUMI-03", "VAYU-04", "AKASHA-05"]:
             return False
         if not isinstance(data["metrics"], dict):
             return False

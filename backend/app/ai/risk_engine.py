@@ -40,6 +40,10 @@ class HybridRiskEngine:
             return self.evaluate_agni(current_metrics, recent_history, is_simulation)
         elif node_id == "BHUMI-03":
             return self.evaluate_bhumi(current_metrics, recent_history, is_simulation)
+        elif node_id == "VAYU-04":
+            return self.evaluate_vayu(current_metrics, recent_history, is_simulation)
+        elif node_id == "AKASHA-05":
+            return self.evaluate_akasha(current_metrics, recent_history, is_simulation)
         else:
             return self._fallback_evaluation(node_id, current_metrics, is_simulation)
 
@@ -218,6 +222,178 @@ class HybridRiskEngine:
             "model_source": model_source,
             "estimated_crossing_time": None,
             "risk_trend": trend_direction
+        }
+
+    def evaluate_vayu(
+        self,
+        metrics: Dict[str, Any],
+        history: List[Dict[str, Any]],
+        is_simulation: bool = False
+    ) -> Dict[str, Any]:
+        pm25 = float(metrics.get("pm2_5", 0.0))
+        pm10 = float(metrics.get("pm10", 0.0))
+        co = float(metrics.get("co_ppm", 0.0))
+        voc = float(metrics.get("voc_index", 0.0))
+
+        trust_scores, anomalies = sensor_trust_engine.evaluate_node_trust(
+            "VAYU-04", metrics, history
+        )
+
+        components = {
+            "PM2.5": min(100.0, pm25 / 75.0 * 100.0),
+            "PM10": min(100.0, pm10 / 150.0 * 100.0),
+            "CO": min(100.0, co / 15.0 * 100.0),
+            "VOC": min(100.0, voc / 400.0 * 100.0),
+        }
+
+        peak = max(components.values())
+        mean = sum(components.values()) / len(components)
+
+        risk_score = round(
+            min(100.0, peak * 0.72 + mean * 0.28),
+            1
+        )
+
+        risk_band = self.get_risk_band(risk_score)
+
+        confidence = round(
+            sum(trust_scores.values()) / max(1, len(trust_scores)),
+            1
+        )
+
+        trend = feature_engine.compute_trend(
+            "pm2_5", history, pm25
+        )
+
+        factors = [
+            {
+                "name": name,
+                "score": round(score, 1)
+            }
+            for name, score in components.items()
+            if score >= 20.0
+        ]
+
+        explanation = (
+            f"VAYU evidence fusion: PM2.5={pm25:.1f}, "
+            f"PM10={pm10:.1f}, CO={co:.1f} ppm and "
+            f"VOC index={voc:.1f}. This is an engineering "
+            "multi-sensor risk score, not a statutory AQI."
+        )
+
+        if anomalies:
+            explanation += " Trust warnings: " + "; ".join(anomalies[:3])
+
+        return {
+            "node_id": "VAYU-04",
+            "risk_score": risk_score,
+            "risk_band": risk_band,
+            "confidence": confidence,
+            "anomaly_score": 0.0,
+            "sensor_trust": trust_scores,
+            "contributing_factors": factors,
+            "human_explanation": explanation,
+            "machine_explanation": {
+                "components": components
+            },
+            "recommended_action":
+                "Increase local air monitoring and verify pollutant source."
+                if risk_band != "NORMAL"
+                else "Routine air-quality surveillance.",
+            "model_source":
+                "SIMULATION_RULE_FUSION"
+                if is_simulation else "RULE_FUSION",
+            "estimated_crossing_time": None,
+            "risk_trend": trend,
+        }
+
+    def evaluate_akasha(
+        self,
+        metrics: Dict[str, Any],
+        history: List[Dict[str, Any]],
+        is_simulation: bool = False
+    ) -> Dict[str, Any]:
+        rain = float(metrics.get("rain_intensity", 0.0))
+        pressure = float(metrics.get("pressure_hpa", 1010.0))
+        pressure_drop = float(
+            metrics.get("pressure_drop_hpa_3h", 0.0)
+        )
+        wind = float(metrics.get("wind_speed_kmh", 0.0))
+        gust = float(metrics.get("wind_gust_kmh", wind))
+
+        trust_scores, anomalies = sensor_trust_engine.evaluate_node_trust(
+            "AKASHA-05", metrics, history
+        )
+
+        components = {
+            "Rain": min(100.0, rain / 80.0 * 100.0),
+            "Wind": min(100.0, wind / 90.0 * 100.0),
+            "Gust": min(100.0, gust / 120.0 * 100.0),
+            "Pressure fall": min(
+                100.0,
+                pressure_drop / 12.0 * 100.0
+            ),
+        }
+
+        peak = max(components.values())
+        mean = sum(components.values()) / len(components)
+
+        risk_score = round(
+            min(100.0, peak * 0.70 + mean * 0.30),
+            1
+        )
+
+        risk_band = self.get_risk_band(risk_score)
+
+        confidence = round(
+            sum(trust_scores.values()) / max(1, len(trust_scores)),
+            1
+        )
+
+        trend = feature_engine.compute_trend(
+            "rain_intensity", history, rain
+        )
+
+        factors = [
+            {
+                "name": name,
+                "score": round(score, 1)
+            }
+            for name, score in components.items()
+            if score >= 20.0
+        ]
+
+        explanation = (
+            f"AKASHA evidence fusion: rain={rain:.1f} mm/h, "
+            f"wind={wind:.1f} km/h, gust={gust:.1f} km/h, "
+            f"pressure={pressure:.1f} hPa and "
+            f"pressure fall={pressure_drop:.1f} hPa/3h."
+        )
+
+        if anomalies:
+            explanation += " Trust warnings: " + "; ".join(anomalies[:3])
+
+        return {
+            "node_id": "AKASHA-05",
+            "risk_score": risk_score,
+            "risk_band": risk_band,
+            "confidence": confidence,
+            "anomaly_score": 0.0,
+            "sensor_trust": trust_scores,
+            "contributing_factors": factors,
+            "human_explanation": explanation,
+            "machine_explanation": {
+                "components": components
+            },
+            "recommended_action":
+                "Increase weather sampling and reevaluate linked flood and landslide hazards."
+                if risk_band != "NORMAL"
+                else "Routine atmospheric surveillance.",
+            "model_source":
+                "SIMULATION_RULE_FUSION"
+                if is_simulation else "RULE_FUSION",
+            "estimated_crossing_time": None,
+            "risk_trend": trend,
         }
 
     def _fallback_evaluation(self, node_id: str, metrics: Dict[str, Any], is_simulation: bool) -> Dict[str, Any]:

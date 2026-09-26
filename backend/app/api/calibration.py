@@ -15,6 +15,16 @@ DEFAULT_CALIBRATION = {
     "JALA-01": {"water_level_offset_cm": 0.0, "rain_gauge_factor": 1.0},
     "AGNI-02": {"mq2_baseline": 115.0, "mq135_baseline": 128.0, "thermal_offset_c": 0.0},
     "BHUMI-03": {"tilt_x_zero_deg": 0.35, "tilt_y_zero_deg": -0.22, "vibration_zero": 0.45},
+    "VAYU-04": {
+        "pm2_5_offset": 0.0,
+        "pm10_offset": 0.0,
+        "co_offset_ppm": 0.0
+    },
+    "AKASHA-05": {
+        "pressure_offset_hpa": 0.0,
+        "rain_factor": 1.0,
+        "wind_factor": 1.0
+    },
 }
 
 

@@ -71,48 +71,67 @@ export const LiveMap: React.FC<LiveMapProps> = ({
       URL is constructed this way to prevent terminals/editors
       from accidentally converting it into Markdown.
     */
-    const tileUrl =
-      'https' +
-      '://tile.openstreetmap.org/{z}/{x}/{y}.png';
+    // Keyless map chain:
+    // CARTO Dark -> OpenStreetMap -> local tactical grid.
+    const primaryLayer = L.tileLayer(
+      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+      {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        subdomains: 'abcd',
+        minZoom: 3,
+        maxZoom: 19,
+        keepBuffer: 6,
+        updateWhenIdle: true,
+        detectRetina: false,
+        className: 'prahari-map-dark-native',
+      }
+    );
 
-    const tileLayer = L.tileLayer(tileUrl, {
-      attribution: '&copy; OpenStreetMap contributors',
+    const fallbackLayer = L.tileLayer(
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        attribution: '&copy; OpenStreetMap contributors',
+        minZoom: 3,
+        maxZoom: 18,
+        keepBuffer: 6,
+        updateWhenIdle: true,
+        detectRetina: false,
+        className: 'prahari-map-tiles',
+      }
+    );
 
-      minZoom: 3,
-      maxZoom: 18,
+    let primaryFailures = 0;
+    let fallbackEnabled = false;
 
-      // Keep nearby tiles ready while panning.
-      keepBuffer: 8,
+    primaryLayer.on('tileerror', () => {
+      primaryFailures += 1;
 
-      // Do not continuously request new tile grids
-      // during every animation frame of a zoom.
-      updateWhenIdle: false,
-      updateWhenZooming: false,
+      if (primaryFailures >= 2 && !fallbackEnabled) {
+        fallbackEnabled = true;
 
-      // Throttle tile redraw work.
-      updateInterval: 220,
+        if (map.hasLayer(primaryLayer)) {
+          map.removeLayer(primaryLayer);
+        }
 
-      // Avoid requesting double-resolution tiles.
-      detectRetina: false,
-
-      crossOrigin: true,
-
-      className: 'prahari-map-tiles',
+        fallbackLayer.addTo(map);
+      }
     });
 
-    tileLayer.on('tileerror', () => {
+    primaryLayer.on('load', () => {
+      setOfflineTilesActive(false);
+      window.requestAnimationFrame(() => map.invalidateSize(false));
+    });
+
+    fallbackLayer.on('load', () => {
+      setOfflineTilesActive(false);
+      window.requestAnimationFrame(() => map.invalidateSize(false));
+    });
+
+    fallbackLayer.on('tileerror', () => {
       setOfflineTilesActive(true);
     });
 
-    tileLayer.on('load', () => {
-      setOfflineTilesActive(false);
-
-      window.requestAnimationFrame(() => {
-        map.invalidateSize(false);
-      });
-    });
-
-    tileLayer.addTo(map);
+    primaryLayer.addTo(map);
 
     /*
       Once zoom/pan finishes, correct the Leaflet viewport.

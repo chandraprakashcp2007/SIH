@@ -23,6 +23,18 @@ SCENARIOS = [
     {"id": "CONFIRMED_FIRE", "name": "Immediate Confirmed Fire", "hazard": "FIRE", "desc": "Full thermal surge, smoke plume, and active optical flame detection."},
     {"id": "LANDSLIDE_SATURATION", "name": "Rain Soil Saturation", "hazard": "LANDSLIDE", "desc": "Prolonged rainfall context drives pore water pressure to saturation levels."},
     {"id": "LANDSLIDE_MOVEMENT", "name": "Active Landslide Shear Slip", "hazard": "LANDSLIDE", "desc": "Saturated slope experiences structural tilt delta and high vibration RMS."},
+    {
+        "id": "AIR_QUALITY_EVENT",
+        "name": "VAYU Air Quality Escalation",
+        "hazard": "AIR_QUALITY",
+        "desc": "PM, CO and VOC indicators rise together."
+    },
+    {
+        "id": "SEVERE_WEATHER",
+        "name": "AKASHA Severe Weather Escalation",
+        "hazard": "EXTREME_WEATHER",
+        "desc": "Rain, wind, gust and pressure-fall evidence rise together."
+    },
     {"id": "SENSOR_FAILURE", "name": "Sensor Freeze / Out-of-Bounds", "hazard": "GENERAL", "desc": "Sensor value jumps out-of-bounds; trust decays to 30% without panic alert."},
     {"id": "NODE_OFFLINE", "name": "Node Power Cut / Disconnect", "hazard": "GENERAL", "desc": "JALA-01 stops emitting packets; gateway flags node as OFFLINE."},
     {"id": "PACKET_LOSS", "name": "LoRa RF Interference & Gaps", "hazard": "GENERAL", "desc": "Simulates 35% packet drops causing sequence gaps and packet loss warnings."},

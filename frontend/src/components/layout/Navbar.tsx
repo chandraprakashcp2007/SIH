@@ -41,6 +41,13 @@ export const Navbar: React.FC<NavbarProps> = ({ summary, onLogout }) => {
   const criticalAlerts = summary?.critical_alerts_count ?? 0;
   const networkMode = summary?.network_mode || 'LOCAL_EDGE';
 
+  const gatewayLabel =
+    summary?.gateway_mode === 'REAL'
+      ? 'USB Serial Hardware'
+      : summary?.gateway_mode === 'SIMULATOR'
+        ? 'Windows Python / Simulator'
+        : (summary?.gateway_mode || 'Gateway Unknown');
+
   return (
     <header className="h-14 bg-bg-secondary border-b border-border-subtle px-4 flex items-center justify-between z-30 shrink-0 select-none">
       {/* Left: System Mode & Local Time */}
@@ -68,13 +75,13 @@ export const Navbar: React.FC<NavbarProps> = ({ summary, onLogout }) => {
         {/* Gateway indicator */}
         <div className="hidden sm:flex items-center space-x-1.5 bg-bg-surface px-2.5 py-1 rounded border border-border-subtle text-text-secondary">
           <Cpu className="w-3.5 h-3.5 text-accent-info" />
-          <span>Gateway: <strong className="text-text-primary">LoRa SX1276</strong></span>
+          <span>Gateway: <strong className="text-text-primary">{gatewayLabel}</strong></span>
         </div>
 
         {/* Nodes online */}
         <div className="hidden md:flex items-center space-x-1.5 bg-bg-surface px-2.5 py-1 rounded border border-border-subtle text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-hazard-normal"></span>
-          <span><strong className="text-text-primary">{summary?.nodes_online ?? 3}</strong> / {summary?.nodes_total ?? 3} Nodes Online</span>
+          <span><strong className="text-text-primary">{summary?.nodes_online ?? 0}</strong> / {summary?.nodes_total ?? 0} Operational Nodes</span>
         </div>
       </div>
 

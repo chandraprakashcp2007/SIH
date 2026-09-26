@@ -11,7 +11,7 @@
     },
     "node_id": {
       "type": "string",
-      "enum": ["JALA-01", "AGNI-02", "BHUMI-03"]
+      "enum": ["JALA-01", "AGNI-02", "BHUMI-03", "VAYU-04", "AKASHA-05"]
     },
     "sequence": {
       "type": "integer",

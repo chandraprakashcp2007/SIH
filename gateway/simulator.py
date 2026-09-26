@@ -16,7 +16,13 @@ class PrahariSimulator:
     """Accurate physical process simulator for JALA, AGNI, and BHUMI."""
 
     def __init__(self):
-        self.sequence_counters = {"JALA-01": 100, "AGNI-02": 100, "BHUMI-03": 100}
+        self.sequence_counters = {
+            "JALA-01": 100,
+            "AGNI-02": 100,
+            "BHUMI-03": 100,
+            "VAYU-04": 100,
+            "AKASHA-05": 100
+        }
         self.active_scenario = "ALL_NORMAL"
         self.tick = 0
         self.internet_outage = False
@@ -63,6 +69,26 @@ class PrahariSimulator:
                 "temperature_c": 24.5,
                 "battery_pct": 88.0,
                 "signal_rssi": -84,
+            },
+            "VAYU-04": {
+                "pm2_5": 18.0,
+                "pm10": 38.0,
+                "co_ppm": 0.8,
+                "voc_index": 82.0,
+                "temperature_c": 28.0,
+                "humidity_pct": 62.0,
+                "battery_pct": 93.0,
+                "signal_rssi": -82,
+            },
+            "AKASHA-05": {
+                "rain_intensity": 1.0,
+                "pressure_hpa": 1008.0,
+                "pressure_drop_hpa_3h": 0.3,
+                "wind_speed_kmh": 12.0,
+                "wind_gust_kmh": 18.0,
+                "humidity_pct": 70.0,
+                "battery_pct": 92.0,
+                "signal_rssi": -83,
             }
         }
 
@@ -103,6 +129,17 @@ class PrahariSimulator:
         self.state["BHUMI-03"]["tilt_delta_deg"] = 0.12
         self.state["BHUMI-03"]["vibration_rms"] = 0.45
         self.state["BHUMI-03"]["rain_context"] = 5.0
+
+        self.state["VAYU-04"]["pm2_5"] = 18.0
+        self.state["VAYU-04"]["pm10"] = 38.0
+        self.state["VAYU-04"]["co_ppm"] = 0.8
+        self.state["VAYU-04"]["voc_index"] = 82.0
+
+        self.state["AKASHA-05"]["rain_intensity"] = 1.0
+        self.state["AKASHA-05"]["pressure_hpa"] = 1008.0
+        self.state["AKASHA-05"]["pressure_drop_hpa_3h"] = 0.3
+        self.state["AKASHA-05"]["wind_speed_kmh"] = 12.0
+        self.state["AKASHA-05"]["wind_gust_kmh"] = 18.0
 
     def step_simulation(self):
         """Advance physical simulation state by one cycle (~2 seconds)."""
@@ -188,12 +225,43 @@ class PrahariSimulator:
             self.state["BHUMI-03"]["tilt_delta_deg"] = min(7.5, 1.2 + t * 0.7)
             self.state["BHUMI-03"]["vibration_rms"] = min(18.5, 2.0 + t * 1.8)
 
+        elif self.active_scenario == "AIR_QUALITY_EVENT":
+            self.state["VAYU-04"]["pm2_5"] = min(
+                180.0, 18.0 + t * 10.0
+            )
+            self.state["VAYU-04"]["pm10"] = min(
+                280.0, 38.0 + t * 14.0
+            )
+            self.state["VAYU-04"]["co_ppm"] = min(
+                25.0, 0.8 + t * 1.2
+            )
+            self.state["VAYU-04"]["voc_index"] = min(
+                500.0, 82.0 + t * 20.0
+            )
+
+        elif self.active_scenario == "SEVERE_WEATHER":
+            self.state["AKASHA-05"]["rain_intensity"] = min(
+                140.0, 5.0 + t * 7.0
+            )
+            self.state["AKASHA-05"]["wind_speed_kmh"] = min(
+                130.0, 15.0 + t * 6.0
+            )
+            self.state["AKASHA-05"]["wind_gust_kmh"] = min(
+                170.0, 22.0 + t * 8.0
+            )
+            self.state["AKASHA-05"]["pressure_drop_hpa_3h"] = min(
+                18.0, 0.5 + t * 0.8
+            )
+            self.state["AKASHA-05"]["pressure_hpa"] = max(
+                955.0, 1008.0 - t * 2.2
+            )
+
         elif self.active_scenario == "SENSOR_FAILURE":
             # In sensor failure, a sensor gets frozen or outputs NaN/jump
             self.state["JALA-01"]["water_level_cm"] = 999.9  # Out of bounds jump!
 
     def generate_packets(self) -> Dict[str, Dict[str, Any]]:
-        """Produce 3 LoRa JSON packets adhering to protocol.json."""
+        """Produce five provenance-labelled telemetry packets."""
         packets = {}
         now_iso = time.strftime("%Y-%m-%dT%H:%M:%S+05:30", time.localtime())
 

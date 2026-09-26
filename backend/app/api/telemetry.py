@@ -44,7 +44,7 @@ async def ingest_telemetry(
 @router.get("/latest")
 async def get_latest_telemetry(db: AsyncSession = Depends(get_db)):
     """Retrieve the most recent telemetry packet for each registered node."""
-    nodes = ["JALA-01", "AGNI-02", "BHUMI-03"]
+    nodes = ["JALA-01", "AGNI-02", "BHUMI-03", "VAYU-04", "AKASHA-05"]
     latest = {}
     for nid in nodes:
         query = (

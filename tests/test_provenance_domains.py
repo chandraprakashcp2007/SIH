@@ -50,21 +50,42 @@ def test_source_mode_has_all_canonical_values():
 
 def test_registry_contains_five_truthful_domains():
     assert set(DOMAIN_REGISTRY) == {"JALA-01", "AGNI-02", "BHUMI-03", "VAYU-04", "AKASHA-05"}
-    assert DOMAIN_REGISTRY["VAYU-04"].default_source_mode is SourceMode.PLANNED
-    assert DOMAIN_REGISTRY["AKASHA-05"].risk_engine_available is False
+    assert DOMAIN_REGISTRY["VAYU-04"].default_source_mode is SourceMode.SIMULATION
+    assert DOMAIN_REGISTRY["VAYU-04"].risk_engine_available is True
+    assert DOMAIN_REGISTRY["AKASHA-05"].default_source_mode is SourceMode.SIMULATION
+    assert DOMAIN_REGISTRY["AKASHA-05"].risk_engine_available is True
 
 
 @pytest.mark.asyncio
-async def test_elements_api_returns_planned_domains_without_fake_readings():
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
-        response = await client.get("/api/elements", headers=AUTH_HEADERS)
+async def test_elements_api_returns_five_active_software_domains():
+    async with AsyncClient(
+        transport=ASGITransport(app=app),
+        base_url="http://test"
+    ) as client:
+        response = await client.get(
+            "/api/elements",
+            headers=AUTH_HEADERS
+        )
+
     assert response.status_code == 200
-    by_id = {item["domain_id"]: item for item in response.json()}
+
+    by_id = {
+        item["domain_id"]: item
+        for item in response.json()
+    }
+
     assert len(by_id) == 5
-    assert by_id["VAYU-04"]["source_mode"] == "PLANNED"
-    assert by_id["VAYU-04"]["latest_update"] is None
-    assert by_id["AKASHA-05"]["latest_update"] is None
-    assert by_id["AKASHA-05"]["risk_engine_state"] == "NOT_IMPLEMENTED"
+
+    assert by_id["VAYU-04"]["source_mode"] == "SIMULATION"
+    assert by_id["VAYU-04"]["risk_engine_state"] == "AVAILABLE"
+
+    assert by_id["AKASHA-05"]["source_mode"] == "SIMULATION"
+    assert by_id["AKASHA-05"]["risk_engine_state"] == "AVAILABLE"
+
+    assert "NOT CONNECTED" in (
+        by_id["VAYU-04"]["hardware_state"]
+        .replace("_", " ")
+    )
 
 
 @pytest.mark.asyncio
@@ -89,15 +110,60 @@ async def test_legacy_simulation_flag_maps_to_simulation_and_stores_timestamps()
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("node_id", ["VAYU-04", "AKASHA-05"])
-async def test_planned_nodes_cannot_generate_telemetry(node_id):
+@pytest.mark.parametrize(
+    "node_id,metrics",
+    [
+        (
+            "VAYU-04",
+            {
+                "pm2_5": 20.0,
+                "pm10": 40.0,
+                "co_ppm": 1.0,
+                "voc_index": 90.0,
+            },
+        ),
+        (
+            "AKASHA-05",
+            {
+                "rain_intensity": 2.0,
+                "pressure_hpa": 1008.0,
+                "pressure_drop_hpa_3h": 0.3,
+                "wind_speed_kmh": 12.0,
+                "wind_gust_kmh": 18.0,
+            },
+        ),
+    ],
+)
+async def test_vayu_akasha_software_pipeline_accepts_simulation(
+    node_id,
+    metrics,
+):
     telemetry_service.reset_sequence_tracking()
+
+    sequence = 810001 if node_id == "VAYU-04" else 820001
+
+    payload = packet(
+        node_id=node_id,
+        sequence=sequence,
+        metrics=metrics,
+        source_mode="SIMULATION",
+    )
+
     async with AsyncSessionLocal() as db:
-        result = await telemetry_service.ingest_packet(db, packet(node_id=node_id), "TEST")
-        count = len((await db.execute(select(TelemetryRecord).where(TelemetryRecord.node_id == node_id))).scalars().all())
-    assert result["status"] == "quarantined"
-    assert result["reason_code"] == "PLANNED_NODE_TELEMETRY"
-    assert count == 0
+        result = await telemetry_service.ingest_packet(
+            db,
+            payload,
+            "SIMULATOR",
+        )
+
+    assert result["status"] == "success"
+    assert result["source_mode"] == "SIMULATION"
+    assert result["risk_band"] in {
+        "NORMAL",
+        "WATCH",
+        "WARNING",
+        "CRITICAL",
+    }
 
 
 @pytest.mark.asyncio

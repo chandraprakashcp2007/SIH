@@ -78,6 +78,8 @@ export const Nodes: React.FC = () => {
             <option value="FLOOD">JALA (Flood)</option>
             <option value="FIRE">AGNI (Fire)</option>
             <option value="LANDSLIDE">BHUMI (Landslide)</option>
+            <option value="AIR_QUALITY">VAYU (Air Quality)</option>
+            <option value="WEATHER">AKASHA (Atmosphere)</option>
           </select>
 
           {/* Status filter */}
@@ -105,7 +107,7 @@ export const Nodes: React.FC = () => {
                 <th className="py-3 px-4">Hazard Type</th>
                 <th className="py-3 px-4">Location</th>
                 <th className="py-3 px-4">Status & Risk</th>
-                <th className="py-3 px-4">LoRa RF (RSSI)</th>
+                <th className="py-3 px-4">Signal / Transport</th>
                 <th className="py-3 px-4">Battery</th>
                 <th className="py-3 px-4">Packet Loss</th>
                 <th className="py-3 px-4">Last Seen</th>

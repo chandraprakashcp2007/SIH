@@ -1,4 +1,4 @@
-﻿"""
+"""
 PRAHARI-NET Database Initialization & Demo Seeder
 Initializes SQLite schema, registers default credentials, and populates 3 core sensor nodes.
 """
@@ -100,7 +100,7 @@ async def seed_data():
                 solar_voltage=0.0,
                 signal_rssi=-76,
                 packet_loss_pct=0.2,
-                sensors_configured=["water_level_ultrasonic", "tipping_rain_gauge", "dht22_ambient"],
+                sensors_configured=["water_level_ultrasonic", "tipping_rain_gauge", "dht11_ambient"],
                 metadata_info={"demo_location": True, "physical_location_verified": False, "flood_warning_level_cm": 120}
                 ,source_mode="SIMULATION"
             ),
@@ -143,6 +143,58 @@ async def seed_data():
                 sensors_configured=["soil_moisture_tws_upper", "soil_moisture_tws_lower", "mpu6050_inclinometer", "geophone_vib"],
                 metadata_info={"demo_location": True, "physical_location_verified": False}
                 ,source_mode="SIMULATION"
+            )
+            ,
+            Node(
+                id="VAYU-04",
+                name="VAYU Air Intelligence",
+                node_type="AIR_QUALITY",
+                tagline="Air Quality & Hazardous Gas Intelligence",
+                latitude=20.5937,
+                longitude=78.9629,
+                elevation_m=0.0,
+                location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
+                status="SIMULATION",
+                firmware_version="SOFTWARE-DOMAIN",
+                hardware_rev="ESP32 AIR NODE - HARDWARE NOT CONNECTED",
+                battery_pct=93.0,
+                solar_voltage=0.0,
+                signal_rssi=-82,
+                packet_loss_pct=0.0,
+                sensors_configured=["pm2_5", "pm10", "co_ppm", "voc_index"],
+                metadata_info={
+                    "demo_location": True,
+                    "physical_location_verified": False
+                },
+                source_mode="SIMULATION"
+            ),
+            Node(
+                id="AKASHA-05",
+                name="AKASHA Atmospheric Intelligence",
+                node_type="WEATHER",
+                tagline="Rain, Pressure, Wind & Severe Weather Intelligence",
+                latitude=17.3850,
+                longitude=78.4867,
+                elevation_m=0.0,
+                location_name="SIMULATION DEMO LOCATION - NOT FIELD DEPLOYED",
+                status="SIMULATION",
+                firmware_version="SOFTWARE-DOMAIN",
+                hardware_rev="ESP32 WEATHER NODE - HARDWARE NOT CONNECTED",
+                battery_pct=92.0,
+                solar_voltage=0.0,
+                signal_rssi=-83,
+                packet_loss_pct=0.0,
+                sensors_configured=[
+                    "rain_intensity",
+                    "pressure_hpa",
+                    "wind_speed_kmh",
+                    "wind_gust_kmh"
+                ],
+                metadata_info={
+                    "demo_location": True,
+                    "physical_location_verified": False
+                },
+                source_mode="SIMULATION"
             )
         ]
 

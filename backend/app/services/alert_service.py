@@ -18,7 +18,9 @@ class AlertService:
     HAZARD_MAP = {
         "JALA-01": ("FLOOD", "SIMULATION DEMO LOCATION"),
         "AGNI-02": ("FIRE", "SIMULATION DEMO LOCATION"),
-        "BHUMI-03": ("LANDSLIDE", "SIMULATION DEMO LOCATION")
+        "BHUMI-03": ("LANDSLIDE", "SIMULATION DEMO LOCATION"),
+        "VAYU-04": ("AIR_QUALITY", "SIMULATION DEMO LOCATION"),
+        "AKASHA-05": ("EXTREME_WEATHER", "SIMULATION DEMO LOCATION")
     }
 
     async def evaluate_and_create_alert(

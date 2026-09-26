@@ -46,7 +46,7 @@ async def build_system_readiness(db: AsyncSession) -> Dict[str, Any]:
     gateway = await get_gateway_state(db)
     checks["gateway"] = {"status": "READY" if gateway["status"] == "CONNECTED" else "DEGRADED", "detail": gateway}
     nodes = (await db.execute(select(Node))).scalars().all()
-    for node_id in ("JALA-01", "AGNI-02", "BHUMI-03"):
+    for node_id in ("JALA-01", "AGNI-02", "BHUMI-03", "VAYU-04", "AKASHA-05"):
         node = next((item for item in nodes if item.id == node_id), None)
         checks[node_id.lower().split("-")[0]] = {
             "status": "READY" if node and node.status != "OFFLINE" else "DEGRADED",

@@ -17,6 +17,8 @@ import {
   Droplets,
   Flame,
   Mountain,
+  Wind,
+  CloudRain,
   ChevronLeft,
   ChevronRight,
   Terminal,
@@ -38,6 +40,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
     { to: '/nodes/JALA-01', label: 'JALA (Flood)', icon: Droplets, indent: true },
     { to: '/nodes/AGNI-02', label: 'AGNI (Fire)', icon: Flame, indent: true },
     { to: '/nodes/BHUMI-03', label: 'BHUMI (Landslide)', icon: Mountain, indent: true },
+    { to: '/nodes/VAYU-04', label: 'VAYU (Air)', icon: Wind, indent: true },
+    { to: '/nodes/AKASHA-05', label: 'AKASHA (Atmosphere)', icon: CloudRain, indent: true },
     { to: '/alerts', label: 'Alert Centre', icon: AlertTriangle },
 
     { section: 'INTELLIGENCE' },

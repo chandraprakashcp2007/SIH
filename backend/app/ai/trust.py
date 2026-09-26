@@ -34,6 +34,18 @@ class SensorTrustEngine:
         "tilt_delta_deg": (0.0, 90.0),
         "vibration_level": (0.0, 100.0),
         "vibration_rms": (0.0, 50.0),
+
+        # VAYU
+        "pm2_5": (0.0, 1000.0),
+        "pm10": (0.0, 1500.0),
+        "co_ppm": (0.0, 100.0),
+        "voc_index": (0.0, 1000.0),
+
+        # AKASHA
+        "pressure_hpa": (850.0, 1100.0),
+        "pressure_drop_hpa_3h": (0.0, 50.0),
+        "wind_speed_kmh": (0.0, 300.0),
+        "wind_gust_kmh": (0.0, 350.0),
     }
 
     # Maximum realistic physical change per sampling interval (~2 sec)
@@ -65,7 +77,17 @@ class SensorTrustEngine:
         elif node_id == "BHUMI-03":
             trust_scores, anomalies = self._evaluate_bhumi(current_metrics, recent_history)
         else:
-            trust_scores = {k: 95.0 for k in current_metrics.keys()}
+            for key, value in current_metrics.items():
+                if isinstance(value, (int, float)):
+                    score, reason = self._check_bounds(
+                        key, float(value)
+                    )
+                    trust_scores[key] = round(score, 1)
+
+                    if reason:
+                        anomalies.append(reason)
+                else:
+                    trust_scores[key] = 95.0
 
         return trust_scores, anomalies
 

@@ -212,6 +212,8 @@ export const CommandCentre: React.FC = () => {
                 <option value="FLOOD">Flood (JALA)</option>
                 <option value="FIRE">Fire (AGNI)</option>
                 <option value="LANDSLIDE">Landslide (BHUMI)</option>
+                <option value="AIR_QUALITY">Air Quality (VAYU)</option>
+                <option value="WEATHER">Atmosphere (AKASHA)</option>
               </select>
 
               <select

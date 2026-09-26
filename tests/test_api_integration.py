@@ -1,4 +1,4 @@
-"""
+﻿"""
 FastAPI REST API Integration Tests
 """
 import pytest
@@ -35,7 +35,7 @@ async def test_system_summary():
         resp = await ac.get("/api/system/summary", headers=AUTH_HEADERS)
         assert resp.status_code == 200
         data = resp.json()
-        assert data["nodes_total"] == 3
+        assert data["nodes_total"] == 5
         assert data["gateway_status"] in {"CONNECTED", "STALE", "OFFLINE"}
         assert "last_packet_age_seconds" in data
 
@@ -47,7 +47,7 @@ async def test_list_nodes():
         resp = await ac.get("/api/nodes", headers=AUTH_HEADERS)
         assert resp.status_code == 200
         nodes = resp.json()
-        assert len(nodes) == 3
+        assert len(nodes) == 5
         node_ids = [n["id"] for n in nodes]
         assert "JALA-01" in node_ids
         assert "AGNI-02" in node_ids
@@ -104,3 +104,4 @@ async def test_readiness_and_calibration_endpoints():
     assert {"database", "gateway", "jala", "agni", "bhumi"} <= set(readiness.json()["checks"])
     assert calibration.status_code == 200
     assert {"JALA-01", "AGNI-02", "BHUMI-03"} <= set(calibration.json()["nodes"])
+

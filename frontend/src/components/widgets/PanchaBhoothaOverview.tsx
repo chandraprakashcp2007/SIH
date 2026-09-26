@@ -35,7 +35,7 @@ export const PanchaBhoothaOverview: React.FC<{ domains: ElementStatus[] }> = ({ 
     <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
       <div>
         <h2 id="pancha-bhootha-title" className="text-xs font-bold uppercase tracking-[0.16em] text-text-primary">Pancha Bhootha Fabric</h2>
-        <p className="text-[10px] text-text-muted">Hardware and source state only; planned domains carry no fabricated readings.</p>
+        <p className="text-[10px] text-text-muted">Water • Fire • Earth • Air • Atmosphere — one environmental intelligence fabric.</p>
       </div>
       <div aria-label="Provenance legend" className="flex flex-wrap gap-1">
         {(['REAL', 'SIMULATION', 'EXTERNAL_DATA', 'REPLAY', 'PLANNED'] as SourceMode[]).map(mode => <ProvenanceBadge key={mode} mode={mode} />)}

@@ -87,7 +87,13 @@ async def analytics_overview(db: AsyncSession = Depends(get_db)):
 async def hazard_breakdown(db: AsyncSession = Depends(get_db)):
     """Timeline of average risk scores by hazard over the past observations."""
     timeline = []
-    for nid, h_name in [("JALA-01", "Flood"), ("AGNI-02", "Fire"), ("BHUMI-03", "Landslide")]:
+    for nid, h_name in [
+        ("JALA-01", "Flood"),
+        ("AGNI-02", "Fire"),
+        ("BHUMI-03", "Landslide"),
+        ("VAYU-04", "Air Quality"),
+        ("AKASHA-05", "Extreme Weather")
+    ]:
         query = (
             select(RiskAssessment)
             .where(RiskAssessment.node_id == nid)

@@ -20,7 +20,9 @@ async def get_predictions(db: AsyncSession = Depends(get_db)):
     nodes = [
         {"id": "JALA-01", "name": "Brahmaputra Flood Basin", "hazard": "FLOOD"},
         {"id": "AGNI-02", "name": "Similipal Forest Perimeter", "hazard": "FIRE"},
-        {"id": "BHUMI-03", "name": "NH-58 Landslide Ghat", "hazard": "LANDSLIDE"}
+        {"id": "BHUMI-03", "name": "BHUMI Slope Intelligence", "hazard": "LANDSLIDE"},
+        {"id": "VAYU-04", "name": "VAYU Air Intelligence", "hazard": "AIR_QUALITY"},
+        {"id": "AKASHA-05", "name": "AKASHA Atmospheric Intelligence", "hazard": "EXTREME_WEATHER"}
     ]
     results = []
 

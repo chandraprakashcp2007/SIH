@@ -30,6 +30,8 @@ class TelemetryService:
         "JALA-01": {"total": 0, "lost": 0},
         "AGNI-02": {"total": 0, "lost": 0},
         "BHUMI-03": {"total": 0, "lost": 0},
+        "VAYU-04": {"total": 0, "lost": 0},
+        "AKASHA-05": {"total": 0, "lost": 0},
     }
 
     def reset_sequence_tracking(self) -> None:
@@ -246,7 +248,13 @@ class TelemetryService:
         # 8. Alert Lifecycle Evaluation
         evidence = build_event_evidence(
             event_id=f"EVT-{node_id}-{sequence}", node_id=node_id,
-            hazard={"JALA-01": "FLOOD", "AGNI-02": "FIRE", "BHUMI-03": "LANDSLIDE"}.get(node_id, "HAZARD"),
+            hazard={
+                "JALA-01": "FLOOD",
+                "AGNI-02": "FIRE",
+                "BHUMI-03": "LANDSLIDE",
+                "VAYU-04": "AIR_QUALITY",
+                "AKASHA-05": "EXTREME_WEATHER"
+            }.get(node_id, "HAZARD"),
             timestamp=now_utc.isoformat(), raw_telemetry=payload,
             processed_features={"contributors": assessment["contributing_factors"], "trend": assessment.get("risk_trend")},
             risk={"score": assessment["risk_score"], "band": assessment["risk_band"]},
