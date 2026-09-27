@@ -15,7 +15,7 @@ from backend.app.models.digital_twin import DigitalTwinSnapshot
 from backend.app.models.impact import InfrastructureAsset, InfrastructureDependency, ImpactAssessment, EvacuationAssessment, SafeZoneAssessment
 from backend.app.models.cap import CAPExport, DeliveryAttempt
 from backend.app.models.continuity import OutboundQueueItem, ContinuitySnapshot
-from backend.app.models.security import TelemetryNonce, SecurityEvent
+from backend.app.models.security import TelemetryNonce, SecurityEvent, SecureDeviceState
 from backend.app.models.model_registry import DatasetManifest, ModelArtifact, DriftAssessment
 from backend.app.models.disaster_memory import DisasterMemory
 from backend.app.models.laboratory import LaboratoryRun
@@ -55,7 +55,7 @@ __all__ = [
     "InfrastructureAsset", "InfrastructureDependency", "ImpactAssessment", "EvacuationAssessment", "SafeZoneAssessment",
     "CAPExport", "DeliveryAttempt",
     "OutboundQueueItem", "ContinuitySnapshot",
-    "TelemetryNonce", "SecurityEvent",
+    "TelemetryNonce", "SecurityEvent", "SecureDeviceState",
     "DatasetManifest", "ModelArtifact", "DriftAssessment",
     "DisasterMemory",
     "LaboratoryRun",

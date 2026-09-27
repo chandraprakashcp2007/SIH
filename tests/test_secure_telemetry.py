@@ -106,3 +106,43 @@ async def test_fresh_nonce_cannot_replay_sequence_or_mutate_real(monkeypatch,cap
     assert await real_count("AGNI-02")==after_first
     assert any(item["event_type"]=="SEQUENCE_REPLAY" and item["node_id"]=="AGNI-02" for item in events.json())
     assert secret not in accepted.text and secret not in rejected.text and secret not in events.text and secret not in caplog.text
+
+@pytest.mark.asyncio
+async def test_signed_simulation_cannot_be_promoted_to_real(monkeypatch):
+    secret="provenance-secret";monkeypatch.setenv("PRAHARI_DEVICE_KEYS",json.dumps({"JALA-01":secret}))
+    envelope=signed_envelope(secret,nonce="nonce-provenance-conflict",sequence=await next_real_sequence());envelope["payload"]["source_mode"]="SIMULATION"
+    unsigned={k:v for k,v in envelope.items() if k!="signature"};envelope["signature"]=hmac.new(secret.encode(),json.dumps(unsigned,sort_keys=True,separators=(",",":")).encode(),hashlib.sha256).hexdigest()
+    before=await real_count()
+    async with AsyncClient(transport=ASGITransport(app=app),base_url="http://test") as c:r=await c.post("/api/security/telemetry/ingest",headers=HEADERS,json=envelope)
+    assert r.status_code==422 and r.json()["detail"]=="PROVENANCE_CONFLICT" and await real_count()==before
+
+@pytest.mark.asyncio
+async def test_invalid_metrics_do_not_reserve_sequence(monkeypatch):
+    secret="schema-secret";monkeypatch.setenv("PRAHARI_DEVICE_KEYS",json.dumps({"VAYU-04":secret}));sequence=await next_real_sequence("VAYU-04")
+    bad=signed_envelope(secret,node_id="VAYU-04",nonce="bad-metrics",sequence=sequence);bad["payload"]["metrics"]={"pm2_5":"not-a-number"}
+    unsigned={k:v for k,v in bad.items() if k!="signature"};bad["signature"]=hmac.new(secret.encode(),json.dumps(unsigned,sort_keys=True,separators=(",",":")).encode(),hashlib.sha256).hexdigest()
+    good=signed_envelope(secret,node_id="VAYU-04",nonce="good-metrics",sequence=sequence)
+    async with AsyncClient(transport=ASGITransport(app=app),base_url="http://test") as c:
+        rejected=await c.post("/api/security/telemetry/ingest",headers=HEADERS,json=bad);accepted=await c.post("/api/security/telemetry/ingest",headers=HEADERS,json=good)
+    assert rejected.status_code==422 and rejected.json()["detail"]=="INVALID_SIGNED_PAYLOAD"
+    assert accepted.status_code==200 and accepted.json()["telemetry"]["status"]=="success"
+
+@pytest.mark.asyncio
+async def test_keyed_device_rejects_unsigned_real_ingress(monkeypatch):
+    monkeypatch.setenv("PRAHARI_DEVICE_KEYS",json.dumps({"JALA-01":"configured"}))
+    payload={"node_id":"JALA-01","sequence":await next_real_sequence(),"metrics":{"water_level_cm":35},"source_mode":"REAL","rssi":-70,"battery_pct":90}
+    async with AsyncClient(transport=ASGITransport(app=app),base_url="http://test") as c:r=await c.post("/api/telemetry/ingest",headers=HEADERS,json=payload)
+    assert r.status_code==403 and r.json()["detail"]=="SIGNED_TELEMETRY_REQUIRED"
+
+@pytest.mark.asyncio
+async def test_concurrent_signed_requests_cannot_accept_same_sequence_or_fork_audit(monkeypatch):
+    secret="concurrent-secret";node="BHUMI-03";monkeypatch.setenv("PRAHARI_DEVICE_KEYS",json.dumps({node:secret}))
+    telemetry_service.reset_sequence_tracking();sequence=await next_real_sequence(node);before=await real_count(node)
+    first=signed_envelope(secret,node_id=node,nonce="concurrent-a",sequence=sequence)
+    second=signed_envelope(secret,node_id=node,nonce="concurrent-b",sequence=sequence)
+    async with AsyncClient(transport=ASGITransport(app=app),base_url="http://test") as c:
+        responses=await asyncio.gather(c.post("/api/security/telemetry/ingest",headers=HEADERS,json=first),c.post("/api/security/telemetry/ingest",headers=HEADERS,json=second))
+        chain=await c.get("/api/security/audit-chain/verify",headers=HEADERS)
+    assert sorted(r.status_code for r in responses)==[200,409]
+    assert await real_count(node)==before+1
+    assert chain.json()["valid"] is True

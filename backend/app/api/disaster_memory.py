@@ -23,8 +23,8 @@ async def create(payload:dict=Body(...),db:AsyncSession=Depends(get_db)):
 async def similar(event_id:str,db:AsyncSession=Depends(get_db)):
     target=await db.get(DisasterMemory,event_id)
     if not target:raise HTTPException(404,"MEMORY_NOT_FOUND")
-    matches=(await db.execute(select(DisasterMemory).where(DisasterMemory.id!=event_id,DisasterMemory.hazard==target.hazard))).scalars()
-    return [{"event_id":x.id,"score":1.0 if x.fingerprint==target.fingerprint else 0.0,"evidence_ids":x.evidence_ids} for x in matches if x.fingerprint==target.fingerprint]
+    matches=(await db.execute(select(DisasterMemory).where(DisasterMemory.id!=event_id,DisasterMemory.hazard==target.hazard,DisasterMemory.provenance==target.provenance))).scalars()
+    return [{"event_id":x.id,"score":1.0 if x.fingerprint==target.fingerprint else 0.0,"evidence_ids":x.evidence_ids,"provenance":x.provenance} for x in matches if x.fingerprint==target.fingerprint]
 @router.post("/events/{event_id}/replay")
 async def replay(event_id:str,db:AsyncSession=Depends(get_db)):
     item=await db.get(DisasterMemory,event_id)

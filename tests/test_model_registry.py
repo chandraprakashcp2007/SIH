@@ -33,9 +33,9 @@ async def test_unvalidated_model_abstains_and_cites_validation_state():
 @pytest.mark.asyncio
 async def test_drift_or_out_of_distribution_forces_abstention():
     async with AsyncClient(transport=ASGITransport(app=app),base_url="http://test") as client:
-        model=await client.post("/api/ml/models",headers=HEADERS,json={"name":"test-validated-model","version":"1","artifact_checksum":"def456","provenance":"MODEL","validation_status":"VALIDATED","validation_evidence":{"dataset_id":"fixture","metrics":{"f1":0.9}}})
+        model=await client.post("/api/ml/models",headers=HEADERS,json={"name":"self-attested-model","version":"1","artifact_checksum":"def456","provenance":"MODEL","validation_status":"VALIDATED","validation_evidence":{"dataset_id":"fixture","metrics":{"f1":0.9}}})
         drift=await client.post(f"/api/ml/models/{model.json()['id']}/drift",headers=HEADERS,json={"score":0.9,"threshold":0.2,"sample_count":20})
         decision=await client.post(f"/api/ml/models/{model.json()['id']}/evaluate",headers=HEADERS,json={"features":{"x":999}})
-    assert drift.json()["state"]=="OUT_OF_DISTRIBUTION"
+    assert model.json()["validation_status"]=="UNVALIDATED" and drift.json()["state"]=="OUT_OF_DISTRIBUTION"
     assert decision.json()["decision"]=="ABSTAIN"
-    assert decision.json()["reason"]=="OUT_OF_DISTRIBUTION"
+    assert decision.json()["reason"]=="MODEL_NOT_VALIDATED"

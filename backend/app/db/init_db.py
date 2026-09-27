@@ -19,7 +19,7 @@ from backend.app.models.digital_twin import DigitalTwinSnapshot  # noqa: F401
 from backend.app.models.impact import InfrastructureAsset, InfrastructureDependency, ImpactAssessment, EvacuationAssessment, SafeZoneAssessment  # noqa: F401
 from backend.app.models.cap import CAPExport, DeliveryAttempt  # noqa: F401
 from backend.app.models.continuity import OutboundQueueItem, ContinuitySnapshot  # noqa: F401
-from backend.app.models.security import TelemetryNonce, SecurityEvent  # noqa: F401
+from backend.app.models.security import TelemetryNonce, SecurityEvent, SecureDeviceState  # noqa: F401
 from backend.app.models.model_registry import DatasetManifest, ModelArtifact, DriftAssessment  # noqa: F401
 from backend.app.models.disaster_memory import DisasterMemory  # noqa: F401
 from backend.app.models.laboratory import LaboratoryRun  # noqa: F401

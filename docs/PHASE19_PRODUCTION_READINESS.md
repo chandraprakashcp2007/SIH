@@ -13,6 +13,14 @@ Local acceptance is complete, but Railway production deployment is **BLOCKED**. 
 - Truthful NOT_CONFIGURED, PLANNED and BLOCKED states for unavailable integrations.
 - Additive SQLAlchemy schema creation for isolated/local databases.
 
+## Known local limitations retained as partial
+
+- Disaster-memory checksum chaining is tamper-evident only for the retained sequence; it is not immutable storage and has no external trusted head.
+- Scenario/chaos APIs persist deterministic manifests and isolation evidence but do not execute an isolated scenario or fault-injection engine.
+- Copilot 2.0 has narrow TEL/RISK grounding rather than a complete semantic evidence-query layer.
+- DDQI and safety assertions remain UNVERIFIED; no synthetic assurance score is presented.
+- Security-event appends are serialized within one application process; production multi-instance serialization must be enforced by the production database design and tested before deployment.
+
 ## Production blockers and external dependencies
 
 1. Railway project/environment credentials and deployment permission are absent; no production smoke test exists.

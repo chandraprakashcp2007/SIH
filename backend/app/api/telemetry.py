@@ -2,6 +2,7 @@
 Telemetry Ingestion & Querying API Router
 """
 from typing import Dict, Any, List
+import json,os
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,11 @@ async def ingest_telemetry(
     creates alerts if necessary, and broadcasts WebSocket event.
     """
     try:
+        source_mode=resolve_source_mode(payload.source_mode,payload.is_simulation).value
+        try:configured_keys=json.loads(os.getenv("PRAHARI_DEVICE_KEYS","{}"))
+        except json.JSONDecodeError:configured_keys={}
+        if source_mode=="REAL" and payload.node_id in configured_keys and payload.transport!="SIGNED_GATEWAY":
+            raise HTTPException(status_code=403,detail="SIGNED_TELEMETRY_REQUIRED")
         result = await telemetry_service.ingest_packet(
             db=db,
             payload=payload.model_dump(),
@@ -34,6 +40,7 @@ async def ingest_telemetry(
             ))
         )
         return result
+    except HTTPException:raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

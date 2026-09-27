@@ -19,3 +19,9 @@ async def test_grounded_copilot_abstains_instead_of_inventing_operational_claims
     async with AsyncClient(transport=ASGITransport(app=app),base_url="http://test") as c:r=await c.post("/api/copilot/grounded",headers=HEADERS,json={"query":query})
     body=r.json();assert body=={"grounded":False,"answer":"INSUFFICIENT_PERSISTED_EVIDENCE","claims":[],"evidence_ids":[]}
     assert "delivered" not in body["answer"].lower()
+
+@pytest.mark.asyncio
+async def test_grounded_copilot_does_not_answer_unsupported_claim_from_node_telemetry():
+    async with AsyncClient(transport=ASGITransport(app=app),base_url="http://test") as c:
+        r=await c.post("/api/copilot/grounded",headers=HEADERS,json={"query":"Was the official SMS delivered for JALA-01?"})
+    assert r.json()=={"grounded":False,"answer":"INSUFFICIENT_PERSISTED_EVIDENCE","claims":[],"evidence_ids":[]}

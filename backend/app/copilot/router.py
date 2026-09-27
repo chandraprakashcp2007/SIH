@@ -33,6 +33,9 @@ router = APIRouter(prefix="/copilot", tags=["PRAHARI Copilot"])
 @router.post("/grounded")
 async def grounded_copilot(payload:dict=Body(...),db:AsyncSession=Depends(get_db)):
     query=str(payload.get("query","")).upper()
+    unsupported_claims=("SMS","DELIVERY","PROVIDER","GOVERNMENT","ROUTE","PREDICT","FORECAST")
+    if any(term in query for term in unsupported_claims):
+        return {"grounded":False,"answer":"INSUFFICIENT_PERSISTED_EVIDENCE","claims":[],"evidence_ids":[]}
     node_id=next((node for node in ("JALA-01","AGNI-02","BHUMI-03","VAYU-04","AKASHA-05") if node in query),None)
     if not node_id:
         return {"grounded":False,"answer":"INSUFFICIENT_PERSISTED_EVIDENCE","claims":[],"evidence_ids":[]}

@@ -54,7 +54,7 @@ export const SimulatorPage: React.FC = () => {
 
   return (
     <div className="p-4 space-y-4 max-w-7xl mx-auto">
-      <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle text-xs"><h2 className="font-bold">Scenario Laboratory + Chaos Laboratory</h2><p className="text-text-muted mt-1">Deterministic seeded runs persist as SIMULATION only. Fault injection cannot strengthen or mutate REAL operational state.</p></div>
+      <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle text-xs"><h2 className="font-bold">Scenario Laboratory + Chaos Laboratory</h2><p className="text-text-muted mt-1">SIMULATION-only run manifests are persisted and cannot strengthen or mutate REAL operational state. An isolated scenario/chaos execution engine is not yet implemented.</p></div>
       {/* Header & Prominent Simulation Badge */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-bg-secondary p-4 rounded-lg border border-border-subtle">
         <div>

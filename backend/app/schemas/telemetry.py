@@ -3,7 +3,8 @@ Pydantic Schemas for Telemetry Payloads & Responses
 """
 from typing import Dict, Any, Optional
 from datetime import datetime
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
+import math
 from backend.app.provenance import SourceMode
 
 
@@ -19,6 +20,15 @@ class TelemetryIngestPayload(BaseModel):
     source_mode: Optional[SourceMode] = Field(None, description="Canonical provenance mode")
     gateway_id: Optional[str] = Field(None, max_length=64)
     transport: Optional[str] = Field(None, max_length=32)
+
+    @field_validator("metrics")
+    @classmethod
+    def finite_metrics(cls, metrics):
+        if not metrics: raise ValueError("metrics must not be empty")
+        for name,value in metrics.items():
+            if not isinstance(name,str) or not isinstance(value,(int,float,bool)) or isinstance(value,float) and not math.isfinite(value):
+                raise ValueError("metrics must contain finite numeric or boolean values")
+        return metrics
 
 
 class TelemetryResponse(BaseModel):

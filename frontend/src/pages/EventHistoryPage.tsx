@@ -23,7 +23,7 @@ export const EventHistoryPage: React.FC = () => {
           Audited lifecycle history of environmental hazard transitions, escalations, and operator mitigations.
         </p>
       </div>
-      <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle text-xs"><h2 className="font-bold">Disaster Memory & Black Box</h2><p className="text-text-muted mt-1">{memory.events.length} persisted memories • hash chain {memory.chain.valid ? 'VALID' : 'UNAVAILABLE'} • replay is isolated as REPLAY.</p></div>
+      <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle text-xs"><h2 className="font-bold">Disaster Memory & Black Box</h2><p className="text-text-muted mt-1">{memory.events.length} persisted memories • sequential checksum chain {memory.chain.valid ? 'VALID' : 'UNAVAILABLE'} • replay is isolated as REPLAY. This is tamper-evident within the retained chain, not immutable storage.</p></div>
 
       {/* Timeline List */}
       <div className="relative pl-6 border-l-2 border-border-subtle space-y-6">

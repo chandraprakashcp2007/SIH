@@ -14,7 +14,7 @@ async def datasets(db:AsyncSession=Depends(get_db)):
 @router.post("/datasets")
 async def validate_dataset(payload:dict=Body(...),db:AsyncSession=Depends(get_db)):
     errors=[field for field in ("checksum","version","license_reference") if not payload.get(field)]
-    item=DatasetManifest(name=payload.get("name","unnamed"),version=payload.get("version"),checksum=payload.get("checksum"),provenance=payload.get("provenance","EXTERNAL_DATA"),validation_status="VALIDATED" if not errors else "INVALID",validation_errors=errors,metadata_info={k:v for k,v in payload.items() if k not in {"name","version","checksum","provenance"}})
+    item=DatasetManifest(name=payload.get("name","unnamed"),version=payload.get("version"),checksum=payload.get("checksum"),provenance=payload.get("provenance","EXTERNAL_DATA"),validation_status="MANIFEST_COMPLETE_UNVERIFIED" if not errors else "INVALID",validation_errors=errors,metadata_info={**{k:v for k,v in payload.items() if k not in {"name","version","checksum","provenance"}},"validation_authority":"NOT_CONFIGURED"})
     db.add(item);await db.commit();return row(item)
 
 @router.get("/models")
@@ -23,8 +23,8 @@ async def models(db:AsyncSession=Depends(get_db)):
 
 @router.post("/models")
 async def register_model(payload:dict=Body(...),db:AsyncSession=Depends(get_db)):
-    evidence=payload.get("validation_evidence") or {};requested=payload.get("validation_status")
-    status="VALIDATED" if requested=="VALIDATED" and evidence.get("dataset_id") and evidence.get("metrics") else "UNVALIDATED"
+    evidence=payload.get("validation_evidence") or {}
+    status="UNVALIDATED"
     item=ModelArtifact(name=payload.get("name","unnamed"),version=payload.get("version","unversioned"),artifact_checksum=payload.get("artifact_checksum",""),provenance="MODEL",validation_status=status,validation_evidence=evidence)
     db.add(item);await db.commit();return row(item)
 

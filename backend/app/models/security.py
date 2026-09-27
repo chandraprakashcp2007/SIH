@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime,timezone
-from sqlalchemy import DateTime,JSON,String,Text,UniqueConstraint
+from sqlalchemy import DateTime,Integer,JSON,String,Text,UniqueConstraint
 from sqlalchemy.orm import Mapped,mapped_column
 from backend.app.core.database import Base
 class TelemetryNonce(Base):
@@ -21,3 +21,8 @@ class SecurityEvent(Base):
     previous_hash:Mapped[str]=mapped_column(String(64))
     event_hash:Mapped[str]=mapped_column(String(64),unique=True,index=True)
     created_at:Mapped[datetime]=mapped_column(DateTime,default=lambda:datetime.now(timezone.utc),index=True)
+class SecureDeviceState(Base):
+    __tablename__="secure_device_states"
+    node_id:Mapped[str]=mapped_column(String(32),primary_key=True)
+    last_sequence:Mapped[int]=mapped_column(Integer)
+    updated_at:Mapped[datetime]=mapped_column(DateTime,default=lambda:datetime.now(timezone.utc))
