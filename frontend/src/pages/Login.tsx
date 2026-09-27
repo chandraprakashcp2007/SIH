@@ -1,9 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchAuthMode, login } from '../services/api';
-import { ArrowRight, Eye, EyeOff, KeyRound, Radio, ShieldAlert, UserRound } from 'lucide-react';
+import {
+  ArrowRight,
+  Eye,
+  EyeOff,
+  KeyRound,
+  Radio,
+  Satellite,
+  ShieldAlert,
+  UserRound,
+} from 'lucide-react';
 
-const DOMAIN_IDS = ['JALA-01', 'AGNI-02', 'BHUMI-03', 'VAYU-04', 'AKASHA-05'] as const;
+const DOMAINS = [
+  ['JALA-01', 'Flood & River Surge Hydrodynamics', 'cyan'],
+  ['AGNI-02', 'Fire, Smoke & Gas AI Inference', 'orange'],
+  ['BHUMI-03', 'Geotechnical Slope & Landslide Shear', 'green'],
+  ['VAYU-04', 'Air Quality & Gas Intelligence', 'yellow'],
+  ['AKASHA-05', 'Atmospheric & Weather Intelligence', 'violet'],
+] as const;
+
+const ALERTS = [
+  { left: '57%', top: '19%', delay: '0s' },
+  { left: '59%', top: '35%', delay: '-.7s' },
+  { left: '73%', top: '44%', delay: '-1.4s' },
+  { left: '62%', top: '59%', delay: '-2.1s' },
+  { left: '65%', top: '72%', delay: '-2.8s' },
+] as const;
 
 export const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -12,6 +35,7 @@ export const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [devBypass, setDevBypass] = useState(false);
+  const [pointer, setPointer] = useState({ x: 0, y: 0 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +43,24 @@ export const Login: React.FC = () => {
       .then((data) => setDevBypass(Boolean(data.dev_auth_bypass)))
       .catch(() => setDevBypass(false));
   }, []);
+
+  const parallax = useMemo(
+    () => ({
+      far: `translate3d(${pointer.x * -4}px, ${pointer.y * -3}px, 0) scale(1.025)`,
+      mid: `translate3d(${pointer.x * 8}px, ${pointer.y * 5}px, 0)`,
+      near: `translate3d(${pointer.x * 14}px, ${pointer.y * 9}px, 0)`,
+    }),
+    [pointer],
+  );
+
+  const onPointerMove = (event: React.PointerEvent<HTMLElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    setPointer({ x, y });
+  };
+
+  const onPointerLeave = () => setPointer({ x: 0, y: 0 });
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -43,49 +85,96 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#020812] text-white">
-      {/* Desktop cinematic layer: exact user-provided visual reference. */}
-      <div className="absolute inset-0 hidden lg:block" aria-hidden="true">
-        <img
-          src="/prahari-login-cinematic.png"
-          alt=""
-          className="h-full w-full object-cover object-center"
-          draggable={false}
-        />
-      </div>
+    <main
+      className="prahari-cinema-login relative min-h-screen overflow-hidden bg-[#020812] text-white"
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+    >
+      <section className="prahari-cinema-stage absolute inset-y-0 left-0 hidden overflow-hidden lg:block">
+        <div
+          className="prahari-cinema-base absolute inset-y-0 left-0"
+          style={{ transform: parallax.far }}
+          aria-hidden="true"
+        >
+          <img src="/prahari-login-cinematic.png" alt="" draggable={false} />
+        </div>
 
-      {/* Mobile fallback intentionally avoids exposing the reference image's static demo panel. */}
-      <div
-        className="absolute inset-0 lg:hidden"
-        aria-hidden="true"
-        style={{
-          background:
-            'radial-gradient(circle at 50% 22%, rgba(0,195,255,.18), transparent 32%), radial-gradient(circle at 18% 80%, rgba(42,69,152,.24), transparent 35%), linear-gradient(145deg,#020914 0%,#06172a 58%,#020812 100%)',
-        }}
-      />
+        <div className="prahari-cinema-night absolute inset-0" aria-hidden="true" />
+        <div className="prahari-cinema-grid absolute inset-0" aria-hidden="true" />
+        <div className="prahari-cinema-scanlines absolute inset-0" aria-hidden="true" />
 
-      {/* Keep semantic project/domain identity in the DOM while the desktop visual is image-driven. */}
+        <div className="prahari-cloud prahari-cloud-a" style={{ transform: parallax.mid }} aria-hidden="true" />
+        <div className="prahari-cloud prahari-cloud-b" style={{ transform: parallax.mid }} aria-hidden="true" />
+        <div className="prahari-cloud prahari-cloud-c" style={{ transform: parallax.near }} aria-hidden="true" />
+
+        <div className="prahari-ocean-zone" style={{ transform: parallax.mid }} aria-hidden="true">
+          <div className="prahari-ocean-shimmer" />
+          <div className="prahari-ocean-wave prahari-ocean-wave-one" />
+          <div className="prahari-ocean-wave prahari-ocean-wave-two" />
+        </div>
+
+        <div className="prahari-cyclone" style={{ transform: parallax.near }} aria-hidden="true">
+          <div className="prahari-cyclone-arm prahari-cyclone-arm-one" />
+          <div className="prahari-cyclone-arm prahari-cyclone-arm-two" />
+          <div className="prahari-cyclone-eye" />
+        </div>
+
+        <div className="prahari-satellite-wrap" style={{ transform: parallax.near }} aria-hidden="true">
+          <Satellite className="prahari-satellite-icon" />
+          <div className="prahari-satellite-halo" />
+        </div>
+        <div className="prahari-satellite-beam" aria-hidden="true" />
+        <div className="prahari-satellite-beam-core" aria-hidden="true" />
+
+        <div className="prahari-radar-disc" style={{ transform: parallax.mid }} aria-hidden="true">
+          <div className="prahari-radar-ring prahari-radar-ring-one" />
+          <div className="prahari-radar-ring prahari-radar-ring-two" />
+          <div className="prahari-radar-ring prahari-radar-ring-three" />
+          <div className="prahari-radar-sector" />
+        </div>
+
+        {ALERTS.map((alert, index) => (
+          <div
+            key={`${alert.left}-${alert.top}`}
+            className="prahari-alert-beacon"
+            style={{
+              left: alert.left,
+              top: alert.top,
+              animationDelay: alert.delay,
+              transform: parallax.near,
+            }}
+            aria-hidden="true"
+          >
+            <div className="prahari-alert-core">!</div>
+            <span className="prahari-alert-ring prahari-alert-ring-a" />
+            <span className="prahari-alert-ring prahari-alert-ring-b" />
+          </div>
+        ))}
+
+        <div className="prahari-energy-arc prahari-energy-arc-one" aria-hidden="true" />
+        <div className="prahari-energy-arc prahari-energy-arc-two" aria-hidden="true" />
+        <div className="prahari-energy-arc prahari-energy-arc-three" aria-hidden="true" />
+
+        <div className="prahari-scene-depth absolute inset-0" aria-hidden="true" />
+      </section>
+
+      <section className="prahari-cinema-mobile absolute inset-0 lg:hidden" aria-hidden="true">
+        <div className="prahari-mobile-radar" />
+        <div className="prahari-mobile-cloud" />
+      </section>
+
       <div className="sr-only">
         <h1>पंजापुतम</h1>
         <p>PRAHARI-NET — Predictive Resilient Autonomous Hazard &amp; Risk Intelligence Network</p>
-        {DOMAIN_IDS.map((id) => <span key={id}>{id}</span>)}
+        {DOMAINS.map(([id]) => <span key={id}>{id}</span>)}
       </div>
 
-      <section className="relative z-10 flex min-h-screen items-center justify-center p-5 lg:justify-end lg:px-[2.45vw] lg:py-[4vh]">
-        <div
-          className="
-            flex w-full max-w-md flex-col justify-center
-            rounded-[22px] border border-[#315f82]
-            bg-[#06172a] p-6
-            shadow-[0_35px_100px_rgba(0,0,0,.58),inset_0_1px_0_rgba(255,255,255,.03)]
-            sm:p-8
-            lg:min-h-[74vh] lg:w-[33.4vw] lg:max-w-[550px] lg:min-w-[450px] lg:p-[2.2vw]
-          "
-        >
+      <section className="relative z-30 flex min-h-screen items-center justify-center p-5 lg:justify-end lg:px-[3.1vw] lg:py-[4vh]">
+        <div className="prahari-auth-card flex w-full max-w-md flex-col justify-center rounded-[22px] border p-6 sm:p-8 lg:min-h-[72vh] lg:w-[31.5vw] lg:max-w-[535px] lg:min-w-[440px] lg:p-[2.15vw]">
           {devBypass && (
             <div
               role="status"
-              className="mb-6 border border-[#d4a400] bg-[#101c24] px-4 py-3 text-center text-[11px] font-black uppercase tracking-[0.06em] text-[#ffc400]"
+              className="mb-6 border border-[#d4a400] bg-[#101c24]/95 px-4 py-3 text-center text-[11px] font-black uppercase tracking-[0.06em] text-[#ffc400]"
             >
               DEV AUTH BYPASS — LOCAL DEVELOPMENT ONLY
             </div>
@@ -113,10 +202,7 @@ export const Login: React.FC = () => {
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label
-                htmlFor="login-username"
-                className="mb-2 block text-[11px] font-bold uppercase tracking-[0.04em] text-[#82a9d3]"
-              >
+              <label htmlFor="login-username" className="mb-2 block text-[11px] font-bold uppercase tracking-[0.04em] text-[#82a9d3]">
                 Username
               </label>
               <div className="relative">
@@ -129,16 +215,13 @@ export const Login: React.FC = () => {
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                   placeholder="Registered operator"
-                  className="h-12 w-full rounded-[14px] border border-[#355776] bg-[#081421] pl-12 pr-4 text-sm font-semibold text-white outline-none transition placeholder:text-[#5d7186] focus:border-cyan-300/80 focus:ring-2 focus:ring-cyan-300/10"
+                  className="prahari-auth-input h-12 w-full rounded-[14px] pl-12 pr-4 text-sm font-semibold text-white outline-none placeholder:text-[#5d7186]"
                 />
               </div>
             </div>
 
             <div>
-              <label
-                htmlFor="login-password"
-                className="mb-2 block text-[11px] font-bold uppercase tracking-[0.04em] text-[#82a9d3]"
-              >
+              <label htmlFor="login-password" className="mb-2 block text-[11px] font-bold uppercase tracking-[0.04em] text-[#82a9d3]">
                 Password
               </label>
               <div className="relative">
@@ -151,7 +234,7 @@ export const Login: React.FC = () => {
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   placeholder="Password"
-                  className="h-12 w-full rounded-[14px] border border-[#355776] bg-[#081421] pl-12 pr-12 text-sm font-semibold text-white outline-none transition placeholder:text-[#5d7186] focus:border-cyan-300/80 focus:ring-2 focus:ring-cyan-300/10"
+                  className="prahari-auth-input h-12 w-full rounded-[14px] pl-12 pr-12 text-sm font-semibold text-white outline-none placeholder:text-[#5d7186]"
                 />
                 <button
                   type="button"
@@ -167,7 +250,7 @@ export const Login: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group flex h-12 w-full items-center justify-center gap-3 rounded-[14px] border border-[#ffd36b] bg-gradient-to-r from-[#e5b951] via-[#f4d177] to-[#deb04c] text-sm font-black text-[#08111b] shadow-[0_8px_28px_rgba(225,175,63,.18)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-55"
+              className="prahari-access-button group flex h-12 w-full items-center justify-center gap-3 rounded-[14px] text-sm font-black text-[#08111b] disabled:cursor-not-allowed disabled:opacity-55"
             >
               <span>{loading ? 'Authenticating secure session…' : 'Access Command Centre'}</span>
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -180,27 +263,20 @@ export const Login: React.FC = () => {
                 Fast jury demo credentials
               </div>
               <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => fillLocalDemo('operator')}
-                  className="rounded-full border border-[#355776] bg-[#0a1c2e] px-3 py-1.5 text-[11px] text-[#c7dbef] hover:border-cyan-300/50"
-                >
-                  Operator (Field Officer)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillLocalDemo('admin')}
-                  className="rounded-full border border-[#355776] bg-[#0a1c2e] px-3 py-1.5 text-[11px] text-[#c7dbef] hover:border-cyan-300/50"
-                >
-                  Admin (EOC Director)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillLocalDemo('viewer')}
-                  className="rounded-full border border-[#355776] bg-[#0a1c2e] px-3 py-1.5 text-[11px] text-[#c7dbef] hover:border-cyan-300/50"
-                >
-                  Viewer (Observer)
-                </button>
+                {[
+                  ['operator', 'Operator (Field Officer)'],
+                  ['admin', 'Admin (EOC Director)'],
+                  ['viewer', 'Viewer (Observer)'],
+                ].map(([user, label]) => (
+                  <button
+                    key={user}
+                    type="button"
+                    onClick={() => fillLocalDemo(user)}
+                    className="rounded-full border border-[#355776] bg-[#0a1c2e] px-3 py-1.5 text-[11px] text-[#c7dbef] transition hover:border-cyan-300/50 hover:bg-cyan-300/5"
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
               <p className="mt-3 text-[10px] leading-4 text-[#607991]">
                 Local-development shortcuts are available only while development bypass is enabled.
