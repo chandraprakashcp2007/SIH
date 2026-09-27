@@ -8,11 +8,11 @@ describe('Sidebar', () => {
     render(<MemoryRouter><Sidebar collapsed={false} onToggleCollapse={() => undefined} /></MemoryRouter>);
     expect(screen.getByText('PANCHA BHOOTHAM')).toBeInTheDocument();
     const links = {
-      'JALA (Flood)': '/live/jala',
-      'AGNI (Fire)': '/live/agni',
-      'BHUMI (Landslide)': '/live/bhumi',
-      'VAYU (Air)': '/live/vayu',
-      'AKASHA (Atmosphere)': '/live/akasha',
+      'जल (JALA) · Flood': '/live/jala',
+      'अग्नि (AGNI) · Fire': '/live/agni',
+      'भूमि (BHUMI) · Landslide': '/live/bhumi',
+      'वायु (VAYU) · Air': '/live/vayu',
+      'आकाश (AKASHA) · Atmosphere': '/live/akasha',
     };
     for (const [label, href] of Object.entries(links)) {
       expect(screen.getByRole('link', { name: label })).toHaveAttribute('href', href);

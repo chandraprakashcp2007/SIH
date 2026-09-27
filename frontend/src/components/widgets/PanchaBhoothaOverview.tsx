@@ -24,6 +24,14 @@ const badgeStyles: Record<SourceMode, string> = {
   PLANNED: 'border-slate-400/35 bg-slate-400/10 text-slate-300',
 };
 
+const bilingual: Record<string, string> = {
+  JALA: 'जल (JALA)',
+  AGNI: 'अग्नि (AGNI)',
+  BHUMI: 'भूमि (BHUMI)',
+  VAYU: 'वायु (VAYU)',
+  AKASHA: 'आकाश (AKASHA)',
+};
+
 export const ProvenanceBadge: React.FC<{ mode: SourceMode }> = ({ mode }) => (
   <span className={`rounded border px-1.5 py-0.5 text-[9px] font-bold tracking-wide ${badgeStyles[mode]}`}>
     {labels[mode]}
@@ -34,18 +42,18 @@ export const PanchaBhoothaOverview: React.FC<{ domains: ElementStatus[] }> = ({ 
   <section aria-labelledby="pancha-bhootha-title" className="rounded-xl border border-border-subtle bg-bg-secondary/80 p-3">
     <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
       <div>
-        <h2 id="pancha-bhootha-title" className="text-xs font-bold uppercase tracking-[0.16em] text-text-primary">Pancha Bhootha Fabric</h2>
-        <p className="text-[10px] text-text-muted">Water • Fire • Earth • Air • Atmosphere — one environmental intelligence fabric.</p>
+        <h2 id="pancha-bhootha-title" className="text-xs font-bold uppercase tracking-[0.16em] text-text-primary">पंचभूत · Pancha Bhootha Fabric</h2>
+        <p className="text-[10px] text-text-muted">जल • अग्नि • भूमि • वायु • आकाश — one provenance-aware environmental intelligence fabric.</p>
       </div>
       <div aria-label="Provenance legend" className="flex flex-wrap gap-1">
-        {(['REAL', 'SIMULATION', 'EXTERNAL_DATA', 'REPLAY', 'PLANNED'] as SourceMode[]).map(mode => <ProvenanceBadge key={mode} mode={mode} />)}
+        {(['REAL', 'SIMULATION', 'EXTERNAL_DATA', 'REPLAY', 'PLANNED'] as SourceMode[]).map((mode) => <ProvenanceBadge key={mode} mode={mode} />)}
       </div>
     </div>
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-5">
-      {domains.map(domain => (
+      {domains.map((domain) => (
         <article key={domain.domain_id} className="rounded-lg border border-border-subtle bg-bg-surface p-2.5">
           <div className="flex items-start justify-between gap-2">
-            <div><div className="text-xs font-bold text-text-primary">{domain.display_name}</div><div className="text-[9px] tracking-widest text-accent-info">{domain.element}</div></div>
+            <div><div className="text-xs font-bold text-text-primary">{bilingual[domain.display_name] || domain.display_name}</div><div className="text-[9px] tracking-widest text-accent-info">{domain.element}</div></div>
             <ProvenanceBadge mode={domain.source_mode} />
           </div>
           <dl className="mt-2 space-y-1 text-[10px]">

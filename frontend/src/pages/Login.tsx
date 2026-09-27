@@ -1,18 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchAuthMode, login } from '../services/api';
-import { Radio, ShieldAlert, Key, User, ArrowRight } from 'lucide-react';
+import {
+  ArrowRight,
+  CloudLightning,
+  Eye,
+  EyeOff,
+  Key,
+  Radio,
+  Radar,
+  Satellite,
+  ShieldAlert,
+  User,
+} from 'lucide-react';
+
+const PANCHA = [
+  ['जल (JALA)', 'JALA-01', 'Flood & river surge intelligence', 'text-cyan-300'],
+  ['अग्नि (AGNI)', 'AGNI-02', 'Fire, smoke & thermal intelligence', 'text-orange-300'],
+  ['भूमि (BHUMI)', 'BHUMI-03', 'Landslide & geotechnical intelligence', 'text-emerald-300'],
+  ['वायु (VAYU)', 'VAYU-04', 'Air, smoke & gas intelligence', 'text-violet-300'],
+  ['आकाश (AKASHA)', 'AKASHA-05', 'Atmospheric & weather intelligence', 'text-sky-300'],
+] as const;
 
 export const Login: React.FC = () => {
-  const [username, setUsername] = useState('operator');
-  const [password, setPassword] = useState('prahari2026!');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [devBypass, setDevBypass] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchAuthMode().then((data) => setDevBypass(Boolean(data.dev_auth_bypass))).catch(() => setDevBypass(false));
+    fetchAuthMode()
+      .then((data) => setDevBypass(Boolean(data.dev_auth_bypass)))
+      .catch(() => setDevBypass(false));
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -34,194 +56,176 @@ export const Login: React.FC = () => {
 
   const handleFillDemo = (user: string) => {
     setUsername(user);
-    setPassword('prahari2026!');
+    setPassword('local-demo');
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-[#07111F] text-[#F1F5F9] select-none">
-      {/* Left: Brand Identity & Problem Statement intent */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-[#0B1726] border-r border-[#22364A] relative overflow-hidden">
-        {/* Subtle background tactical radar motif */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-20"
-          style={{
-            backgroundImage: `radial-gradient(circle at 70% 30%, rgba(39, 199, 232, 0.15) 0%, transparent 60%),
-                              linear-gradient(#102033 1px, transparent 1px),
-                              linear-gradient(90deg, #102033 1px, transparent 1px)`,
-            backgroundSize: '100% 100%, 40px 40px, 40px 40px',
-          }}
-        />
+    <div className="prahari-login min-h-screen w-full overflow-hidden bg-[#020711] text-[#F1F5F9] lg:grid lg:grid-cols-[1.08fr_0.92fr]">
+      <section className="prahari-login-scene relative hidden min-h-screen overflow-hidden border-r border-cyan-400/10 lg:flex lg:flex-col lg:justify-between">
+        <div className="prahari-login-grid absolute inset-0" aria-hidden="true" />
+        <div className="prahari-india-orbit absolute inset-0" aria-hidden="true">
+          <div className="prahari-orbit prahari-orbit-one" />
+          <div className="prahari-orbit prahari-orbit-two" />
+          <div className="prahari-radar-sweep" />
+          <div className="prahari-storm-cell prahari-storm-one" />
+          <div className="prahari-storm-cell prahari-storm-two" />
+          <div className="prahari-signal-point prahari-signal-jala" />
+          <div className="prahari-signal-point prahari-signal-agni" />
+          <div className="prahari-signal-point prahari-signal-bhumi" />
+          <div className="prahari-signal-point prahari-signal-vayu" />
+          <div className="prahari-signal-point prahari-signal-akasha" />
+        </div>
 
-        <div className="relative z-10 space-y-6">
-          <div className="flex items-center space-x-3">
-            <img src="/logo.svg" alt="PRAHARI Logo" className="w-12 h-12" />
+        <div className="relative z-10 px-10 pt-9 xl:px-14 xl:pt-12">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full bg-cyan-300/20 blur-xl" />
+              <img src="/logo.svg" alt="PRAHARI Logo" className="relative h-12 w-12" />
+            </div>
             <div>
-              <h1 className="text-xl font-bold tracking-wider text-text-primary">PRAHARI-NET</h1>
-              <div className="text-xs tracking-widest text-accent-info font-medium">
-                SENSE • PREDICT • ALERT • PROTECT
-              </div>
+              <div className="text-lg font-black tracking-[0.18em] text-white">PRAHARI-NET</div>
+              <div className="text-[10px] font-semibold tracking-[0.24em] text-cyan-300">SENSE • PREDICT • ALERT • PROTECT</div>
             </div>
           </div>
 
-          <div className="space-y-2 pt-8 max-w-lg">
-            <span className="text-[11px] font-mono uppercase bg-accent-ai/20 text-accent-ai px-2.5 py-1 rounded font-bold border border-accent-ai/30">
-              Smart India Hackathon 2026 • SIH26178
-            </span>
-            <h2 className="text-2xl font-bold text-text-primary leading-snug">
-              Predictive Resilient Autonomous Hazard & Risk Intelligence Network
+          <div className="mt-10 max-w-3xl xl:mt-14">
+            <div className="mb-4 flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em]">
+              <span className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-cyan-200">Smart India Hackathon 2026</span>
+              <span className="rounded-full border border-violet-300/25 bg-violet-300/10 px-3 py-1 text-violet-200">SIH26178</span>
+            </div>
+
+            <h1 className="prahari-devanagari text-5xl font-black tracking-tight text-white drop-shadow-[0_0_30px_rgba(34,211,238,0.22)] xl:text-7xl">
+              पंजापुतम
+            </h1>
+            <div className="mt-1 text-sm font-semibold tracking-[0.22em] text-cyan-200/80">PANJAPUTHAM</div>
+            <h2 className="mt-6 max-w-2xl text-2xl font-semibold leading-tight text-slate-100 xl:text-3xl">
+              Predictive Resilient Autonomous Hazard &amp; Risk Intelligence Network
             </h2>
-            <p className="text-xs text-text-secondary leading-relaxed pt-2">
-              Empowering communities to shift from reactive disaster response to proactive risk prevention through localized multi-sensor LoRa networks, hybrid physical AI, and autonomous local edge computing.
+            <p className="mt-4 max-w-xl text-sm leading-6 text-slate-400">
+              A five-domain environmental intelligence fabric for evidence-aware sensing, prediction, alerting and resilient local response.
             </p>
-          </div>
-        </div>
 
-        {/* 5 Node Capabilities Strip */}
-        <div className="relative z-10 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3 border-t border-[#22364A] pt-6 text-xs">
-          <div>
-            <div className="font-bold text-accent-info">JALA-01</div>
-            <div className="text-[11px] text-text-muted mt-0.5">
-              Flood & River Surge Hydrodynamics
-            </div>
-          </div>
-
-          <div>
-            <div className="font-bold text-hazard-warning">AGNI-02</div>
-            <div className="text-[11px] text-text-muted mt-0.5">
-              Fire, Smoke & Gas AI Inference
-            </div>
-          </div>
-
-          <div>
-            <div className="font-bold text-hazard-normal">BHUMI-03</div>
-            <div className="text-[11px] text-text-muted mt-0.5">
-              Geotechnical Slope & Landslide Shear
-            </div>
-          </div>
-
-          <div>
-            <div className="font-bold text-cyan-300">VAYU-04</div>
-            <div className="text-[11px] text-text-muted mt-0.5">
-              Air Quality & Gas Intelligence
-            </div>
-          </div>
-
-          <div>
-            <div className="font-bold text-violet-300">AKASHA-05</div>
-            <div className="text-[11px] text-text-muted mt-0.5">
-              Atmospheric & Weather Intelligence
+            <div className="mt-7 flex flex-wrap gap-2 text-[10px] font-semibold tracking-wide text-slate-300">
+              <span className="flex items-center gap-1.5 rounded-full border border-cyan-300/20 bg-black/20 px-3 py-1.5"><Radar className="h-3.5 w-3.5 text-cyan-300" /> EDGE INTELLIGENCE</span>
+              <span className="flex items-center gap-1.5 rounded-full border border-violet-300/20 bg-black/20 px-3 py-1.5"><Satellite className="h-3.5 w-3.5 text-violet-300" /> GEO OPERATIONS</span>
+              <span className="flex items-center gap-1.5 rounded-full border border-amber-300/20 bg-black/20 px-3 py-1.5"><CloudLightning className="h-3.5 w-3.5 text-amber-300" /> MULTI-HAZARD</span>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Right: Authentication Portal */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12">
-        <div className="max-w-md w-full space-y-6 bg-bg-secondary p-8 rounded-xl border border-border-subtle shadow-2xl">
+        <div className="relative z-10 grid grid-cols-5 gap-2 px-10 pb-9 xl:px-14 xl:pb-12">
+          {PANCHA.map(([label, id, description, tone]) => (
+            <div key={id} className="min-w-0 rounded-xl border border-white/10 bg-slate-950/45 p-3 backdrop-blur-xl">
+              <div className={`text-[11px] font-black ${tone}`}>{label}</div>
+              <div className="mt-0.5 text-[9px] font-mono text-slate-500">{id}</div>
+              <div className="mt-2 text-[9px] leading-4 text-slate-400">{description}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="relative flex min-h-screen items-center justify-center overflow-hidden p-5 sm:p-8 lg:p-12">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_20%,rgba(34,211,238,0.10),transparent_28%),radial-gradient(circle_at_25%_80%,rgba(124,58,237,0.10),transparent_30%)]" aria-hidden="true" />
+        <div className="prahari-login-card relative z-10 w-full max-w-md rounded-2xl border border-cyan-300/15 bg-[#07111F]/90 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.55),0_0_0_1px_rgba(34,211,238,0.04)] backdrop-blur-2xl sm:p-8">
+          <div className="mb-5 lg:hidden">
+            <div className="prahari-devanagari text-3xl font-black text-white">पंजापुतम</div>
+            <div className="mt-1 text-[9px] font-bold tracking-[0.18em] text-cyan-300">PRAHARI-NET · PANJAPUTHAM</div>
+          </div>
           {devBypass && (
-            <div role="status" className="border border-hazard-watch/50 bg-hazard-watch/10 px-3 py-2 text-[11px] font-bold tracking-wider text-hazard-watch">
+            <div role="status" className="mb-5 rounded-lg border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-[10px] font-bold tracking-[0.14em] text-amber-300">
               DEV AUTH BYPASS — LOCAL DEVELOPMENT ONLY
             </div>
           )}
-          <div>
-            <div className="flex items-center space-x-2 text-accent-info text-xs font-semibold uppercase tracking-wider mb-1">
-              <Radio className="w-4 h-4" />
-              <span>Command & Control Access</span>
+
+          <div className="mb-6">
+            <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-300">
+              <Radio className="h-4 w-4" />
+              Secure Command Access
             </div>
-            <h2 className="text-lg font-bold text-text-primary">Operator Authentication</h2>
-            <p className="text-xs text-text-muted mt-0.5">
-              Enter registered credentials to unlock local emergency command dispatch.
-            </p>
+            <h2 className="text-xl font-bold text-white">Operator Authentication</h2>
+            <p className="mt-1 text-xs leading-5 text-slate-400">Authenticate to enter the PRAHARI environmental command workspace.</p>
           </div>
 
           {error && (
-            <div className="bg-hazard-critical/20 border border-hazard-critical text-hazard-critical p-3 rounded text-xs flex items-center space-x-2">
-              <ShieldAlert className="w-4 h-4 shrink-0" />
+            <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-400/35 bg-red-500/10 p-3 text-xs text-red-200">
+              <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label htmlFor="login-username" className="text-[11px] text-text-secondary uppercase tracking-wider block mb-1">
-                Username
-              </label>
+              <label htmlFor="login-username" className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">Username</label>
               <div className="relative">
-                <User className="w-4 h-4 absolute left-3 top-3 text-text-muted" />
+                <User className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
                 <input
                   id="login-username"
                   type="text"
+                  autoComplete="username"
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-bg-surface border border-border-subtle rounded-lg pl-9 pr-3 py-2 text-xs text-text-primary focus:outline-none focus:border-accent-info"
+                  className="w-full rounded-lg border border-slate-700/80 bg-slate-950/70 py-2.5 pl-9 pr-3 text-sm text-white outline-none transition focus:border-cyan-300/70 focus:ring-2 focus:ring-cyan-300/10"
+                  placeholder="Registered operator"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="login-password" className="text-[11px] text-text-secondary uppercase tracking-wider block mb-1">
-                Password
-              </label>
+              <label htmlFor="login-password" className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">Password</label>
               <div className="relative">
-                <Key className="w-4 h-4 absolute left-3 top-3 text-text-muted" />
+                <Key className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
                 <input
                   id="login-password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-bg-surface border border-border-subtle rounded-lg pl-9 pr-3 py-2 text-xs text-text-primary focus:outline-none focus:border-accent-info"
+                  className="w-full rounded-lg border border-slate-700/80 bg-slate-950/70 py-2.5 pl-9 pr-10 text-sm text-white outline-none transition focus:border-cyan-300/70 focus:ring-2 focus:ring-cyan-300/10"
+                  placeholder="Password"
                 />
+                <button
+                  type="button"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  onClick={() => setShowPassword((value) => !value)}
+                  className="absolute right-2 top-2 rounded p-1.5 text-slate-500 transition hover:bg-white/5 hover:text-cyan-200"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-accent-info hover:bg-cyan-400 text-bg-primary font-bold rounded-lg text-xs transition-colors flex items-center justify-center space-x-2 disabled:opacity-50"
+              className="group flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-cyan-300 to-cyan-400 py-2.5 text-xs font-black text-slate-950 shadow-[0_0_25px_rgba(34,211,238,0.18)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <span>{loading ? 'Authenticating...' : 'Access Command Centre'}</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>{loading ? 'Authenticating secure session…' : 'Access Command Centre'}</span>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </button>
           </form>
 
-          {/* Seed Demo Account Quick Selectors */}
           {devBypass && (
-          <div className="pt-4 border-t border-border-subtle text-xs space-y-2">
-            <span className="text-[10px] uppercase font-semibold text-text-muted tracking-wider block">
-              Fast Jury Demo Credentials
-            </span>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => handleFillDemo('operator')}
-                className="px-2.5 py-1 bg-bg-surface hover:bg-bg-elevated border border-border-subtle rounded text-[11px] text-text-secondary hover:text-text-primary transition-colors"
-              >
-                Operator (Field Officer)
-              </button>
-              <button
-                type="button"
-                onClick={() => handleFillDemo('admin')}
-                className="px-2.5 py-1 bg-bg-surface hover:bg-bg-elevated border border-border-subtle rounded text-[11px] text-text-secondary hover:text-text-primary transition-colors"
-              >
-                Admin (EOC Director)
-              </button>
-              <button
-                type="button"
-                onClick={() => handleFillDemo('viewer')}
-                className="px-2.5 py-1 bg-bg-surface hover:bg-bg-elevated border border-border-subtle rounded text-[11px] text-text-secondary hover:text-text-primary transition-colors"
-              >
-                Viewer (Observer)
-              </button>
+            <div className="mt-6 border-t border-slate-700/70 pt-4 text-xs">
+              <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">Local jury demo shortcuts</div>
+              <div className="flex flex-wrap gap-2">
+                {['operator', 'admin', 'viewer'].map((user) => (
+                  <button key={user} type="button" onClick={() => handleFillDemo(user)} className="rounded-md border border-slate-700 bg-slate-900 px-2.5 py-1 text-[10px] capitalize text-slate-300 transition hover:border-cyan-300/40 hover:text-cyan-200">
+                    {user}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-2 text-[9px] text-slate-600">Local bypass uses a non-production placeholder credential and is unavailable when production bypass is disabled.</p>
             </div>
-            <p className="text-[10px] text-text-muted pt-1">
-              Password for all demo accounts: <code className="text-accent-info font-mono">prahari2026!</code>
-            </p>
-          </div>
           )}
+
+          <div className="mt-6 flex items-center justify-between border-t border-slate-800 pt-4 text-[9px] font-semibold tracking-[0.12em] text-slate-600">
+            <span>SECURE • PROVENANCE-AWARE</span>
+            <span>PRAHARI-NET</span>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

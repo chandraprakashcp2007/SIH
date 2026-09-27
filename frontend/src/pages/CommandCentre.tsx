@@ -209,11 +209,11 @@ export const CommandCentre: React.FC = () => {
                 className="bg-bg-surface border border-border-subtle rounded px-2 py-0.5 text-[11px] text-text-secondary focus:outline-none"
               >
                 <option value="ALL">All Hazards</option>
-                <option value="FLOOD">Flood (JALA)</option>
-                <option value="FIRE">Fire (AGNI)</option>
-                <option value="LANDSLIDE">Landslide (BHUMI)</option>
-                <option value="AIR_QUALITY">Air Quality (VAYU)</option>
-                <option value="WEATHER">Atmosphere (AKASHA)</option>
+                <option value="FLOOD">जल (JALA) · Flood</option>
+                <option value="FIRE">अग्नि (AGNI) · Fire</option>
+                <option value="LANDSLIDE">भूमि (BHUMI) · Landslide</option>
+                <option value="AIR_QUALITY">वायु (VAYU) · Air Quality</option>
+                <option value="WEATHER">आकाश (AKASHA) · Atmosphere</option>
               </select>
 
               <select

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PRAHARI-NET API Client Service
  */
 
@@ -17,6 +17,35 @@ function getHeaders(): HeadersInit {
   return headers;
 }
 
+async function authenticatedFetch(input: RequestInfo | URL, init: RequestInit = {}) {
+  const headers = new Headers(getHeaders());
+  new Headers(init.headers || {}).forEach((value, key) => headers.set(key, value));
+  const response = await fetch(input, { ...init, headers });
+
+  if (response.status === 401) {
+    localStorage.removeItem('prahari_token');
+    localStorage.removeItem('prahari_user');
+    window.dispatchEvent(new CustomEvent('prahari:auth-required', { detail: { status: 401 } }));
+    const error: any = new Error('Authentication expired. Please sign in again.');
+    error.status = 401;
+    throw error;
+  }
+
+  if (response.status === 403) {
+    const error: any = new Error('Your current role is not authorized for this operation.');
+    error.status = 403;
+    throw error;
+  }
+
+  if (!response.ok) {
+    const error: any = new Error(`API request failed (HTTP ${response.status})`);
+    error.status = response.status;
+    throw error;
+  }
+
+  return response;
+}
+
 export async function fetchSystemSummary() {
   return fetchOperationalJson<any>('system-summary', `${BASE_URL}/system/summary`, { headers: getHeaders() });
 }
@@ -26,48 +55,47 @@ export async function fetchNodes() {
 }
 
 export async function fetchElements() {
-  const res = await fetch(`${BASE_URL}/elements`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/elements`, { headers: getHeaders() });
   if (!res.ok) throw new Error('Failed to fetch Pancha Bhootha registry');
   return res.json();
 }
 
 export async function fetchGeoDomain(domain: string) {
-  const res = await fetch(`${BASE_URL}/geo/domains/${encodeURIComponent(domain)}`, { headers: getHeaders() });
-  if (!res.ok) throw new Error(`Failed to load ${domain} geo-intelligence (HTTP ${res.status})`);
+  const res = await authenticatedFetch(`${BASE_URL}/geo/domains/${encodeURIComponent(domain)}`);
   return res.json();
 }
 
 export async function fetchGeoDatasets() {
-  const res = await fetch(`${BASE_URL}/geo/datasets`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/geo/datasets`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to load geospatial dataset registry (HTTP ${res.status})`);
   return res.json();
 }
 
 export async function fetchSensorHealth(nodeId?: string) {
   const query = nodeId ? `?node_id=${encodeURIComponent(nodeId)}` : '';
-  const res = await fetch(`${BASE_URL}/sensor-health${query}`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/sensor-health${query}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to load sensor health (HTTP ${res.status})`);
   return res.json();
 }
 
 export async function fetchObservationAggregate(nodeId: string, observedProperty: string, range = '1h') {
   const params = new URLSearchParams({ node_id: nodeId, observed_property: observedProperty, range });
-  const res = await fetch(`${BASE_URL}/observations/aggregate?${params}`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/observations/aggregate?${params}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to load observation history (HTTP ${res.status})`);
   return res.json();
 }
 
 export async function fetchEvidenceGateEvaluations() {
-  const res = await fetch(`${BASE_URL}/evidence-gate/evaluations`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/evidence-gate/evaluations`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to load Evidence Gate evaluations (HTTP ${res.status})`);
   return res.json();
 }
 
 export async function fetchCrossHazardIntelligence() {
   const [relationships, compoundRisks, consensus] = await Promise.all([
-    fetch(`${BASE_URL}/cascades`, { headers: getHeaders() }),
-    fetch(`${BASE_URL}/compound-risk`, { headers: getHeaders() }),
-    fetch(`${BASE_URL}/consensus`, { headers: getHeaders() }),
+    authenticatedFetch(`${BASE_URL}/cascades`, { headers: getHeaders() }),
+    authenticatedFetch(`${BASE_URL}/compound-risk`, { headers: getHeaders() }),
+    authenticatedFetch(`${BASE_URL}/consensus`, { headers: getHeaders() }),
   ]);
   for (const response of [relationships, compoundRisks, consensus]) {
     if (!response.ok) throw new Error(`Failed to load cross-hazard intelligence (HTTP ${response.status})`);
@@ -80,53 +108,53 @@ export async function fetchCrossHazardIntelligence() {
 }
 
 export async function reevaluateCrossHazards() {
-  const res = await fetch(`${BASE_URL}/cascades/reevaluate`, { method: 'POST', headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/cascades/reevaluate`, { method: 'POST', headers: getHeaders() });
   if (!res.ok) throw new Error(`Cross-hazard reevaluation failed (HTTP ${res.status})`);
   return res.json();
 }
 
 export async function fetchJalaDownstreamIntelligence() {
   const [topology, threats] = await Promise.all([
-    fetch(`${BASE_URL}/jala/topology`, { headers: getHeaders() }),
-    fetch(`${BASE_URL}/jala/downstream-threats`, { headers: getHeaders() }),
+    authenticatedFetch(`${BASE_URL}/jala/topology`, { headers: getHeaders() }),
+    authenticatedFetch(`${BASE_URL}/jala/downstream-threats`, { headers: getHeaders() }),
   ]);
   if (!topology.ok || !threats.ok) throw new Error('Failed to load JALA downstream intelligence');
   return { topology: await topology.json(), threats: await threats.json() };
 }
 
 export async function evaluateJalaDownstreamThreats() {
-  const res = await fetch(`${BASE_URL}/jala/downstream-threats/evaluate`, { method: 'POST', headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/jala/downstream-threats/evaluate`, { method: 'POST', headers: getHeaders() });
   if (!res.ok) throw new Error('JALA downstream evaluation failed');
   return res.json();
 }
-export async function fetchDigitalTwins() { const r=await fetch(`${BASE_URL}/digital-twin`,{headers:getHeaders()}); if(!r.ok) throw new Error('Failed to load digital twins'); return r.json(); }
-export async function refreshDigitalTwins() { const r=await fetch(`${BASE_URL}/digital-twin/refresh`,{method:'POST',headers:getHeaders()}); if(!r.ok) throw new Error('Failed to refresh digital twins'); return r.json(); }
-export async function evaluateImpact(){const r=await fetch(`${BASE_URL}/impact/evaluate`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Impact evaluation failed');return r.json()}
-export async function evaluateEvacuation(){const r=await fetch(`${BASE_URL}/evacuation/evaluate`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Evacuation evaluation failed');return r.json()}
-export async function fetchSafeZones(){const r=await fetch(`${BASE_URL}/safe-zones`,{headers:getHeaders()});if(!r.ok)throw new Error('Safe-zone registry unavailable');return r.json()}
-export async function fetchCAPCentre(){const [s,e,d]=await Promise.all([fetch(`${BASE_URL}/cap/status`,{headers:getHeaders()}),fetch(`${BASE_URL}/cap/exports`,{headers:getHeaders()}),fetch(`${BASE_URL}/cap/deliveries`,{headers:getHeaders()})]);if(!s.ok||!e.ok||!d.ok)throw new Error('CAP centre unavailable');return {status:await s.json(),exports:await e.json(),deliveries:await d.json()}}
-export async function exportCAP(alertId:string,languages=['en-IN','hi-IN']){const r=await fetch(`${BASE_URL}/cap/alerts/${encodeURIComponent(alertId)}/export`,{method:'POST',headers:getHeaders(),body:JSON.stringify({languages})});if(!r.ok)throw new Error(`CAP export failed (HTTP ${r.status})`);return r.json()}
-export async function fetchContinuity(){const [s,q,t]=await Promise.all([fetch(`${BASE_URL}/continuity/status`,{headers:getHeaders()}),fetch(`${BASE_URL}/continuity/queue`,{headers:getHeaders()}),fetch(`${BASE_URL}/continuity/transports`,{headers:getHeaders()})]);if(!s.ok||!q.ok||!t.ok)throw new Error('Continuity service unavailable');return {status:await s.json(),queue:await q.json(),transports:await t.json()}}
-export async function evaluateContinuity(payload:any){const r=await fetch(`${BASE_URL}/continuity/evaluate`,{method:'POST',headers:getHeaders(),body:JSON.stringify(payload)});if(!r.ok)throw new Error('Continuity evaluation failed');return r.json()}
-export async function fetchSecurityCentre(){const [s,e,c]=await Promise.all([fetch(`${BASE_URL}/security/status`,{headers:getHeaders()}),fetch(`${BASE_URL}/security/events`,{headers:getHeaders()}),fetch(`${BASE_URL}/security/audit-chain/verify`,{headers:getHeaders()})]);if(!s.ok||!e.ok||!c.ok)throw new Error('Security centre unavailable');return {status:await s.json(),events:await e.json(),chain:await c.json()}}
-export async function fetchModelRegistry(){const [d,m]=await Promise.all([fetch(`${BASE_URL}/ml/datasets`,{headers:getHeaders()}),fetch(`${BASE_URL}/ml/models`,{headers:getHeaders()})]);if(!d.ok||!m.ok)throw new Error('Dataset/model registry unavailable');return {datasets:await d.json(),models:await m.json()}}
-export async function fetchDisasterMemory(){const [e,c]=await Promise.all([fetch(`${BASE_URL}/memory/events`,{headers:getHeaders()}),fetch(`${BASE_URL}/memory/black-box/verify`,{headers:getHeaders()})]);if(!e.ok||!c.ok)throw new Error('Disaster memory unavailable');return {events:await e.json(),chain:await c.json()}}
-export async function refreshAssurance(){const r=await fetch(`${BASE_URL}/assurance/refresh`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Assurance dashboard unavailable');return r.json()}
+export async function fetchDigitalTwins() { const r=await authenticatedFetch(`${BASE_URL}/digital-twin`,{headers:getHeaders()}); if(!r.ok) throw new Error('Failed to load digital twins'); return r.json(); }
+export async function refreshDigitalTwins() { const r=await authenticatedFetch(`${BASE_URL}/digital-twin/refresh`,{method:'POST',headers:getHeaders()}); if(!r.ok) throw new Error('Failed to refresh digital twins'); return r.json(); }
+export async function evaluateImpact(){const r=await authenticatedFetch(`${BASE_URL}/impact/evaluate`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Impact evaluation failed');return r.json()}
+export async function evaluateEvacuation(){const r=await authenticatedFetch(`${BASE_URL}/evacuation/evaluate`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Evacuation evaluation failed');return r.json()}
+export async function fetchSafeZones(){const r=await authenticatedFetch(`${BASE_URL}/safe-zones`,{headers:getHeaders()});if(!r.ok)throw new Error('Safe-zone registry unavailable');return r.json()}
+export async function fetchCAPCentre(){const [s,e,d]=await Promise.all([authenticatedFetch(`${BASE_URL}/cap/status`,{headers:getHeaders()}),authenticatedFetch(`${BASE_URL}/cap/exports`,{headers:getHeaders()}),authenticatedFetch(`${BASE_URL}/cap/deliveries`,{headers:getHeaders()})]);if(!s.ok||!e.ok||!d.ok)throw new Error('CAP centre unavailable');return {status:await s.json(),exports:await e.json(),deliveries:await d.json()}}
+export async function exportCAP(alertId:string,languages=['en-IN','hi-IN']){const r=await authenticatedFetch(`${BASE_URL}/cap/alerts/${encodeURIComponent(alertId)}/export`,{method:'POST',headers:getHeaders(),body:JSON.stringify({languages})});if(!r.ok)throw new Error(`CAP export failed (HTTP ${r.status})`);return r.json()}
+export async function fetchContinuity(){const [s,q,t]=await Promise.all([authenticatedFetch(`${BASE_URL}/continuity/status`,{headers:getHeaders()}),authenticatedFetch(`${BASE_URL}/continuity/queue`,{headers:getHeaders()}),authenticatedFetch(`${BASE_URL}/continuity/transports`,{headers:getHeaders()})]);if(!s.ok||!q.ok||!t.ok)throw new Error('Continuity service unavailable');return {status:await s.json(),queue:await q.json(),transports:await t.json()}}
+export async function evaluateContinuity(payload:any){const r=await authenticatedFetch(`${BASE_URL}/continuity/evaluate`,{method:'POST',headers:getHeaders(),body:JSON.stringify(payload)});if(!r.ok)throw new Error('Continuity evaluation failed');return r.json()}
+export async function fetchSecurityCentre(){const [s,e,c]=await Promise.all([authenticatedFetch(`${BASE_URL}/security/status`,{headers:getHeaders()}),authenticatedFetch(`${BASE_URL}/security/events`,{headers:getHeaders()}),authenticatedFetch(`${BASE_URL}/security/audit-chain/verify`,{headers:getHeaders()})]);if(!s.ok||!e.ok||!c.ok)throw new Error('Security centre unavailable');return {status:await s.json(),events:await e.json(),chain:await c.json()}}
+export async function fetchModelRegistry(){const [d,m]=await Promise.all([authenticatedFetch(`${BASE_URL}/ml/datasets`,{headers:getHeaders()}),authenticatedFetch(`${BASE_URL}/ml/models`,{headers:getHeaders()})]);if(!d.ok||!m.ok)throw new Error('Dataset/model registry unavailable');return {datasets:await d.json(),models:await m.json()}}
+export async function fetchDisasterMemory(){const [e,c]=await Promise.all([authenticatedFetch(`${BASE_URL}/memory/events`,{headers:getHeaders()}),authenticatedFetch(`${BASE_URL}/memory/black-box/verify`,{headers:getHeaders()})]);if(!e.ok||!c.ok)throw new Error('Disaster memory unavailable');return {events:await e.json(),chain:await c.json()}}
+export async function refreshAssurance(){const r=await authenticatedFetch(`${BASE_URL}/assurance/refresh`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Assurance dashboard unavailable');return r.json()}
 
 export async function fetchNode(id: string) {
-  const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to fetch node ${id}`);
   return res.json();
 }
 
 export async function fetchNodeTelemetry(id: string, limit = 60) {
-  const res = await fetch(`${BASE_URL}/nodes/${id}/telemetry?limit=${limit}`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/nodes/${id}/telemetry?limit=${limit}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to fetch telemetry for node ${id}`);
   return res.json();
 }
 
 export async function fetchNodeRisk(id: string, limit = 60) {
-  const res = await fetch(`${BASE_URL}/nodes/${id}/risk?limit=${limit}`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/nodes/${id}/risk?limit=${limit}`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to fetch risk history for node ${id}`);
   return res.json();
 }
@@ -140,9 +168,23 @@ export async function fetchAlerts(state?: string, severity?: string) {
   return res.json();
 }
 
+export async function fetchIncidentReport(alertId: string) {
+  const res = await authenticatedFetch(`${BASE_URL}/reports/incident/${encodeURIComponent(alertId)}`);
+  return res.json();
+}
+
+export async function downloadReportCsv(reportType: 'telemetry' | 'alerts' | 'events') {
+  const res = await authenticatedFetch(`${BASE_URL}/reports/export/csv?report_type=${encodeURIComponent(reportType)}`);
+  const blob = await res.blob();
+  const disposition = res.headers.get('Content-Disposition') || '';
+  const matched = disposition.match(/filename="?([^";]+)"?/i);
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const filename = matched?.[1] || `prahari_${reportType}_${stamp}.csv`;
+  return { blob, filename: filename.endsWith('.csv') ? filename : `${filename}.csv` };
+}
 export async function acknowledgeAlert(alertId: string, notes?: string) {
   const user = JSON.parse(localStorage.getItem('prahari_user') || '{}');
-  const res = await fetch(`${BASE_URL}/alerts/${alertId}/acknowledge`, {
+  const res = await authenticatedFetch(`${BASE_URL}/alerts/${alertId}/acknowledge`, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify({ acknowledged_by: user.username || 'operator', notes }),
@@ -153,7 +195,7 @@ export async function acknowledgeAlert(alertId: string, notes?: string) {
 
 export async function resolveAlert(alertId: string, resolutionNotes: string) {
   const user = JSON.parse(localStorage.getItem('prahari_user') || '{}');
-  const res = await fetch(`${BASE_URL}/alerts/${alertId}/resolve`, {
+  const res = await authenticatedFetch(`${BASE_URL}/alerts/${alertId}/resolve`, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify({ resolved_by: user.username || 'operator', resolution_notes: resolutionNotes }),
@@ -163,13 +205,13 @@ export async function resolveAlert(alertId: string, resolutionNotes: string) {
 }
 
 export async function fetchPredictions() {
-  const res = await fetch(`${BASE_URL}/predictions`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/predictions`, { headers: getHeaders() });
   if (!res.ok) throw new Error('Failed to fetch predictions');
   return res.json();
 }
 
 export async function fetchAnalytics() {
-  const res = await fetch(`${BASE_URL}/analytics/overview`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/analytics/overview`, { headers: getHeaders() });
   if (!res.ok) throw new Error('Failed to fetch analytics');
   return res.json();
 }
@@ -179,19 +221,19 @@ export async function fetchNetworkStatus() {
 }
 
 export async function fetchNetworkPackets(limit = 40) {
-  const res = await fetch(`${BASE_URL}/network/packets?limit=${limit}`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/network/packets?limit=${limit}`, { headers: getHeaders() });
   if (!res.ok) throw new Error('Failed to fetch network packets');
   return res.json();
 }
 
 export async function fetchScenarios() {
-  const res = await fetch(`${BASE_URL}/simulator/scenarios`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/simulator/scenarios`, { headers: getHeaders() });
   if (!res.ok) throw new Error('Failed to fetch simulation scenarios');
   return res.json();
 }
 
 export async function triggerScenario(scenarioName: string) {
-  const res = await fetch(`${BASE_URL}/simulator/scenario/${scenarioName}`, {
+  const res = await authenticatedFetch(`${BASE_URL}/simulator/scenario/${scenarioName}`, {
     method: 'POST',
     headers: getHeaders(),
   });
@@ -200,7 +242,7 @@ export async function triggerScenario(scenarioName: string) {
 }
 
 export async function resetSimulator() {
-  const res = await fetch(`${BASE_URL}/simulator/reset`, {
+  const res = await authenticatedFetch(`${BASE_URL}/simulator/reset`, {
     method: 'POST',
     headers: getHeaders(),
   });
@@ -209,7 +251,7 @@ export async function resetSimulator() {
 }
 
 export async function sendCopilotChat(message: string) {
-  const res = await fetch(`${BASE_URL}/copilot/chat`, {
+  const res = await authenticatedFetch(`${BASE_URL}/copilot/chat`, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify({ message }),
@@ -219,25 +261,25 @@ export async function sendCopilotChat(message: string) {
 }
 
 export async function fetchCopilotSessions() {
-  const res = await fetch(`${BASE_URL}/copilot/sessions`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/copilot/sessions`, { headers: getHeaders() });
   if (!res.ok) throw new Error('Failed to load Copilot sessions');
   return res.json();
 }
 
 export async function createCopilotSession(title = 'Operational Inquiry') {
-  const res = await fetch(`${BASE_URL}/copilot/sessions`, { method: 'POST', headers: getHeaders(), body: JSON.stringify({ title }) });
+  const res = await authenticatedFetch(`${BASE_URL}/copilot/sessions`, { method: 'POST', headers: getHeaders(), body: JSON.stringify({ title }) });
   if (!res.ok) throw new Error('Failed to create Copilot session');
   return res.json();
 }
 
 export async function fetchCopilotMessages(sessionId: string) {
-  const res = await fetch(`${BASE_URL}/copilot/sessions/${sessionId}/messages`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/copilot/sessions/${sessionId}/messages`, { headers: getHeaders() });
   if (!res.ok) throw new Error('Failed to load conversation');
   return res.json();
 }
 
 export async function deleteCopilotSession(sessionId: string) {
-  const res = await fetch(`${BASE_URL}/copilot/sessions/${sessionId}`, { method: 'DELETE', headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/copilot/sessions/${sessionId}`, { method: 'DELETE', headers: getHeaders() });
   if (!res.ok) throw new Error('Failed to clear conversation');
 }
 
@@ -249,7 +291,7 @@ export async function streamCopilotChat(
 ) {
   const params = new URLSearchParams({ query });
   if (sessionId) params.set('session_id', sessionId);
-  const res = await fetch(`${BASE_URL}/copilot/stream?${params}`, { headers: getHeaders(), signal });
+  const res = await authenticatedFetch(`${BASE_URL}/copilot/stream?${params}`, { headers: getHeaders(), signal });
   if (!res.ok || !res.body) throw new Error('Copilot stream unavailable');
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
@@ -277,13 +319,13 @@ export async function fetchSystemLogs(category?: string) {
 }
 
 export async function fetchSettings() {
-  const res = await fetch(`${BASE_URL}/settings`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/settings`, { headers: getHeaders() });
   if (!res.ok) throw new Error('Failed to fetch settings');
   return res.json();
 }
 
 export async function saveSettings(settings: any) {
-  const res = await fetch(`${BASE_URL}/settings`, {
+  const res = await authenticatedFetch(`${BASE_URL}/settings`, {
     method: 'PUT',
     headers: getHeaders(),
     body: JSON.stringify({ settings }),
@@ -389,13 +431,13 @@ export async function fetchReadiness() {
 }
 
 export async function fetchCalibration() {
-  const res = await fetch(`${BASE_URL}/calibration`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/calibration`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to load calibration (HTTP ${res.status}): ${(await res.text()) || res.statusText}`);
   return res.json();
 }
 
 export async function saveCalibration(nodeId: string, values: Record<string, number>) {
-  const res = await fetch(`${BASE_URL}/calibration`, {
+  const res = await authenticatedFetch(`${BASE_URL}/calibration`, {
     method: 'PUT', headers: getHeaders(), body: JSON.stringify({ node_id: nodeId, values }),
   });
   if (!res.ok) throw new Error(`Failed to save calibration (HTTP ${res.status}): ${(await res.text()) || res.statusText}`);
@@ -403,15 +445,13 @@ export async function saveCalibration(nodeId: string, values: Record<string, num
 }
 
 export async function fetchExternalProviderStatus() {
-  const res = await fetch(`${BASE_URL}/external/status`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/external/status`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to load external providers (HTTP ${res.status})`);
   return res.json();
 }
 
 export async function fetchExternalObservations() {
-  const res = await fetch(`${BASE_URL}/external/observations?limit=50`, { headers: getHeaders() });
+  const res = await authenticatedFetch(`${BASE_URL}/external/observations?limit=50`, { headers: getHeaders() });
   if (!res.ok) throw new Error(`Failed to load external observations (HTTP ${res.status})`);
   return res.json();
 }
-
-

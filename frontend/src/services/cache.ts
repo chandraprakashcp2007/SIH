@@ -30,17 +30,30 @@ export function readOperationalCache<T>(key: string): CachedOperationalData<T> |
   }
 }
 
+function authFailure(status: number) {
+  return status === 401 || status === 403;
+}
+
 export async function fetchOperationalJson<T>(key: string, url: string, init?: RequestInit): Promise<T> {
   try {
     const response = await fetch(url, init);
-    if (!response.ok) throw new Error(`Request failed (${response.status})`);
+    if (!response.ok) {
+      const error: any = new Error(`Request failed (${response.status})`);
+      error.status = response.status;
+      error.disableCacheFallback = authFailure(response.status);
+      if (response.status === 401 && typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('prahari:auth-required', { detail: { status: response.status } }));
+      }
+      throw error;
+    }
     const data = await response.json() as T;
     writeOperationalCache(key, data);
     if (data && typeof data === 'object' && !Array.isArray(data)) {
       return { ...data, _dataState: { source: 'LIVE', fetchedAt: new Date().toISOString(), ageSeconds: 0 } };
     }
     return data;
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.disableCacheFallback) throw error;
     const cached = readOperationalCache<T>(key);
     if (!cached) throw error;
     if (cached.data && typeof cached.data === 'object' && !Array.isArray(cached.data)) {

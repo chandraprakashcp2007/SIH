@@ -13,3 +13,12 @@ describe('Login', () => {
     }
   });
 });
+
+describe('prahari premium identity', () => {
+  it('renders Panjaputham identity without exposing production demo password', () => {
+    render(<MemoryRouter><Login /></MemoryRouter>);
+    expect(screen.getAllByText('पंजापुतम').length).toBeGreaterThan(0);
+    expect(screen.queryByText('prahari2026!')).not.toBeInTheDocument();
+    expect(screen.queryByText(/DEV AUTH BYPASS/)).not.toBeInTheDocument();
+  });
+});

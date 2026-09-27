@@ -10,7 +10,7 @@ async function login(page: any, username = 'admin') {
   await page.goto('/login');
   await expect(page.getByText('DEV AUTH BYPASS')).toBeVisible();
   await page.getByLabel('Username').fill(username);
-  await page.getByLabel('Password').fill('local-demo');
+  await page.locator('#login-password').fill('local-demo');
   await page.getByRole('button', { name: 'Access Command Centre' }).click();
   await expect(page).toHaveURL(/\/$/);
 }
@@ -45,17 +45,18 @@ test('admin can drive flood and recovery scenarios', async ({ page }) => {
 test('five dedicated domain intelligence maps expose truthful layer states', async ({ page }) => {
   await login(page);
   const domains = [
-    ['jala', 'JALA River & Flood Intelligence'],
-    ['agni', 'AGNI Fire Intelligence'],
-    ['bhumi', 'BHUMI Terrain & Landslide Intelligence'],
-    ['vayu', 'VAYU Air & Smoke Intelligence'],
-    ['akasha', 'AKASHA Weather Intelligence'],
+    ['jala', 'जल (JALA) — Flood & River Surge Intelligence', 'jala-hydrology-map'],
+    ['agni', 'अग्नि (AGNI) — Fire, Smoke & Thermal Intelligence', 'agni-fire-map'],
+    ['bhumi', 'भूमि (BHUMI) — Geotechnical Slope & Landslide Intelligence', 'bhumi-landslide-map'],
+    ['vayu', 'वायु (VAYU) — Air Quality, Smoke & Gas Intelligence', 'vayu-air-map'],
+    ['akasha', 'आकाश (AKASHA) — Atmospheric & Severe Weather Intelligence', 'akasha-weather-map'],
   ];
-  for (const [path, heading] of domains) {
+  for (const [path, heading, mapTestId] of domains) {
     await page.goto(`/live/${path}`);
     await expect(page.getByRole('heading', { name: heading })).toBeVisible();
     await expect(page.getByText('Operational layers')).toBeVisible();
     await expect(page.getByText(/Data limitation:/)).toBeVisible();
+    await expect(page.getByTestId(mapTestId)).toBeVisible();
   }
 });
 
@@ -95,6 +96,16 @@ test('security centre reports key configuration and audit-chain state',async({pa
 test('dataset manager exposes validation and model abstention',async({page})=>{await login(page);await openNavItem(page,'Dataset Manager');await expect(page.getByRole('heading',{name:'Dataset Manager'})).toBeVisible();await expect(page.getByText('Dataset validation')).toBeVisible();await expect(page.getByText('Model registry')).toBeVisible();await expect(page.getByText(/models ABSTAIN/i)).toBeVisible()});
 test('event history exposes tamper-evident disaster memory',async({page})=>{await login(page);await openNavItem(page,'Event History');await expect(page.getByText('Disaster Memory & Black Box')).toBeVisible();await expect(page.getByText(/checksum chain VALID/i)).toBeVisible();await expect(page.getByText(/not immutable storage/i)).toBeVisible()});
 test('scenario lab labels manifest-only simulation isolation',async({page})=>{await login(page);await openNavItem(page,'Simulator');await expect(page.getByText('Scenario Laboratory + Chaos Laboratory')).toBeVisible();await expect(page.getByText(/SIMULATION-only run manifests/i)).toBeVisible();await expect(page.getByText(/execution engine is not yet implemented/i)).toBeVisible()});
-test('reports expose evidence-backed recovery safety',async({page})=>{await login(page);await openNavItem(page,'Reports & Export');await expect(page.getByText('Recovery Intelligence')).toBeVisible();await expect(page.getByText(/PENDING_HUMAN_VERIFICATION/i)).toBeVisible();await expect(page.getByText(/never issues an automatic all-clear/i)).toBeVisible()});
+test('reports expose evidence-backed recovery safety and authenticated CSV export', async ({ page }) => {
+  await login(page);
+  await openNavItem(page, 'Reports & Export');
+  await expect(page.getByText('Recovery Intelligence')).toBeVisible();
+  await expect(page.getByText(/PENDING_HUMAN_VERIFICATION/i)).toBeVisible();
+  await expect(page.getByText(/never issues an automatic all-clear/i)).toBeVisible();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export Telemetry CSV' }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(/\.csv$/i);
+});
 test('copilot UI states persisted-evidence grounding contract',async({page})=>{await login(page);await openNavItem(page,'AI Intelligence');await expect(page.getByText('PRAHARI Copilot 2.0 Grounding Contract')).toBeVisible();await expect(page.getByText(/cite internal evidence IDs/i)).toBeVisible();await expect(page.getByText(/instead of inventing telemetry/i)).toBeVisible()});
 test('readiness exposes unverified DDQI safety case',async({page})=>{await login(page);await openNavItem(page,'System Readiness');await expect(page.getByText('System Safety Case + DDQI')).toBeVisible();await expect(page.getByText(/DDQI 0.*UNVERIFIED/i)).toBeVisible();await expect(page.getByText(/AUTHORITATIVE_DATASETS_NOT_CONFIGURED/i)).toBeVisible()});

@@ -49,9 +49,9 @@ export const MapPage: React.FC = () => {
             className="bg-bg-surface border border-border-subtle rounded px-2.5 py-1 text-xs text-text-secondary focus:outline-none"
           >
             <option value="ALL">All Hazards</option>
-            <option value="FLOOD">JALA (Flood)</option>
-            <option value="FIRE">AGNI (Fire)</option>
-            <option value="LANDSLIDE">BHUMI (Landslide)</option>
+            <option value="FLOOD">जल (JALA) · Flood</option>
+            <option value="FIRE">अग्नि (AGNI) · Fire</option>
+            <option value="LANDSLIDE">भूमि (BHUMI) · Landslide</option>
           </select>
 
           <select

@@ -15,7 +15,7 @@ const domains = [
 describe('PanchaBhoothaOverview', () => {
   it('renders all five domains and provenance badges', () => {
     render(<PanchaBhoothaOverview domains={domains as any} />);
-    for (const name of ['JALA', 'AGNI', 'BHUMI', 'VAYU', 'AKASHA']) {
+    for (const name of ['जल (JALA)', 'अग्नि (AGNI)', 'भूमि (BHUMI)', 'वायु (VAYU)', 'आकाश (AKASHA)']) {
       expect(screen.getByText(name)).toBeInTheDocument();
     }
     for (const mode of ['REAL', 'SIMULATION', 'REPLAY', 'PLANNED', 'EXTERNAL DATA']) {

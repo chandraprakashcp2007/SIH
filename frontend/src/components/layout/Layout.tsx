@@ -20,6 +20,16 @@ export const Layout: React.FC = () => {
     setMobileNavOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    const handleAuthRequired = () => {
+      localStorage.removeItem('prahari_token');
+      localStorage.removeItem('prahari_user');
+      navigate('/login', { replace: true });
+    };
+    window.addEventListener('prahari:auth-required', handleAuthRequired);
+    return () => window.removeEventListener('prahari:auth-required', handleAuthRequired);
+  }, [navigate]);
+
   const loadSummary = async () => {
     try {
       const data = await fetchSystemSummary();
