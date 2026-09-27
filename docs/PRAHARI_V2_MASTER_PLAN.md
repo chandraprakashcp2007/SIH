@@ -92,7 +92,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | 10 | Offline queue, continuity, adaptive network/energy policies | Implemented: persisted checksum-idempotent queue and acknowledgements, derived continuity modes, transport capability registry, adaptive network/energy policies, typed events and stale-cache UI labels |
 | 11 | Signed telemetry, replay defense, security centre, audit chain | Implemented: canonical HMAC envelope verification, server-configured key status, persisted unique nonces, persisted REAL-sequence replay rejection before operational mutation, typed rejection events, secret non-disclosure tests, verifiable hash chain and Security Event Centre |
 | 12 | Dataset manager, model registry, drift/abstention | Implemented: persisted dataset manifest validation, model validation metadata, drift/OOD assessments and mandatory abstention for unvalidated, insufficient or OOD states; no scientific validation claimed |
-| 13 | Disaster memory, fingerprints and immutable black-box replay | replay cannot write operational state |
+| 13 | Disaster memory, fingerprints and immutable black-box replay | Implemented: persisted evidence-linked disaster memories, deterministic fingerprints/similarity, verifiable append-only hash chain and REPLAY projections that never write operational telemetry |
 | 14 | Isolated deterministic Scenario Lab and Chaos Lab | simulation cannot strengthen REAL |
 | 15 | Recovery, damage evidence and evidence-backed reports | human verification and no auto all-clear |
 | 16 | Copilot 2.0 grounded evidence explanations | no fabricated evidence/claims |

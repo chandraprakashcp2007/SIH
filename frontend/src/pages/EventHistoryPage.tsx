@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { fetchAlerts } from '../services/api';
+import { fetchAlerts, fetchDisasterMemory } from '../services/api';
 import { History, ShieldAlert, ArrowRight, Clock, CheckCircle } from 'lucide-react';
 
 export const EventHistoryPage: React.FC = () => {
   const [events, setEvents] = useState<any[]>([]);
+  const [memory,setMemory]=useState<any>({events:[],chain:{valid:false}});
 
   useEffect(() => {
     fetchAlerts().then(setEvents).catch(console.error);
+    fetchDisasterMemory().then(setMemory).catch(()=>{});
   }, []);
 
   return (
@@ -21,6 +23,7 @@ export const EventHistoryPage: React.FC = () => {
           Audited lifecycle history of environmental hazard transitions, escalations, and operator mitigations.
         </p>
       </div>
+      <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle text-xs"><h2 className="font-bold">Disaster Memory & Black Box</h2><p className="text-text-muted mt-1">{memory.events.length} persisted memories • hash chain {memory.chain.valid ? 'VALID' : 'UNAVAILABLE'} • replay is isolated as REPLAY.</p></div>
 
       {/* Timeline List */}
       <div className="relative pl-6 border-l-2 border-border-subtle space-y-6">

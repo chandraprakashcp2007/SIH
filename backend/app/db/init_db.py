@@ -21,6 +21,7 @@ from backend.app.models.cap import CAPExport, DeliveryAttempt  # noqa: F401
 from backend.app.models.continuity import OutboundQueueItem, ContinuitySnapshot  # noqa: F401
 from backend.app.models.security import TelemetryNonce, SecurityEvent  # noqa: F401
 from backend.app.models.model_registry import DatasetManifest, ModelArtifact, DriftAssessment  # noqa: F401
+from backend.app.models.disaster_memory import DisasterMemory  # noqa: F401
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.audit import AuditLog

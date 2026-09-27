@@ -17,6 +17,7 @@ from backend.app.models.cap import CAPExport, DeliveryAttempt
 from backend.app.models.continuity import OutboundQueueItem, ContinuitySnapshot
 from backend.app.models.security import TelemetryNonce, SecurityEvent
 from backend.app.models.model_registry import DatasetManifest, ModelArtifact, DriftAssessment
+from backend.app.models.disaster_memory import DisasterMemory
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.sensor_trust import SensorTrustLog
@@ -53,6 +54,7 @@ __all__ = [
     "OutboundQueueItem", "ContinuitySnapshot",
     "TelemetryNonce", "SecurityEvent",
     "DatasetManifest", "ModelArtifact", "DriftAssessment",
+    "DisasterMemory",
     "RiskAssessment",
     "Alert",
     "SensorTrustLog",
