@@ -49,6 +49,8 @@ from backend.app.api.model_registry import router as model_registry_router
 from backend.app.api.disaster_memory import router as disaster_memory_router
 from backend.app.api.laboratory import router as laboratory_router
 from backend.app.api.recovery import router as recovery_router
+from backend.app.api.assurance import router as assurance_router
+from backend.app.api.stac import router as stac_router
 
 configure_logging()
 logger = logging.getLogger("prahari.main")
@@ -129,6 +131,8 @@ app.include_router(model_registry_router, prefix=settings.API_V1_STR, dependenci
 app.include_router(disaster_memory_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 app.include_router(laboratory_router, prefix=settings.API_V1_STR, dependencies=[Depends(require_roles("ADMIN"))])
 app.include_router(recovery_router, prefix=settings.API_V1_STR, dependencies=authenticated)
+app.include_router(assurance_router, prefix=settings.API_V1_STR, dependencies=authenticated)
+app.include_router(stac_router, prefix=settings.API_V1_STR, dependencies=authenticated)
 
 
 @app.get("/")

@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { CheckCircle2, RefreshCw, ShieldCheck, TriangleAlert } from 'lucide-react';
-import { fetchReadiness } from '../services/api';
+import { fetchReadiness, refreshAssurance } from '../services/api';
 
 export const SystemReadinessPage: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [assurance,setAssurance]=useState<any>(null);
   const load = useCallback(async () => {
     setLoading(true); setError(null);
-    try { setData(await fetchReadiness()); } catch (err: any) { setError(err.message || 'Readiness checks unavailable'); }
+    try { const [readiness,safety]=await Promise.all([fetchReadiness(),refreshAssurance()]);setData(readiness);setAssurance(safety); } catch (err: any) { setError(err.message || 'Readiness checks unavailable'); }
     finally { setLoading(false); }
   }, []);
   useEffect(() => { load(); }, [load]);
@@ -21,6 +22,7 @@ export const SystemReadinessPage: React.FC = () => {
       <div><h1 id="readiness-title" className="text-xl font-bold flex items-center gap-2"><ShieldCheck className="text-accent-info"/>System Readiness</h1><p className="text-xs text-text-muted mt-1">Live checks; no hardcoded green indicators.</p></div>
       <button onClick={load} className="px-3 py-2 border border-border-subtle bg-bg-surface text-xs flex items-center gap-2 hover:border-accent-info"><RefreshCw className="w-4 h-4"/>Run checks</button>
     </header>
+    <div className="mb-4 border border-border-subtle bg-bg-secondary p-4 text-xs"><h2 className="font-bold">System Safety Case + DDQI</h2><p className="mt-1 text-text-muted">DDQI {assurance?.ddqi ?? 'UNAVAILABLE'} • {assurance?.status ?? 'UNAVAILABLE'}</p><p className="mt-1 text-hazard-watch">{assurance?.blockers?.join(' • ')}</p></div>
     <div className={`mb-4 border-l-4 p-4 bg-bg-secondary ${data.overall_status === 'READY' ? 'border-hazard-normal' : 'border-hazard-warning'}`}>
       <div className="text-xs text-text-muted">OVERALL STATE</div><div className="font-mono font-bold">{data.overall_status}</div><div className="text-[11px] text-text-muted">Checked {new Date(data.checked_at).toLocaleString()}</div>
     </div>

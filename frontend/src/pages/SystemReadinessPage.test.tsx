@@ -4,10 +4,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { SystemReadinessPage } from './SystemReadinessPage';
 import * as api from '../services/api';
 
-vi.mock('../services/api', () => ({ fetchReadiness: vi.fn() }));
+vi.mock('../services/api', () => ({ fetchReadiness: vi.fn(), refreshAssurance: vi.fn() }));
 
 describe('SystemReadinessPage', () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(api.refreshAssurance).mockResolvedValue({ ddqi: 60, status: 'CONDITIONAL', blockers: ['AUTHORITATIVE_DATASETS_NOT_CONFIGURED'] });
+  });
 
   it('renders real check results and their semantic state', async () => {
     vi.mocked(api.fetchReadiness).mockResolvedValue({
@@ -17,6 +20,7 @@ describe('SystemReadinessPage', () => {
     render(<SystemReadinessPage />);
     expect(screen.getByText(/Checking backend/i)).toBeInTheDocument();
     expect(await screen.findByText('SQLite query succeeded')).toBeInTheDocument();
+    expect(screen.getByText(/DDQI 60.*CONDITIONAL/)).toBeInTheDocument();
     expect(screen.getAllByText('DEGRADED').length).toBeGreaterThan(0);
   });
 

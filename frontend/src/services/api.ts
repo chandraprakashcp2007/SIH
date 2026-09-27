@@ -111,6 +111,7 @@ export async function evaluateContinuity(payload:any){const r=await fetch(`${BAS
 export async function fetchSecurityCentre(){const [s,e,c]=await Promise.all([fetch(`${BASE_URL}/security/status`,{headers:getHeaders()}),fetch(`${BASE_URL}/security/events`,{headers:getHeaders()}),fetch(`${BASE_URL}/security/audit-chain/verify`,{headers:getHeaders()})]);if(!s.ok||!e.ok||!c.ok)throw new Error('Security centre unavailable');return {status:await s.json(),events:await e.json(),chain:await c.json()}}
 export async function fetchModelRegistry(){const [d,m]=await Promise.all([fetch(`${BASE_URL}/ml/datasets`,{headers:getHeaders()}),fetch(`${BASE_URL}/ml/models`,{headers:getHeaders()})]);if(!d.ok||!m.ok)throw new Error('Dataset/model registry unavailable');return {datasets:await d.json(),models:await m.json()}}
 export async function fetchDisasterMemory(){const [e,c]=await Promise.all([fetch(`${BASE_URL}/memory/events`,{headers:getHeaders()}),fetch(`${BASE_URL}/memory/black-box/verify`,{headers:getHeaders()})]);if(!e.ok||!c.ok)throw new Error('Disaster memory unavailable');return {events:await e.json(),chain:await c.json()}}
+export async function refreshAssurance(){const r=await fetch(`${BASE_URL}/assurance/refresh`,{method:'POST',headers:getHeaders()});if(!r.ok)throw new Error('Assurance dashboard unavailable');return r.json()}
 
 export async function fetchNode(id: string) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { headers: getHeaders() });

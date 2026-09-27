@@ -96,7 +96,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | 14 | Isolated deterministic Scenario Lab and Chaos Lab | Implemented: persisted deterministic seeded scenario/chaos runs with SIMULATION provenance and regression proof that faults cannot mutate or strengthen REAL operational state |
 | 15 | Recovery, damage evidence and evidence-backed reports | Implemented: persisted provenance-labelled damage evidence, explicit human verification state and evidence-ID-citing reports that never issue automatic all-clear |
 | 16 | Copilot 2.0 grounded evidence explanations | Implemented: read-only persisted-record grounding with internal evidence IDs and explicit abstention when telemetry, provider, prediction, route or delivery evidence is absent |
-| 17 | SensorThings subset, GeoJSON, STAC metadata, assurance/DDQI | interoperability contract tests pass |
+| 17 | SensorThings subset, GeoJSON, STAC metadata, assurance/DDQI | DONE: STAC METADATA_ONLY catalog, DDQI snapshot persistence, Safety Case with evidence IDs, System Readiness UI; 141 backend + 10 frontend + 32 Playwright tests pass |
 | 18 | Full regression, security, performance and E2E | all local acceptance gates pass |
 | 19 | Production migration/deploy/smoke | requires deployment credentials/permission and hardware/provider evidence |
 

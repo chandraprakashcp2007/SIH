@@ -24,6 +24,7 @@ from backend.app.models.model_registry import DatasetManifest, ModelArtifact, Dr
 from backend.app.models.disaster_memory import DisasterMemory  # noqa: F401
 from backend.app.models.laboratory import LaboratoryRun  # noqa: F401
 from backend.app.models.recovery import DamageEvidence, RecoveryReport  # noqa: F401
+from backend.app.models.assurance import AssuranceSnapshot  # noqa: F401
 from backend.app.models.risk import RiskAssessment
 from backend.app.models.alerts import Alert
 from backend.app.models.audit import AuditLog

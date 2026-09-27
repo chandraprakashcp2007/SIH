@@ -9,7 +9,7 @@ Status vocabulary: DONE, PARTIAL, NOT_CONFIGURED, PLANNED, BLOCKED. This file is
 | Provenance isolation | DONE | DONE | DONE | PARTIAL | DONE | DONE | DONE | PARTIAL | REAL/SIMULATION/EXTERNAL_DATA/REPLAY/PLANNED; UI coverage incomplete |
 | Canonical Observation | DONE | DONE | DONE | PLANNED | PARTIAL | DONE | DONE | PARTIAL | Legacy telemetry adapter persists per-property observations; physical field validation remains pending |
 | SensorThings subset | DONE | DONE | DONE | N/A | PARTIAL | DONE | DONE | PARTIAL | Read-only Things, Locations, Sensors, Datastreams and Observations mapping; not a complete SensorThings server |
-| Geospatial dataset registry | DONE | DONE | DONE | PARTIAL | PARTIAL | DONE | DONE | PARTIAL | Registry and GeoJSON feature store implemented; STAC expansion remains Phase 17 |
+| Geospatial dataset registry | DONE | DONE | DONE | PARTIAL | PARTIAL | DONE | DONE | PARTIAL | Registry and GeoJSON feature store implemented; STAC metadata catalog exposed as METADATA_ONLY |
 | JALA map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route and backend layers; river/basin/forecast datasets unavailable |
 | AGNI map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route; FIRMS remains NOT_CONFIGURED |
 | BHUMI map | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Dedicated route; DEM remains NOT_CONFIGURED |
@@ -37,4 +37,6 @@ Status vocabulary: DONE, PARTIAL, NOT_CONFIGURED, PLANNED, BLOCKED. This file is
 | Scenario + Chaos Laboratories | DONE | DONE | DONE | DONE | N/A | DONE | DONE | PARTIAL | Deterministic seeded run records and confined fault injection; explicit tests prove no REAL telemetry mutation or strengthening |
 | Recovery + damage | DONE | DONE | DONE | DONE | NOT_CONFIGURED | PARTIAL | DONE | PARTIAL | Persisted provenance-labelled damage evidence, mandatory human-verification state and evidence-ID-backed incident reports; never auto all-clear |
 | Copilot 2.0 | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Dedicated persisted-record grounding endpoint cites internal TEL/RISK evidence IDs and abstains with INSUFFICIENT_PERSISTED_EVIDENCE for unsupported telemetry/provider/prediction/route/delivery claims; paid provider not verified |
+| STAC metadata catalog | DONE | N/A | DONE | N/A | NOT_CONFIGURED | N/A | DONE | PARTIAL | STAC 1.0.0 catalog endpoint exposes dataset registry metadata only; explicitly METADATA_ONLY with no live-provider claim |
+| DDQI + Assurance | DONE | DONE | DONE | DONE | NOT_CONFIGURED | N/A | DONE | PARTIAL | Persisted DDQI snapshots with component dimensions, CONDITIONAL status, blocker tracking and Safety Case endpoint; production_ready=false when blockers remain |
 | Railway deployment | PARTIAL | PARTIAL | DONE | DONE | NOT_CONFIGURED | DONE | PARTIAL | BLOCKED | Requires deployment permission and production smoke test |
