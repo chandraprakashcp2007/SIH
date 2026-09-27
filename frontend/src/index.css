@@ -426,500 +426,621 @@
     animation: none !important;
   }
 }
-/* PRAHARI_REAL_CINEMATIC_LOGIN_START */
-.prahari-cinema-login {
+/* PRAHARI_NATIVE_LOGIN_V4_START */
+.prahari-native-login {
+  --hero-width: minmax(0, 1fr);
+  --auth-width: clamp(410px, 31vw, 560px);
+  background:
+    radial-gradient(circle at 42% 16%, rgba(0, 179, 255, .07), transparent 29%),
+    linear-gradient(135deg, #020812 0%, #04111f 47%, #020812 100%);
+}
+
+.prahari-native-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.prahari-native-hero {
+  background:
+    radial-gradient(circle at 64% 41%, rgba(0, 158, 232, .13), transparent 25%),
+    radial-gradient(circle at 76% 71%, rgba(0, 106, 181, .12), transparent 28%),
+    linear-gradient(130deg, #020915 0%, #061a2a 48%, #020a13 100%);
+  border-right: 1px solid rgba(72, 168, 222, .13);
   isolation: isolate;
-  background:
-    radial-gradient(circle at 35% 30%, rgba(0, 184, 255, .08), transparent 28%),
-    linear-gradient(135deg, #020812 0%, #03101d 48%, #020812 100%);
+  --px: 0px;
+  --py: 0px;
+  --npx: 0px;
+  --npy: 0px;
 }
 
-.prahari-cinema-stage {
-  width: 69%;
-  perspective: 1200px;
-  transform-style: preserve-3d;
-  background: #020812;
+.prahari-native-grid,
+.prahari-native-stars,
+.prahari-native-haze {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-.prahari-cinema-base {
-  width: 145vw;
-  height: 100%;
-  transform-origin: center center;
-  transition: transform 280ms cubic-bezier(.2,.7,.2,1);
-  will-change: transform;
-}
-
-.prahari-cinema-base img {
-  display: block;
-  height: 100%;
-  width: auto;
-  max-width: none;
-  user-select: none;
-  filter: saturate(1.08) contrast(1.04) brightness(.92);
-}
-
-.prahari-cinema-night {
-  background:
-    radial-gradient(circle at 58% 49%, transparent 0 26%, rgba(0,8,17,.03) 40%, rgba(0,6,13,.2) 74%),
-    linear-gradient(90deg, rgba(0,4,12,.02) 0%, transparent 62%, rgba(2,8,18,.88) 100%);
-}
-
-.prahari-cinema-grid {
-  opacity: .21;
+.prahari-native-grid {
+  z-index: 1;
+  opacity: .28;
   background-image:
-    linear-gradient(rgba(0, 213, 255, .11) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 213, 255, .08) 1px, transparent 1px);
-  background-size: 52px 52px;
-  mask-image: radial-gradient(ellipse at 52% 48%, #000 0%, rgba(0,0,0,.85) 48%, transparent 93%);
+    linear-gradient(rgba(49, 173, 228, .075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49, 173, 228, .06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 56% 48%, #000 0%, rgba(0,0,0,.9) 47%, transparent 94%);
 }
 
-.prahari-cinema-scanlines {
-  opacity: .14;
-  background: repeating-linear-gradient(
-    180deg,
-    rgba(255,255,255,.025) 0px,
-    rgba(255,255,255,.025) 1px,
-    transparent 1px,
-    transparent 4px
-  );
-  animation: prahari-scan-drift 12s linear infinite;
+.prahari-native-stars {
+  z-index: 1;
+  opacity: .56;
+  background-image:
+    radial-gradient(circle at 15% 21%, rgba(120,224,255,.65) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 37% 8%, rgba(120,224,255,.48) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 78% 14%, rgba(120,224,255,.55) 0 1.2px, transparent 1.8px),
+    radial-gradient(circle at 91% 32%, rgba(120,224,255,.4) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 68% 72%, rgba(120,224,255,.42) 0 1px, transparent 1.7px);
 }
 
-.prahari-cloud {
-  position: absolute;
-  border-radius: 999px;
-  pointer-events: none;
-  transition: transform 260ms cubic-bezier(.2,.7,.2,1);
-  will-change: transform;
+.prahari-native-haze {
+  z-index: 2;
+  border-radius: 50%;
+  filter: blur(55px);
   mix-blend-mode: screen;
+  opacity: .28;
 }
 
-.prahari-cloud::before,
-.prahari-cloud::after {
-  content: '';
+.prahari-native-haze-a {
+  left: 37%;
+  top: 18%;
+  right: 1%;
+  bottom: 37%;
+  background: rgba(15, 115, 218, .24);
+  animation: prahari-v4-haze 9s ease-in-out infinite alternate;
+}
+
+.prahari-native-haze-b {
+  left: 55%;
+  top: 56%;
+  right: -8%;
+  bottom: -8%;
+  background: rgba(36, 92, 186, .17);
+  animation: prahari-v4-haze 12s -4s ease-in-out infinite alternate-reverse;
+}
+
+.prahari-native-brand {
+  padding: clamp(28px, 3.7vw, 64px);
+  width: min(49%, 610px);
+}
+
+.prahari-native-logo {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(34,211,238,.22);
+  border-radius: 18px;
+  background: rgba(2, 14, 25, .55);
+  box-shadow:
+    0 0 28px rgba(34,211,238,.09),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter: blur(12px);
+}
+
+.prahari-native-capability {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 10px;
+  color: #a8c0d5;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.45;
+  letter-spacing: .04em;
+}
+
+.prahari-native-capability svg {
+  width: 50px;
+  height: 50px;
+  padding: 13px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+  background: rgba(2, 16, 29, .38);
+  box-shadow: 0 12px 35px rgba(0,0,0,.2);
+}
+
+.prahari-native-map-stage {
   position: absolute;
-  border-radius: inherit;
-  inset: -30%;
-  background:
-    radial-gradient(circle at 25% 55%, rgba(164,211,255,.28), transparent 31%),
-    radial-gradient(circle at 53% 32%, rgba(107,174,242,.2), transparent 34%),
-    radial-gradient(circle at 76% 61%, rgba(181,217,255,.22), transparent 29%);
-  filter: blur(26px);
-}
-
-.prahari-cloud-a {
-  width: 36vw;
-  height: 12vw;
-  right: -8vw;
-  top: 3vh;
-  opacity: .54;
-  animation: prahari-cloud-drift-a 16s ease-in-out infinite alternate;
-}
-
-.prahari-cloud-b {
-  width: 25vw;
-  height: 10vw;
-  left: 27vw;
-  top: 26vh;
-  opacity: .35;
-  animation: prahari-cloud-drift-b 20s ease-in-out infinite alternate;
-}
-
-.prahari-cloud-c {
-  width: 32vw;
-  height: 11vw;
-  left: 42vw;
-  bottom: -1vh;
-  opacity: .46;
-  animation: prahari-cloud-drift-a 18s -7s ease-in-out infinite alternate-reverse;
-}
-
-.prahari-ocean-zone {
-  position: absolute;
-  left: 43%;
-  right: -6%;
-  bottom: -7%;
-  height: 48%;
+  z-index: 5;
+  left: 31%;
+  top: 3%;
+  width: 68%;
+  height: 94%;
   pointer-events: none;
-  overflow: hidden;
-  transition: transform 260ms cubic-bezier(.2,.7,.2,1);
-  mask-image: radial-gradient(ellipse at center, #000 0 42%, transparent 79%);
+  transform-style: preserve-3d;
 }
 
-.prahari-ocean-shimmer {
+.prahari-native-india {
+  position: absolute;
+  z-index: 5;
+  left: 12%;
+  top: 5%;
+  width: 67%;
+  height: 86%;
+  overflow: visible;
+  filter:
+    drop-shadow(0 20px 50px rgba(0,0,0,.42))
+    drop-shadow(0 0 18px rgba(0,190,255,.11));
+  transform: translate3d(var(--px), var(--py), 0);
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+
+.prahari-india-shape {
+  opacity: .96;
+}
+
+.prahari-india-internal path {
+  fill: none;
+  stroke: rgba(55, 173, 222, .16);
+  stroke-width: 1;
+}
+
+.prahari-rain-cell {
+  mix-blend-mode: screen;
+  opacity: .74;
+  animation: prahari-v4-rain 5.5s ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.prahari-rain-cell-1 { animation-delay: -1.2s; }
+.prahari-rain-cell-2 { animation-delay: -2.6s; }
+.prahari-rain-cell-3 { animation-delay: -3.7s; }
+
+.prahari-svg-alert {
+  animation: prahari-v4-alert-float 4s ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.prahari-svg-alert-ring {
+  fill: rgba(255, 50, 33, .04);
+  stroke: rgba(255, 78, 55, .7);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: prahari-v4-alert-ring 2.3s ease-out infinite;
+}
+
+.prahari-svg-alert-core {
+  fill: #df2f22;
+  stroke: rgba(255,237,220,.92);
+  stroke-width: 1.7;
+  filter: drop-shadow(0 0 7px rgba(255,51,38,.72));
+}
+
+.prahari-svg-alert text {
+  fill: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.prahari-native-radar {
+  position: absolute;
+  z-index: 3;
+  left: 35%;
+  top: 24%;
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: .55;
+  transform: translate3d(var(--npx), var(--npy), 0);
+  transition: transform 260ms cubic-bezier(.2,.7,.2,1);
+}
+
+.prahari-native-radar-ring {
+  position: absolute;
+  border: 1px solid rgba(43, 208, 255, .17);
+  border-radius: 50%;
+}
+
+.prahari-native-radar-ring.ring-1 { inset: 4%; }
+.prahari-native-radar-ring.ring-2 { inset: 24%; }
+.prahari-native-radar-ring.ring-3 { inset: 42%; }
+
+.prahari-native-radar-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 318deg, rgba(34,211,238,.22) 348deg, transparent 360deg);
+  mask-image: radial-gradient(circle, #000 0 72%, transparent 74%);
+  animation: prahari-v4-radar 8s linear infinite;
+}
+
+.prahari-native-cyclone {
+  position: absolute;
+  z-index: 8;
+  left: 61%;
+  top: 56%;
+  width: 26%;
+  aspect-ratio: 1;
+  transform: translate3d(var(--npx), var(--npy), 0);
+  transition: transform 260ms cubic-bezier(.2,.7,.2,1);
+  filter: drop-shadow(0 0 32px rgba(255,58,30,.15));
+}
+
+.cyclone-arm {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      from 20deg,
+      transparent 0 31deg,
+      rgba(31,175,255,.04) 54deg,
+      rgba(255,212,70,.21) 90deg,
+      rgba(255,75,35,.64) 120deg,
+      transparent 158deg,
+      rgba(0,161,255,.1) 229deg,
+      transparent 278deg
+    );
+  mask-image: radial-gradient(circle, transparent 0 21%, #000 27% 60%, transparent 75%);
+  animation: prahari-v4-cyclone 13s linear infinite;
+}
+
+.cyclone-arm-b {
+  inset: 0;
+  opacity: .65;
+  filter: blur(7px);
+  animation-duration: 18s;
+  animation-direction: reverse;
+}
+
+.cyclone-arm-c {
+  inset: 19%;
+  opacity: .8;
+  animation-duration: 8s;
+}
+
+.cyclone-eye {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #ffe08b;
+  box-shadow:
+    0 0 0 5px rgba(255,78,38,.2),
+    0 0 18px rgba(255,67,34,.9),
+    0 0 38px rgba(255,67,34,.45);
+  animation: prahari-v4-eye 2.1s ease-in-out infinite;
+}
+
+.prahari-native-ocean {
+  position: absolute;
+  z-index: 4;
+  left: 42%;
+  right: -3%;
+  bottom: 0;
+  height: 42%;
+  overflow: hidden;
+  opacity: .7;
+  mask-image: radial-gradient(ellipse at center, #000 0 45%, transparent 83%);
+}
+
+.prahari-native-ocean::before {
+  content: '';
   position: absolute;
   inset: 0;
   background:
     repeating-linear-gradient(
-      112deg,
-      transparent 0 20px,
-      rgba(0,190,255,.055) 21px 22px,
-      transparent 23px 42px
+      115deg,
+      transparent 0 24px,
+      rgba(21,181,255,.07) 25px 26px,
+      transparent 27px 49px
     ),
-    radial-gradient(ellipse at 57% 55%, rgba(0,184,255,.18), transparent 58%);
-  animation: prahari-water-shimmer 9s linear infinite;
-  filter: blur(.2px);
+    radial-gradient(ellipse at 52% 57%, rgba(0,140,222,.12), transparent 58%);
+  animation: prahari-v4-water 9s linear infinite;
 }
 
-.prahari-ocean-wave {
+.ocean-line {
   position: absolute;
-  left: 17%;
-  width: 76%;
-  height: 17%;
+  left: 7%;
+  width: 84%;
+  height: 22%;
   border-radius: 50%;
-  border-top: 1px solid rgba(0,213,255,.24);
-  box-shadow: 0 -5px 25px rgba(0,174,255,.08);
-  animation: prahari-wave 5s ease-in-out infinite alternate;
+  border-top: 1px solid rgba(62,213,255,.2);
+  animation: prahari-v4-wave 5s ease-in-out infinite alternate;
 }
+.ocean-line-a { top: 31%; transform: rotate(-8deg); }
+.ocean-line-b { top: 49%; transform: rotate(7deg) scale(.86); animation-delay: -1.9s; }
+.ocean-line-c { top: 67%; transform: rotate(-4deg) scale(.68); animation-delay: -3.3s; }
 
-.prahari-ocean-wave-one { top: 47%; transform: rotate(-7deg); }
-.prahari-ocean-wave-two { top: 60%; transform: rotate(9deg) scale(.84); animation-delay: -2.5s; }
-
-.prahari-cyclone {
+.prahari-native-cloud {
   position: absolute;
-  left: 55%;
-  top: 43%;
-  width: 18vw;
-  max-width: 330px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  transition: transform 260ms cubic-bezier(.2,.7,.2,1);
-  animation: prahari-cyclone-float 7s ease-in-out infinite alternate;
-  filter: drop-shadow(0 0 35px rgba(255,51,32,.24));
-  pointer-events: none;
-}
-
-.prahari-cyclone-arm {
-  position: absolute;
-  inset: 8%;
-  border-radius: 50%;
-  background:
-    conic-gradient(
-      from 12deg,
-      transparent 0 15deg,
-      rgba(0,155,255,.02) 40deg,
-      rgba(255,204,52,.21) 80deg,
-      rgba(255,64,30,.48) 112deg,
-      transparent 150deg,
-      rgba(0,162,255,.13) 212deg,
-      transparent 270deg
-    );
-  mask-image: radial-gradient(circle, transparent 0 18%, #000 25% 53%, transparent 73%);
-  animation: prahari-cyclone-spin 14s linear infinite;
-}
-
-.prahari-cyclone-arm-two {
-  inset: 0;
-  opacity: .72;
-  filter: blur(7px);
-  animation-duration: 20s;
-  animation-direction: reverse;
-}
-
-.prahari-cyclone-eye {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 13%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: #fff1ae;
-  box-shadow:
-    0 0 0 5px rgba(255,83,43,.2),
-    0 0 20px rgba(255,84,40,.95),
-    0 0 48px rgba(255,50,25,.68);
-  animation: prahari-eye-pulse 2.4s ease-in-out infinite;
-}
-
-.prahari-satellite-wrap {
-  position: absolute;
-  right: 16%;
-  top: 6%;
-  width: 80px;
-  height: 80px;
-  transition: transform 260ms cubic-bezier(.2,.7,.2,1);
-  animation: prahari-satellite-float 5.8s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-
-.prahari-satellite-icon {
-  position: absolute;
-  inset: 16px;
-  width: 48px;
-  height: 48px;
-  color: #7dd3fc;
-  filter: drop-shadow(0 0 8px rgba(0,204,255,.8));
-  transform: rotate(22deg);
-}
-
-.prahari-satellite-halo {
-  position: absolute;
-  inset: 20%;
-  border-radius: 50%;
-  background: rgba(0,198,255,.24);
-  filter: blur(12px);
-  animation: prahari-halo 2.8s ease-in-out infinite;
-}
-
-.prahari-satellite-beam,
-.prahari-satellite-beam-core {
-  position: absolute;
-  right: 13%;
-  top: 11%;
-  width: 30vw;
-  height: 58vh;
-  transform-origin: top right;
-  clip-path: polygon(100% 0, 100% 8%, 12% 100%, 0 100%);
-  pointer-events: none;
-}
-
-.prahari-satellite-beam {
-  background: linear-gradient(132deg, rgba(0,205,255,.19), rgba(0,153,255,.055) 48%, transparent 72%);
-  filter: blur(5px);
+  z-index: 10;
+  border-radius: 999px;
+  opacity: .33;
   mix-blend-mode: screen;
-  animation: prahari-beam-sweep 7s ease-in-out infinite alternate;
+  filter: blur(32px);
+  background:
+    radial-gradient(circle at 25% 55%, rgba(177,216,255,.35), transparent 30%),
+    radial-gradient(circle at 53% 35%, rgba(76,148,218,.24), transparent 34%),
+    radial-gradient(circle at 76% 62%, rgba(180,218,255,.25), transparent 31%);
 }
 
-.prahari-satellite-beam-core {
-  width: 23vw;
-  right: 16%;
-  background: linear-gradient(132deg, rgba(130,235,255,.27), rgba(0,173,255,.04) 48%, transparent 70%);
-  opacity: .45;
-  animation: prahari-beam-pulse 3.2s ease-in-out infinite;
+.prahari-native-cloud.cloud-a {
+  width: 45%;
+  height: 13%;
+  right: -9%;
+  top: 10%;
+  animation: prahari-v4-cloud-a 16s ease-in-out infinite alternate;
 }
 
-.prahari-radar-disc {
+.prahari-native-cloud.cloud-b {
+  width: 34%;
+  height: 12%;
+  left: 43%;
+  top: 36%;
+  opacity: .22;
+  animation: prahari-v4-cloud-b 19s ease-in-out infinite alternate;
+}
+
+.prahari-native-cloud.cloud-c {
+  width: 44%;
+  height: 14%;
+  right: -4%;
+  bottom: 1%;
+  opacity: .29;
+  animation: prahari-v4-cloud-a 18s -6s ease-in-out infinite alternate-reverse;
+}
+
+.prahari-native-satellite {
   position: absolute;
-  left: 36%;
-  top: 20%;
-  width: 33vw;
-  max-width: 580px;
+  z-index: 15;
+  right: 8%;
+  top: 5%;
+  width: clamp(44px, 4.2vw, 76px);
   aspect-ratio: 1;
-  border-radius: 50%;
+  color: #71d9ff;
+  filter: drop-shadow(0 0 10px rgba(0,202,255,.68));
+  transform: translate3d(var(--px), var(--py), 0) rotate(20deg);
   transition: transform 260ms cubic-bezier(.2,.7,.2,1);
+  animation: prahari-v4-satellite 6s ease-in-out infinite alternate;
+}
+
+.prahari-native-beam,
+.prahari-native-beam-core {
+  position: absolute;
+  z-index: 7;
+  right: 7%;
+  top: 10%;
+  width: 34%;
+  height: 56%;
+  clip-path: polygon(100% 0, 100% 8%, 5% 100%, 0 94%);
+  transform-origin: top right;
   pointer-events: none;
+  mix-blend-mode: screen;
 }
 
-.prahari-radar-ring {
-  position: absolute;
-  border: 1px solid rgba(0,211,255,.14);
-  border-radius: 50%;
-  inset: 10%;
-}
-.prahari-radar-ring-two { inset: 26%; border-color: rgba(0,211,255,.19); }
-.prahari-radar-ring-three { inset: 40%; border-color: rgba(0,211,255,.24); }
-
-.prahari-radar-sector {
-  position: absolute;
-  inset: 5%;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, transparent 0 320deg, rgba(0,211,255,.2) 349deg, transparent 360deg);
-  mask-image: radial-gradient(circle, #000 0 72%, transparent 74%);
-  animation: prahari-radar-spin 8s linear infinite;
+.prahari-native-beam {
+  background: linear-gradient(137deg, rgba(90,222,255,.18), rgba(0,154,255,.05) 48%, transparent 70%);
+  filter: blur(5px);
+  animation: prahari-v4-beam 7s ease-in-out infinite alternate;
 }
 
-.prahari-alert-beacon {
-  position: absolute;
-  width: 54px;
-  height: 54px;
-  margin: -27px 0 0 -27px;
-  pointer-events: none;
-  transition: transform 260ms cubic-bezier(.2,.7,.2,1);
-  animation: prahari-alert-float 4s ease-in-out infinite alternate;
+.prahari-native-beam-core {
+  right: 10%;
+  width: 25%;
+  background: linear-gradient(137deg, rgba(186,242,255,.2), rgba(0,178,255,.035) 52%, transparent 74%);
+  animation: prahari-v4-beam-core 3.1s ease-in-out infinite;
 }
 
-.prahari-alert-core {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 2;
+.prahari-native-domains {
   display: grid;
-  width: 28px;
-  height: 28px;
-  transform: translate(-50%, -50%);
-  place-items: center;
-  border: 2px solid rgba(255,225,206,.95);
-  border-radius: 50%;
-  background: rgba(214,36,24,.96);
-  color: white;
-  font-size: 16px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 28px);
+  margin-left: clamp(28px, 3.7vw, 64px);
+  margin-right: clamp(28px, 3.7vw, 64px);
+  margin-bottom: clamp(24px, 3.2vw, 50px);
+  padding-top: 16px;
+  border-top: 1px solid rgba(113, 163, 202, .22);
+}
+
+.prahari-native-domain {
+  min-width: 0;
+  color: #7894af;
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.prahari-native-domain .domain-id {
+  margin-bottom: 6px;
+  color: #7dd3fc;
+  font-size: 10px;
   font-weight: 900;
-  box-shadow:
-    0 0 10px rgba(255,63,36,.9),
-    0 0 25px rgba(255,34,22,.65);
+  letter-spacing: .04em;
 }
 
-.prahari-alert-ring {
-  position: absolute;
-  inset: 8%;
-  border: 1px solid rgba(255,70,50,.8);
-  border-radius: 50%;
-  animation: prahari-alert-ring 2.5s ease-out infinite;
-}
+.prahari-native-domain.domain-agni .domain-id { color: #fb923c; }
+.prahari-native-domain.domain-bhumi .domain-id { color: #34d399; }
+.prahari-native-domain.domain-vayu .domain-id { color: #facc15; }
+.prahari-native-domain.domain-akasha .domain-id { color: #c084fc; }
 
-.prahari-alert-ring-b { animation-delay: -1.25s; }
-
-.prahari-energy-arc {
-  position: absolute;
-  border: 1px solid rgba(0,214,255,.18);
-  border-color: rgba(0,214,255,.18) transparent transparent transparent;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: prahari-arc-breathe 5s ease-in-out infinite;
-}
-.prahari-energy-arc-one { left: 32%; top: 21%; width: 38vw; height: 48vh; transform: rotate(13deg); }
-.prahari-energy-arc-two { left: 42%; top: 32%; width: 29vw; height: 38vh; transform: rotate(-22deg); animation-delay: -1.7s; }
-.prahari-energy-arc-three { left: 28%; top: 45%; width: 46vw; height: 35vh; transform: rotate(7deg); animation-delay: -3.1s; }
-
-.prahari-scene-depth {
+.prahari-native-auth-side {
   background:
-    radial-gradient(circle at 52% 42%, transparent 0 45%, rgba(0,0,0,.05) 62%, rgba(0,0,0,.28) 100%),
-    linear-gradient(90deg, transparent 0 75%, rgba(2,8,18,.42) 100%);
-  pointer-events: none;
+    radial-gradient(circle at 32% 24%, rgba(0,184,255,.06), transparent 31%),
+    linear-gradient(155deg, #020913 0%, #06111f 54%, #020812 100%);
 }
 
-.prahari-auth-card {
-  border-color: rgba(54, 102, 139, .9);
+.prahari-native-auth-card {
+  border-color: rgba(47, 89, 124, .88);
   background:
-    linear-gradient(155deg, rgba(7, 28, 48, .965), rgba(4, 18, 33, .985));
+    linear-gradient(155deg, rgba(8, 28, 47, .96), rgba(4, 17, 30, .985));
   box-shadow:
-    0 35px 100px rgba(0,0,0,.58),
-    0 0 45px rgba(0,183,255,.07),
+    0 40px 110px rgba(0,0,0,.54),
+    0 0 45px rgba(0,189,255,.045),
     inset 0 1px 0 rgba(255,255,255,.035);
-  backdrop-filter: blur(24px) saturate(115%);
-  animation: prahari-panel-breathe 6s ease-in-out infinite;
+  backdrop-filter: blur(22px) saturate(112%);
 }
 
-.prahari-auth-input {
-  border: 1px solid #355776;
-  background: rgba(5, 17, 29, .88);
+.prahari-native-input {
+  border: 1px solid #31516e;
+  background: rgba(4, 15, 26, .85);
   transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    background-color 180ms ease,
-    transform 180ms ease;
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
 }
 
-.prahari-auth-input:focus {
-  border-color: rgba(103,232,249,.8);
-  background: rgba(5,20,34,.97);
+.prahari-native-input:focus {
+  border-color: rgba(103,232,249,.72);
+  background: rgba(4,18,31,.98);
   box-shadow:
-    0 0 0 3px rgba(34,211,238,.08),
-    0 0 22px rgba(0,194,255,.08);
+    0 0 0 3px rgba(34,211,238,.07),
+    0 0 22px rgba(0,184,255,.055);
   transform: translateY(-1px);
 }
 
-.prahari-access-button {
-  border: 1px solid #ffd36b;
-  background: linear-gradient(90deg, #dfae43, #f6d981 50%, #dfa940);
-  box-shadow:
-    0 8px 28px rgba(225,175,63,.2),
-    inset 0 1px 0 rgba(255,255,255,.35);
-  transition:
-    transform 180ms ease,
-    filter 180ms ease,
-    box-shadow 180ms ease;
+.prahari-native-submit {
   position: relative;
   overflow: hidden;
+  border: 1px solid #f8d173;
+  background: linear-gradient(90deg, #dcae4a 0%, #f5d47d 51%, #dda944 100%);
+  box-shadow:
+    0 9px 28px rgba(224,174,60,.16),
+    inset 0 1px 0 rgba(255,255,255,.34);
+  transition:
+    transform 170ms ease,
+    filter 170ms ease,
+    box-shadow 170ms ease;
 }
 
-.prahari-access-button::after {
+.prahari-native-submit::after {
   content: '';
   position: absolute;
-  top: -70%;
-  left: -30%;
-  width: 20%;
-  height: 240%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent);
-  transform: rotate(22deg);
-  animation: prahari-button-shine 4.5s ease-in-out infinite;
+  top: -80%;
+  left: -35%;
+  width: 18%;
+  height: 260%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.58), transparent);
+  transform: rotate(20deg);
+  animation: prahari-v4-button-shine 4.8s ease-in-out infinite;
 }
 
-.prahari-access-button:hover:not(:disabled) {
+.prahari-native-submit:hover:not(:disabled) {
   transform: translateY(-1px);
-  filter: brightness(1.06);
+  filter: brightness(1.05);
   box-shadow:
-    0 12px 34px rgba(225,175,63,.3),
-    0 0 25px rgba(255,200,75,.12);
+    0 12px 34px rgba(224,174,60,.23),
+    0 0 22px rgba(255,205,94,.09);
 }
 
-.prahari-cinema-mobile {
+.prahari-mobile-atmosphere {
+  position: absolute;
+  inset: 0;
   background:
-    radial-gradient(circle at 50% 28%, rgba(0,192,255,.15), transparent 30%),
-    radial-gradient(circle at 18% 82%, rgba(22,89,183,.18), transparent 33%),
-    linear-gradient(145deg,#020914 0%,#06172a 58%,#020812 100%);
+    radial-gradient(circle at 50% 20%, rgba(0,184,255,.13), transparent 28%),
+    radial-gradient(circle at 20% 85%, rgba(37,80,160,.16), transparent 31%);
 }
 
-.prahari-mobile-radar {
+.prahari-mobile-atmosphere::after {
+  content: '';
   position: absolute;
   left: 50%;
-  top: 20%;
-  width: 78vw;
-  max-width: 420px;
+  top: 8%;
+  width: min(78vw, 430px);
   aspect-ratio: 1;
   transform: translateX(-50%);
+  border: 1px solid rgba(34,211,238,.09);
   border-radius: 50%;
-  border: 1px solid rgba(34,211,238,.12);
   box-shadow:
-    0 0 0 50px rgba(34,211,238,.015),
-    0 0 0 100px rgba(34,211,238,.01);
+    0 0 0 55px rgba(34,211,238,.012),
+    0 0 0 110px rgba(34,211,238,.008);
 }
 
-.prahari-mobile-radar::after {
-  content: '';
-  position: absolute;
-  inset: 4%;
-  border-radius: 50%;
-  background: conic-gradient(transparent 0 320deg, rgba(34,211,238,.16) 350deg, transparent 360deg);
-  animation: prahari-radar-spin 9s linear infinite;
+@keyframes prahari-v4-radar { to { transform: rotate(360deg); } }
+@keyframes prahari-v4-cyclone { to { transform: rotate(360deg); } }
+@keyframes prahari-v4-eye { 0%,100% { scale:.88; opacity:.82; } 50% { scale:1.14; opacity:1; } }
+@keyframes prahari-v4-rain { from { opacity:.48; scale:.94; } to { opacity:.86; scale:1.06; } }
+@keyframes prahari-v4-alert-ring { from { scale:.55; opacity:.82; } to { scale:1.9; opacity:0; } }
+@keyframes prahari-v4-alert-float { from { translate:0 -2px; } to { translate:0 3px; } }
+@keyframes prahari-v4-water { from { background-position:0 0,0 0; } to { background-position:170px 58px,0 0; } }
+@keyframes prahari-v4-wave { from { opacity:.22; margin-left:-12px; } to { opacity:.56; margin-left:15px; } }
+@keyframes prahari-v4-cloud-a { from { translate:-18px -6px; } to { translate:22px 10px; } }
+@keyframes prahari-v4-cloud-b { from { translate:16px 6px; } to { translate:-23px -8px; } }
+@keyframes prahari-v4-satellite { from { margin-top:-5px; } to { margin-top:8px; } }
+@keyframes prahari-v4-beam { from { transform:rotate(-3deg); opacity:.31; } to { transform:rotate(4deg); opacity:.82; } }
+@keyframes prahari-v4-beam-core { 0%,100% { opacity:.18; } 50% { opacity:.56; } }
+@keyframes prahari-v4-haze { from { scale:.92; opacity:.2; } to { scale:1.08; opacity:.34; } }
+@keyframes prahari-v4-button-shine { 0%,70% { left:-35%; opacity:0; } 78% { opacity:.68; } 100% { left:125%; opacity:0; } }
+
+@media (min-width: 1024px) {
+  .prahari-native-layout {
+    grid-template-columns: minmax(0, 1fr) var(--auth-width);
+  }
 }
 
-.prahari-mobile-cloud {
-  position: absolute;
-  left: -20%;
-  right: -20%;
-  bottom: 8%;
-  height: 35%;
-  background:
-    radial-gradient(ellipse at 25% 50%, rgba(73,144,204,.15), transparent 35%),
-    radial-gradient(ellipse at 70% 55%, rgba(90,132,199,.12), transparent 38%);
-  filter: blur(22px);
-  animation: prahari-cloud-drift-b 13s ease-in-out infinite alternate;
+@media (max-width: 1320px) and (min-width: 1024px) {
+  .prahari-native-brand {
+    width: 53%;
+    padding: 34px;
+  }
+
+  .prahari-native-domains {
+    margin-left: 34px;
+    margin-right: 34px;
+    gap: 12px;
+  }
+
+  .prahari-native-map-stage {
+    left: 35%;
+    width: 64%;
+  }
 }
 
-@keyframes prahari-radar-spin { to { transform: rotate(360deg); } }
-@keyframes prahari-scan-drift { to { background-position-y: 140px; } }
-@keyframes prahari-cloud-drift-a { from { margin-left: -14px; margin-top: -6px; } to { margin-left: 18px; margin-top: 9px; } }
-@keyframes prahari-cloud-drift-b { from { margin-left: 12px; margin-top: 5px; } to { margin-left: -20px; margin-top: -8px; } }
-@keyframes prahari-water-shimmer { from { background-position: 0 0, 0 0; } to { background-position: 170px 60px, 0 0; } }
-@keyframes prahari-wave { from { opacity: .22; translate: -10px -2px; } to { opacity: .58; translate: 14px 6px; } }
-@keyframes prahari-cyclone-spin { to { transform: rotate(360deg); } }
-@keyframes prahari-cyclone-float { from { margin-top: -4px; } to { margin-top: 8px; } }
-@keyframes prahari-eye-pulse { 0%,100% { scale: .88; opacity: .85; } 50% { scale: 1.14; opacity: 1; } }
-@keyframes prahari-satellite-float { from { margin-top: -5px; rotate: -1deg; } to { margin-top: 7px; rotate: 2deg; } }
-@keyframes prahari-halo { 0%,100% { opacity:.35; scale:.8; } 50% { opacity:.9; scale:1.25; } }
-@keyframes prahari-beam-sweep { from { transform: rotate(-3deg); opacity:.32; } to { transform: rotate(4deg); opacity:.9; } }
-@keyframes prahari-beam-pulse { 0%,100% { opacity:.22; } 50% { opacity:.62; } }
-@keyframes prahari-alert-ring { 0% { scale:.45; opacity:.9; } 100% { scale:1.8; opacity:0; } }
-@keyframes prahari-alert-float { from { margin-top: -2px; } to { margin-top: 3px; } }
-@keyframes prahari-arc-breathe { 0%,100% { opacity:.18; filter:blur(0); } 50% { opacity:.55; filter:blur(.2px); } }
-@keyframes prahari-panel-breathe { 0%,100% { box-shadow:0 35px 100px rgba(0,0,0,.58),0 0 38px rgba(0,183,255,.055),inset 0 1px 0 rgba(255,255,255,.035); } 50% { box-shadow:0 35px 100px rgba(0,0,0,.6),0 0 56px rgba(0,183,255,.09),inset 0 1px 0 rgba(255,255,255,.045); } }
-@keyframes prahari-button-shine { 0%,68% { left:-30%; opacity:0; } 76% { opacity:.7; } 100% { left:120%; opacity:0; } }
+@media (max-height: 760px) and (min-width: 1024px) {
+  .prahari-native-brand {
+    padding-top: 24px;
+  }
 
-@media (max-width: 1280px) {
-  .prahari-cinema-stage { width: 66%; }
-  .prahari-satellite-wrap { right: 11%; }
-  .prahari-cyclone { left: 53%; }
+  .prahari-native-brand .mt-10 {
+    margin-top: 1.15rem;
+  }
+
+  .prahari-native-brand .mt-8 {
+    margin-top: 1.25rem;
+  }
+
+  .prahari-native-domain {
+    font-size: 8px;
+  }
+
+  .prahari-native-domains {
+    margin-bottom: 18px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .prahari-native-auth-side {
+    min-height: 100dvh;
+  }
+
+  .prahari-native-auth-card {
+    max-width: 520px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .prahari-cinema-login *,
-  .prahari-cinema-login *::before,
-  .prahari-cinema-login *::after {
+  .prahari-native-login *,
+  .prahari-native-login *::before,
+  .prahari-native-login *::after {
     animation: none !important;
     transition-duration: .01ms !important;
   }
 }
-
-/* PRAHARI_REAL_CINEMATIC_LOGIN_END */
+/* PRAHARI_NATIVE_LOGIN_V4_END */
