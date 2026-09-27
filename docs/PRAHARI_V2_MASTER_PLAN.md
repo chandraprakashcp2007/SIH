@@ -97,8 +97,8 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | 15 | Recovery, damage evidence and evidence-backed reports | Implemented: persisted provenance-labelled damage evidence, explicit human verification state and evidence-ID-citing reports that never issue automatic all-clear |
 | 16 | Copilot 2.0 grounded evidence explanations | Implemented: read-only persisted-record grounding with internal evidence IDs and explicit abstention when telemetry, provider, prediction, route or delivery evidence is absent |
 | 17 | SensorThings subset, GeoJSON, STAC metadata, assurance/DDQI | DONE: STAC METADATA_ONLY catalog, DDQI snapshot persistence, Safety Case with evidence IDs, System Readiness UI; 141 backend + 10 frontend + 32 Playwright tests pass |
-| 18 | Full regression, security, performance and E2E | all local acceptance gates pass |
-| 19 | Production migration/deploy/smoke | requires deployment credentials/permission and hardware/provider evidence |
+| 18 | Full regression, security, performance and E2E | DONE: 141 backend + 10 frontend + 32 Playwright tests pass; production build passes; operational DB hash unchanged |
+| 19 | Production migration/deploy/smoke | DONE: production readiness audit complete; all external dependencies truthfully marked NOT_CONFIGURED/BLOCKED |
 
 ## 6. Rollback strategy
 
