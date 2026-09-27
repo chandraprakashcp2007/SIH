@@ -34,6 +34,7 @@ export const ReportsPage: React.FC = () => {
 
   return (
     <div className="p-4 space-y-4 max-w-7xl mx-auto select-text">
+      <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle text-xs"><h2 className="font-bold">Recovery Intelligence</h2><p className="text-text-muted mt-1">Incident reports cite persisted damage evidence IDs. Unverified evidence remains PENDING_HUMAN_VERIFICATION, and PRAHARI never issues an automatic all-clear.</p></div>
       {/* Header */}
       <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>

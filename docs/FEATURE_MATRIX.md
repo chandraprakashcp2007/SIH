@@ -35,6 +35,6 @@ Status vocabulary: DONE, PARTIAL, NOT_CONFIGURED, PLANNED, BLOCKED. This file is
 | Dataset manager + model registry | DONE | DONE | DONE | DONE | NOT_CONFIGURED | PARTIAL | DONE | PARTIAL | Persisted manifest validation, model validation evidence, drift/OOD assessments and mandatory abstention; no scientifically validated artifacts are configured |
 | Disaster memory + black box | DONE | DONE | DONE | DONE | NOT_CONFIGURED | DONE | DONE | PARTIAL | Deterministic hazard fingerprints, evidence-ID-linked similarity, verifiable hash chain and read-only REPLAY projection; no historical authoritative corpus configured |
 | Scenario + Chaos Laboratories | DONE | DONE | DONE | DONE | N/A | DONE | DONE | PARTIAL | Deterministic seeded run records and confined fault injection; explicit tests prove no REAL telemetry mutation or strengthening |
-| Recovery + damage | PLANNED | PLANNED | PLANNED | PLANNED | NOT_CONFIGURED | PLANNED | PLANNED | PLANNED | Phase 15 |
+| Recovery + damage | DONE | DONE | DONE | DONE | NOT_CONFIGURED | PARTIAL | DONE | PARTIAL | Persisted provenance-labelled damage evidence, mandatory human-verification state and evidence-ID-backed incident reports; never auto all-clear |
 | Copilot | DONE | DONE | DONE | DONE | PARTIAL | DONE | DONE | PARTIAL | Grounded/read-only; live paid provider not verified |
 | Railway deployment | PARTIAL | PARTIAL | DONE | DONE | NOT_CONFIGURED | DONE | PARTIAL | BLOCKED | Requires deployment permission and production smoke test |

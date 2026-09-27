@@ -94,7 +94,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | 12 | Dataset manager, model registry, drift/abstention | Implemented: persisted dataset manifest validation, model validation metadata, drift/OOD assessments and mandatory abstention for unvalidated, insufficient or OOD states; no scientific validation claimed |
 | 13 | Disaster memory, fingerprints and immutable black-box replay | Implemented: persisted evidence-linked disaster memories, deterministic fingerprints/similarity, verifiable append-only hash chain and REPLAY projections that never write operational telemetry |
 | 14 | Isolated deterministic Scenario Lab and Chaos Lab | Implemented: persisted deterministic seeded scenario/chaos runs with SIMULATION provenance and regression proof that faults cannot mutate or strengthen REAL operational state |
-| 15 | Recovery, damage evidence and evidence-backed reports | human verification and no auto all-clear |
+| 15 | Recovery, damage evidence and evidence-backed reports | Implemented: persisted provenance-labelled damage evidence, explicit human verification state and evidence-ID-citing reports that never issue automatic all-clear |
 | 16 | Copilot 2.0 grounded evidence explanations | no fabricated evidence/claims |
 | 17 | SensorThings subset, GeoJSON, STAC metadata, assurance/DDQI | interoperability contract tests pass |
 | 18 | Full regression, security, performance and E2E | all local acceptance gates pass |

@@ -10,3 +10,4 @@ Task 11 hardening: complete (base 4566c7d; tests: 128 backend, 10 frontend, prod
 Task 12: complete (base 84b0f2e; tests: 131 backend, 10 frontend, production build, 2 focused Playwright passed; dataset manifests and model/drift evidence persist, and unvalidated/OOD models abstain).
 Task 13: complete (base 6e7c3d7; tests: 133 backend, 10 frontend, production build, 2 focused Playwright passed; deterministic fingerprints, similarity and black-box chain persist; replay does not mutate REAL telemetry).
 Task 14: complete (base da7624f; tests: 135 backend, 10 frontend, production build, 2 focused Playwright passed; deterministic scenario/chaos runs remain SIMULATION-only and leave REAL state unchanged).
+Task 15: complete (base 96e0e2e; tests: 137 backend, 10 frontend, production build, 2 focused Playwright passed after correcting the nav label selector; reports cite persisted damage evidence and never auto all-clear).
