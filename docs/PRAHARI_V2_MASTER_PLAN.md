@@ -98,7 +98,7 @@ Each phase follows RED -> GREEN -> regression -> build -> relevant E2E -> docume
 | 16 | Copilot 2.0 grounded evidence explanations | Implemented: read-only persisted-record grounding with internal evidence IDs and explicit abstention when telemetry, provider, prediction, route or delivery evidence is absent |
 | 17 | SensorThings subset, GeoJSON, STAC metadata, assurance/DDQI | DONE: STAC METADATA_ONLY catalog, DDQI snapshot persistence, Safety Case with evidence IDs, System Readiness UI; 141 backend + 10 frontend + 32 Playwright tests pass |
 | 18 | Full regression, security, performance and E2E | DONE locally: 141 backend + 10 frontend + 32 desktop/mobile Playwright tests, production build, isolated telemetry/Copilot benchmarks, security and provenance gates pass; operational DB hash unchanged |
-| 19 | Production migration/deploy/smoke | DONE: production readiness audit complete; all external dependencies truthfully marked NOT_CONFIGURED/BLOCKED |
+| 19 | Production-readiness review | REVIEW COMPLETE / DEPLOYMENT BLOCKED: local evidence is complete, but Railway access, PostgreSQL migrations/backups, production secrets/TLS/observability, authoritative providers, validated models, official delivery and field hardware evidence remain external gates |
 
 ## 6. Rollback strategy
 
