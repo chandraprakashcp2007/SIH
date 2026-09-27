@@ -33,6 +33,7 @@ export const AiIntelligencePage: React.FC = () => {
 
   return (
     <div className="p-4 space-y-4 max-w-7xl mx-auto">
+      <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle text-xs"><h2 className="font-bold">PRAHARI Copilot 2.0 Grounding Contract</h2><p className="text-text-muted mt-1">Answers use persisted PRAHARI records only, cite internal evidence IDs, and return INSUFFICIENT_PERSISTED_EVIDENCE instead of inventing telemetry, providers, predictions, routes or delivery state.</p></div>
       {/* Header */}
       <div className="bg-bg-secondary p-4 rounded-lg border border-border-subtle">
         <h1 className="text-base font-bold text-text-primary flex items-center space-x-2">

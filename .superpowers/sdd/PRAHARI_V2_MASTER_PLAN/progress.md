@@ -11,3 +11,4 @@ Task 12: complete (base 84b0f2e; tests: 131 backend, 10 frontend, production bui
 Task 13: complete (base 6e7c3d7; tests: 133 backend, 10 frontend, production build, 2 focused Playwright passed; deterministic fingerprints, similarity and black-box chain persist; replay does not mutate REAL telemetry).
 Task 14: complete (base da7624f; tests: 135 backend, 10 frontend, production build, 2 focused Playwright passed; deterministic scenario/chaos runs remain SIMULATION-only and leave REAL state unchanged).
 Task 15: complete (base 96e0e2e; tests: 137 backend, 10 frontend, production build, 2 focused Playwright passed after correcting the nav label selector; reports cite persisted damage evidence and never auto all-clear).
+Task 16: complete (base 5887ee5; tests: 139 backend, 10 frontend, production build, 2 focused Playwright passed after correcting the nav label selector; Copilot cites persisted internal evidence IDs and abstains on unsupported operational claims).

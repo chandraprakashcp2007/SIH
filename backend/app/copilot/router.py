@@ -3,9 +3,10 @@ PRAHARI Copilot FastAPI Router
 Exposes REST and SSE endpoints for operational inquiries, sessions, feedback, and metrics.
 """
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, Query, status, Header
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, status, Header
 from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import desc,select
 
 from backend.app.core.database import get_db
 from backend.app.copilot.schemas import (
@@ -24,8 +25,27 @@ from backend.app.copilot.orchestrator import copilot_orchestrator
 from backend.app.copilot.session_store import session_store
 from backend.app.core.security import decode_access_token
 from backend.app.models.users import User
+from backend.app.models.telemetry import TelemetryRecord
+from backend.app.models.risk import RiskAssessment
 
 router = APIRouter(prefix="/copilot", tags=["PRAHARI Copilot"])
+
+@router.post("/grounded")
+async def grounded_copilot(payload:dict=Body(...),db:AsyncSession=Depends(get_db)):
+    query=str(payload.get("query","")).upper()
+    node_id=next((node for node in ("JALA-01","AGNI-02","BHUMI-03","VAYU-04","AKASHA-05") if node in query),None)
+    if not node_id:
+        return {"grounded":False,"answer":"INSUFFICIENT_PERSISTED_EVIDENCE","claims":[],"evidence_ids":[]}
+    telemetry=(await db.execute(select(TelemetryRecord).where(TelemetryRecord.node_id==node_id).order_by(desc(TelemetryRecord.timestamp)).limit(1))).scalar_one_or_none()
+    risk=(await db.execute(select(RiskAssessment).where(RiskAssessment.node_id==node_id).order_by(desc(RiskAssessment.timestamp)).limit(1))).scalar_one_or_none()
+    claims=[]
+    if telemetry:
+        evidence_id=f"TEL-{telemetry.id}";claims.append({"type":"TELEMETRY","evidence_id":evidence_id,"node_id":node_id,"timestamp":telemetry.timestamp,"source_mode":telemetry.source_mode,"metrics":telemetry.metrics})
+    if risk:
+        evidence_id=f"RISK-{risk.id}";claims.append({"type":"RISK","evidence_id":evidence_id,"node_id":node_id,"timestamp":risk.timestamp,"risk_band":risk.risk_band,"risk_score":risk.risk_score,"model_source":risk.model_source})
+    evidence_ids=[claim["evidence_id"] for claim in claims]
+    if not claims:return {"grounded":False,"answer":"INSUFFICIENT_PERSISTED_EVIDENCE","claims":[],"evidence_ids":[]}
+    return {"grounded":True,"answer":f"Found {len(claims)} persisted PRAHARI record(s) for {node_id}.","claims":claims,"evidence_ids":evidence_ids}
 
 
 async def get_optional_user_id(authorization: Optional[str] = Header(None)) -> str:
