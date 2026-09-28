@@ -159,7 +159,7 @@ export const NativeHazardMapBase: React.FC<Props> = ({ feature, layers, config }
   };
 
   return (
-    <div data-testid={config.testId} className={`native-hazard-map native-hazard-map-${config.modeClass} relative h-full min-h-[520px] overflow-hidden rounded-xl bg-[#050b14]`}>
+    <div data-testid={config.testId} className={`native-hazard-map native-hazard-map-${config.modeClass} relative h-full min-h-[520px] overflow-hidden rounded-xl bg-[#031412]`} style={{ '--domain-accent': config.accent } as React.CSSProperties}>
       <div ref={containerRef} className="absolute inset-0" />
       <div className={`native-domain-visual native-domain-visual-${config.modeClass}`} aria-hidden="true" />
 
@@ -170,7 +170,7 @@ export const NativeHazardMapBase: React.FC<Props> = ({ feature, layers, config }
       )}
 
       <div className="absolute left-3 top-3 z-[550] max-w-[70%] rounded-lg border border-white/10 bg-slate-950/80 px-3 py-2 backdrop-blur-xl">
-        <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500">Native hazard map</div>
+        <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-text-muted">Native hazard map</div>
         <div className="mt-0.5 text-xs font-bold text-white">{config.mapLabel}</div>
         <div className="mt-1 flex flex-wrap gap-1 text-[9px]">
           <span className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-slate-300">{props.provenance || 'UNKNOWN'}</span>

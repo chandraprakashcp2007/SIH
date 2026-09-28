@@ -35,7 +35,7 @@ export const SystemLogsPage: React.FC = () => {
   });
 
   return (
-    <div className="p-4 space-y-4 max-w-7xl mx-auto select-text">
+    <div className="command-page command-reveal p-3 lg:p-5 space-y-4 max-w-[1600px] mx-auto select-text">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-bg-secondary p-4 rounded-lg border border-border-subtle">
         <div>

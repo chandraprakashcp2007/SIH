@@ -70,7 +70,7 @@ export const ReportsPage: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-4 p-4 select-text">
+    <div className="command-page command-reveal mx-auto max-w-[1600px] space-y-4 p-3 lg:p-5 select-text">
       <div className="rounded-xl border border-border-subtle bg-bg-secondary p-4 text-xs">
         <h2 className="font-bold">Recovery Intelligence</h2>
         <p className="mt-1 text-text-muted">Incident reports cite persisted evidence. Unverified evidence remains PENDING_HUMAN_VERIFICATION, and PRAHARI never issues an automatic all-clear.</p>

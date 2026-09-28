@@ -12,7 +12,8 @@ async function login(page: any, username = 'admin') {
   await page.getByLabel('Username').fill(username);
   await page.locator('#login-password').fill('local-demo');
   await page.getByRole('button', { name: 'Access Command Centre' }).click();
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveURL(url => url.pathname === '/');
+  await expect(page.getByRole('heading', { name: 'Command Centre' }).last()).toBeVisible();
 }
 
 async function openNavItem(page: any, name: string) {
@@ -25,9 +26,9 @@ async function openNavItem(page: any, name: string) {
 
 test('login, readiness, Copilot and core navigation', async ({ page }) => {
   await login(page);
-  await expect(page.getByText('FLEET STATUS')).toBeVisible();
+  await expect(page.getByText('Fleet Status', { exact: true })).toBeVisible();
   await openNavItem(page, 'System Readiness');
-  await expect(page.getByRole('heading', { name: 'System Readiness' })).toBeVisible();
+  await expect(page.locator('#readiness-title')).toBeVisible();
   await page.getByLabel('Open PRAHARI Copilot').click();
   await page.getByLabel('Ask PRAHARI Copilot').fill('How is the system?');
   await page.getByLabel('Send message').click();
@@ -36,7 +37,7 @@ test('login, readiness, Copilot and core navigation', async ({ page }) => {
 
 test('admin can drive flood and recovery scenarios', async ({ page }) => {
   await login(page);
-  await openNavItem(page, 'Simulator');
+  await openNavItem(page, 'Scenario Lab');
   await page.getByRole('button', { name: 'Engage Flood Water Ramp' }).click();
   await expect(page.getByText(/FLOOD_RAMP|Flood Water Ramp/i).first()).toBeVisible();
   await page.getByRole('button', { name: /Reset/i }).first().click();
@@ -84,21 +85,22 @@ test('digital twin exposes uncertainty and blind spots separately', async ({ pag
   await login(page);
   await openNavItem(page, 'Digital Twin');
   await page.getByRole('button', { name: 'Refresh twin' }).click();
-  await expect(page.getByText('Confidence', { exact: false }).first()).toBeVisible();
-  await expect(page.getByText('Uncertainty', { exact: false }).first()).toBeVisible();
-  await expect(page.getByText('Blind spots:', { exact: false }).first()).toBeVisible();
+  const firstTwin = page.getByRole('article').first();
+  await expect(firstTwin.getByText('Confidence', { exact: false })).toBeVisible();
+  await expect(firstTwin.getByText(/^Uncertainty\s+\d/)).toBeVisible();
+  await expect(firstTwin.getByText('Blind spots:', { exact: false })).toBeVisible();
   await expect(page.getByText('NOT_CONFIGURED').first()).toBeVisible();
 });
 test('impact intelligence withholds exposure and safe-route claims',async({page})=>{await login(page);await openNavItem(page,'Impact & Evacuation');await page.getByRole('button',{name:'Evaluate current state'}).click();await expect(page.getByText('Population exposed: UNAVAILABLE')).toBeVisible();await expect(page.getByText('Guaranteed safe: NO')).toBeVisible();await expect(page.getByText('Verified zones: 0')).toBeVisible()});
 test('CAP centre distinguishes export capability from delivery integration',async({page})=>{await login(page);await openNavItem(page,'CAP Warning Centre');await expect(page.getByRole('heading',{name:'CAP 1.2 Warning Centre'})).toBeVisible();await expect(page.getByText('NOT_CONFIGURED').first()).toBeVisible();await expect(page.getByText(/no official NDMA\/SACHET connection/i)).toBeVisible()});
 test('continuity view labels unavailable transports and stale cache',async({page})=>{await login(page);await openNavItem(page,'Offline Continuity');await expect(page.getByText('LORA',{exact:true})).toBeVisible();await expect(page.getByText('PLANNED').first()).toBeVisible();await expect(page.getByText(/labeled CACHED and stale/i)).toBeVisible()});
-test('security centre reports key configuration and audit-chain state',async({page})=>{await login(page);await openNavItem(page,'Security Event Centre');await expect(page.getByRole('heading',{name:'Security Event Centre'})).toBeVisible();await expect(page.getByText('NOT_CONFIGURED')).toBeVisible();await expect(page.getByText('VALID')).toBeVisible();await expect(page.getByText(/never returned to this client/i)).toBeVisible()});
-test('dataset manager exposes validation and model abstention',async({page})=>{await login(page);await openNavItem(page,'Dataset Manager');await expect(page.getByRole('heading',{name:'Dataset Manager'})).toBeVisible();await expect(page.getByText('Dataset validation')).toBeVisible();await expect(page.getByText('Model registry')).toBeVisible();await expect(page.getByText(/models ABSTAIN/i)).toBeVisible()});
-test('event history exposes tamper-evident disaster memory',async({page})=>{await login(page);await openNavItem(page,'Event History');await expect(page.getByText('Disaster Memory & Black Box')).toBeVisible();await expect(page.getByText(/checksum chain VALID/i)).toBeVisible();await expect(page.getByText(/not immutable storage/i)).toBeVisible()});
-test('scenario lab labels manifest-only simulation isolation',async({page})=>{await login(page);await openNavItem(page,'Simulator');await expect(page.getByText('Scenario Laboratory + Chaos Laboratory')).toBeVisible();await expect(page.getByText(/SIMULATION-only run manifests/i)).toBeVisible();await expect(page.getByText(/execution engine is not yet implemented/i)).toBeVisible()});
+test('security centre reports key configuration and audit-chain state',async({page})=>{await login(page);await openNavItem(page,'Security Event Centre');await expect(page.getByRole('heading',{name:'Security Event Centre'})).toBeVisible();await expect(page.getByText('NOT CONFIGURED').first()).toBeVisible();await expect(page.getByText('VALID').first()).toBeVisible();await expect(page.getByText(/never returned to this client/i)).toBeVisible()});
+test('dataset manager exposes validation and model abstention',async({page})=>{await login(page);await openNavItem(page,'Dataset Manager');await expect(page.locator('#datasets-title')).toBeVisible();await expect(page.getByText('Dataset validation')).toBeVisible();await expect(page.getByText('Model registry')).toBeVisible();await expect(page.getByText(/models ABSTAIN/i)).toBeVisible()});
+test('event history exposes tamper-evident disaster memory',async({page})=>{await login(page);await openNavItem(page,'Disaster Memory');await expect(page.getByText('Disaster Memory & Black Box')).toBeVisible();await expect(page.getByText(/checksum chain VALID/i)).toBeVisible();await expect(page.getByText(/not immutable storage/i)).toBeVisible()});
+test('scenario lab labels manifest-only simulation isolation',async({page})=>{await login(page);await openNavItem(page,'Scenario Lab');await expect(page.getByText('Scenario Laboratory + Chaos Laboratory')).toBeVisible();await expect(page.getByText(/SIMULATION-only run manifests/i)).toBeVisible();await expect(page.getByText(/execution engine is not yet implemented/i)).toBeVisible()});
 test('reports expose evidence-backed recovery safety and authenticated CSV export', async ({ page }) => {
   await login(page);
-  await openNavItem(page, 'Reports & Export');
+  await openNavItem(page, 'Reports & Recovery');
   await expect(page.getByText('Recovery Intelligence')).toBeVisible();
   await expect(page.getByText(/PENDING_HUMAN_VERIFICATION/i)).toBeVisible();
   await expect(page.getByText(/never issues an automatic all-clear/i)).toBeVisible();
@@ -107,5 +109,5 @@ test('reports expose evidence-backed recovery safety and authenticated CSV expor
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toMatch(/\.csv$/i);
 });
-test('copilot UI states persisted-evidence grounding contract',async({page})=>{await login(page);await openNavItem(page,'AI Intelligence');await expect(page.getByText('PRAHARI Copilot 2.0 Grounding Contract')).toBeVisible();await expect(page.getByText(/cite internal evidence IDs/i)).toBeVisible();await expect(page.getByText(/instead of inventing telemetry/i)).toBeVisible()});
+test('copilot UI states persisted-evidence grounding contract',async({page})=>{await login(page);await openNavItem(page,'PRAHARI Copilot');await expect(page.getByText('PRAHARI Copilot 2.0 Grounding Contract')).toBeVisible();await expect(page.getByText(/cite internal evidence IDs/i)).toBeVisible();await expect(page.getByText(/instead of inventing telemetry/i)).toBeVisible()});
 test('readiness exposes unverified DDQI safety case',async({page})=>{await login(page);await openNavItem(page,'System Readiness');await expect(page.getByText('System Safety Case + DDQI')).toBeVisible();await expect(page.getByText(/DDQI 0.*UNVERIFIED/i)).toBeVisible();await expect(page.getByText(/AUTHORITATIVE_DATASETS_NOT_CONFIGURED/i)).toBeVisible()});

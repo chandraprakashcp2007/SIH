@@ -93,7 +93,7 @@ export const CommandCentre: React.FC = () => {
   const selectedNode = nodes.find((n) => n.id === selectedNodeId);
 
   return (
-    <div className="prahari-command-centre h-full flex flex-col p-3 lg:p-4 space-y-3 overflow-y-auto">
+    <div className="prahari-command-centre command-reveal h-full flex flex-col p-3 lg:p-4 space-y-3 overflow-y-auto">
       <div className="prahari-command-status shrink-0">
         {loadError && (
           <div className="mb-2 flex items-center justify-between gap-3 rounded-lg border border-hazard-warning/30 bg-hazard-warning/10 px-3 py-2 text-[11px] text-hazard-warning">

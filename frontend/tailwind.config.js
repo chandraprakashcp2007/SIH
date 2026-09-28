@@ -9,18 +9,18 @@ export default {
     extend: {
       colors: {
         bg: {
-          primary: '#07111F',
-          secondary: '#0B1726',
-          surface: '#102033',
-          elevated: '#14273C',
+          primary: '#020B0B',
+          secondary: '#051F20',
+          surface: '#0B2B26',
+          elevated: '#163832',
         },
         border: {
-          subtle: '#22364A',
-          active: '#27C7E8',
+          subtle: 'rgba(142, 182, 155, 0.18)',
+          active: '#8EB69B',
         },
         accent: {
-          info: '#27C7E8',
-          ai: '#8B5CF6',
+          info: '#8EB69B',
+          ai: '#A9D6B5',
         },
         hazard: {
           normal: '#22C55E',
@@ -30,9 +30,9 @@ export default {
           offline: '#64748B',
         },
         text: {
-          primary: '#F1F5F9',
-          secondary: '#9FB0C3',
-          muted: '#64748B',
+          primary: '#DAF1DE',
+          secondary: '#A9D6B5',
+          muted: '#6F9981',
         }
       },
       fontFamily: {

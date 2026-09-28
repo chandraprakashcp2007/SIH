@@ -70,16 +70,17 @@ export const Layout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen bg-bg-primary text-text-primary overflow-hidden">
+    <div className="command-workspace flex h-screen w-screen bg-bg-primary text-text-primary overflow-hidden">
+      <a href="#command-main" className="command-skip-link">Skip to command workspace</a>
       {/* Left Sidebar */}
       {mobileNavOpen && <button aria-label="Close navigation" onClick={() => setMobileNavOpen(false)} className="fixed inset-0 bg-black/60 z-40 md:hidden" />}
-      <div className={`${mobileNavOpen ? 'block' : 'hidden'} fixed inset-y-0 left-0 z-50 md:static md:block`}>
+      <div className={`${mobileNavOpen ? 'block' : 'hidden'} fixed inset-y-0 left-0 z-50 md:static md:block shadow-2xl md:shadow-none`}>
         <Sidebar collapsed={collapsed} onToggleCollapse={() => setCollapsed(!collapsed)} />
       </div>
 
       {/* Main Column */}
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-        <button aria-label="Open navigation" onClick={() => setMobileNavOpen(true)} className="md:hidden absolute top-3 left-3 z-40 p-2 bg-bg-surface border border-border-subtle"><Menu className="w-4 h-4" /></button>
+        <button aria-label="Open navigation" onClick={() => setMobileNavOpen(true)} className="command-icon-button md:hidden absolute top-[17px] left-3 z-40"><Menu className="w-4 h-4" /></button>
         {/* Top Navbar */}
         <Navbar summary={summary} onLogout={handleLogout} />
 
@@ -102,7 +103,7 @@ export const Layout: React.FC = () => {
         )}
 
         {/* Dynamic Workspace Container */}
-        <main className="flex-1 overflow-y-auto min-h-0 bg-bg-primary">
+        <main id="command-main" tabIndex={-1} className="command-route flex-1 overflow-y-auto min-h-0">
           <Outlet context={{ summary, onRefreshSummary: loadSummary }} />
         </main>
       </div>

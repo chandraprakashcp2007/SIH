@@ -3,7 +3,7 @@ import { LiveMap } from '../components/map/LiveMap';
 import { NodeDetailDrawer } from '../components/widgets/NodeDetailDrawer';
 import { fetchNodes } from '../services/api';
 import { wsClient } from '../services/websocket';
-import { Map as MapIcon, Layers, Radio } from 'lucide-react';
+import { SectionHeader, SourceBadge } from '../components/ui/CommandPrimitives';
 
 export const MapPage: React.FC = () => {
   const [nodes, setNodes] = useState<any[]>([]);
@@ -27,37 +27,31 @@ export const MapPage: React.FC = () => {
   }, []);
 
   const selectedNode = nodes.find((n) => n.id === selectedNodeId);
+  const nodeSources = [...new Set(nodes.map((node) => node.source_mode).filter(Boolean))];
+  const mapSource = nodeSources.length === 1 ? nodeSources[0] : 'UNVERIFIED';
 
   return (
-    <div className="h-full flex flex-col p-3 space-y-2">
+    <div className="h-full flex flex-col p-3 lg:p-4 space-y-3 command-reveal">
       {/* Map Control Bar */}
-      <div className="bg-bg-secondary p-3 rounded-lg border border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shrink-0">
-        <div className="flex items-center space-x-2">
-          <MapIcon className="w-4 h-4 text-accent-info" />
-          <span className="font-bold text-text-primary text-xs uppercase tracking-wider">
-            Full Tactical GIS Map Overview
-          </span>
-          <span className="text-[10px] font-mono text-text-muted">
-            • 3 Georeferenced Edge Nodes
-          </span>
-        </div>
+      <div className="command-panel p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shrink-0">
+        <SectionHeader eyebrow="Geospatial operations" title="Live Multi-Hazard Map" description={`${nodes.length} georeferenced edge node${nodes.length === 1 ? '' : 's'} available`} level={2} />
 
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2"><SourceBadge source={mapSource} />
           <select
             value={filterHazard}
             onChange={(e) => setFilterHazard(e.target.value)}
-            className="bg-bg-surface border border-border-subtle rounded px-2.5 py-1 text-xs text-text-secondary focus:outline-none"
+            aria-label="Filter map by hazard"
+            className="command-select"
           >
             <option value="ALL">All Hazards</option>
-            <option value="FLOOD">जल (JALA) · Flood</option>
-            <option value="FIRE">अग्नि (AGNI) · Fire</option>
-            <option value="LANDSLIDE">भूमि (BHUMI) · Landslide</option>
+            <option value="FLOOD">जल (JALA) · Flood</option><option value="FIRE">अग्नि (AGNI) · Fire</option><option value="LANDSLIDE">भूमि (BHUMI) · Landslide</option><option value="AIR_QUALITY">वायु (VAYU) · Air</option><option value="WEATHER">आकाश (AKASHA) · Weather</option>
           </select>
 
           <select
             value={filterSeverity}
             onChange={(e) => setFilterSeverity(e.target.value)}
-            className="bg-bg-surface border border-border-subtle rounded px-2.5 py-1 text-xs text-text-secondary focus:outline-none"
+            aria-label="Filter map by severity"
+            className="command-select"
           >
             <option value="ALL">All Severities</option>
             <option value="NORMAL">Normal</option>
@@ -69,7 +63,7 @@ export const MapPage: React.FC = () => {
       </div>
 
       {/* Map Body */}
-      <div className="flex-1 rounded-lg overflow-hidden border border-border-subtle min-h-[450px]">
+      <div className="command-map-frame flex-1 rounded-2xl overflow-hidden border border-border-subtle min-h-[450px]">
         <LiveMap
           nodes={nodes}
           selectedNodeId={selectedNodeId || undefined}

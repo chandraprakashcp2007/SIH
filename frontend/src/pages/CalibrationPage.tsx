@@ -14,7 +14,7 @@ export const CalibrationPage: React.FC = () => {
   const save = async (node: string) => { setSaving(node); setError(null); try { await saveCalibration(node, data.nodes[node]); } catch (e: any) { setError(e.message); } finally { setSaving(null); } };
   if (!data && !error) return <div className="p-8 text-sm text-text-muted animate-pulse">Loading sensor calibration registry…</div>;
   if (!data) return <div className="p-8"><div role="alert" className="text-hazard-critical">{error}</div><button onClick={load} className="mt-3 text-accent-info text-xs">Retry</button></div>;
-  return <section className="p-4 sm:p-6 max-w-6xl mx-auto" aria-labelledby="calibration-title">
+  return <section className="command-page command-reveal p-3 lg:p-5 max-w-6xl mx-auto" aria-labelledby="calibration-title">
     <header className="mb-5"><h1 id="calibration-title" className="text-xl font-bold flex items-center gap-2"><Gauge className="text-accent-info"/>Sensor Calibration</h1><p className="text-xs text-text-muted mt-1">Persisted offsets and baselines. Changes require administrator access.</p>{!canEdit && <p role="status" className="mt-2 text-xs text-hazard-watch">Read-only view — administrator access is required to save calibration.</p>}</header>
     {error && <div role="alert" className="mb-4 border border-hazard-critical/40 bg-hazard-critical/10 p-3 text-xs text-hazard-critical">{error}</div>}
     <div className="grid lg:grid-cols-3 gap-4">{Object.entries(data.nodes).map(([node, values]: any) => <article key={node} className="border border-border-subtle bg-bg-secondary">

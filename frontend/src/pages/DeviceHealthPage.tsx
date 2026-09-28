@@ -13,7 +13,7 @@ export const DeviceHealthPage: React.FC = () => {
     return () => unsub();
   }, []);
 
-  return <div className="p-4 space-y-4 max-w-7xl mx-auto">
+  return <div className="command-page command-reveal p-3 lg:p-5 space-y-4 max-w-[1600px] mx-auto">
     <header className="rounded-lg border border-border-subtle bg-bg-secondary p-4">
       <h1 className="flex items-center gap-2 text-base font-bold"><Activity className="h-5 w-5 text-hazard-normal" />Sensor Health Digital Twin</h1>
       <p className="mt-1 text-xs text-text-muted">Persisted fleet trust, connectivity, calibration and fault-reason evidence.</p>

@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-[#07111F] text-[#F1F5F9] font-sans antialiased;
+    @apply bg-[#020B0B] text-[#DAF1DE] font-sans antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
@@ -14,14 +14,14 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #0B1726;
+    background: #051F20;
   }
   ::-webkit-scrollbar-thumb {
-    background: #22364A;
+    background: #235347;
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #27C7E8;
+    background: #8EB69B;
   }
 }
 
@@ -49,7 +49,7 @@
 }
 
 :focus-visible {
-  outline: 2px solid #27C7E8;
+  outline: 2px solid #8EB69B;
   outline-offset: 2px;
 }
 
@@ -57,13 +57,13 @@
 .leaflet-container {
   width: 100%;
   height: 100%;
-  background-color: #0B1726 !important;
+  background-color: #051F20 !important;
   font-family: inherit;
 }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-  background: #102033 !important;
-  color: #F1F5F9 !important;
-  border: 1px solid #22364A !important;
+  background: rgba(5,31,32,.96) !important;
+  color: #DAF1DE !important;
+  border: 1px solid rgba(142,182,155,.28) !important;
   border-radius: 8px !important;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
 }

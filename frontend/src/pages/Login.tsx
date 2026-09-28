@@ -110,7 +110,7 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <main className="prahari-native-login min-h-screen overflow-hidden bg-[#020812] text-white">
+    <main className="prahari-native-login min-h-screen overflow-hidden bg-bg-primary text-text-primary">
       <div className="prahari-native-layout min-h-screen">
         <section
           ref={sceneRef}
@@ -265,7 +265,7 @@ export const Login: React.FC = () => {
             </div>
 
             <h1 className="prahari-devanagari mt-5 text-[clamp(3.6rem,5.4vw,6.7rem)] font-black leading-[.9] tracking-tight text-[#f6c75e] drop-shadow-[0_0_28px_rgba(246,199,94,.18)]">
-              पंजापुतम
+              पंजापुतम्
             </h1>
 
             <h2 className="mt-5 max-w-[560px] text-[clamp(1.35rem,1.9vw,2.2rem)] font-black leading-[1.12] text-slate-100">
@@ -319,7 +319,7 @@ export const Login: React.FC = () => {
                   <div className="text-[9px] font-black tracking-[.1em] text-cyan-300">SENSE • PREDICT • ALERT • PROTECT</div>
                 </div>
               </div>
-              <div className="prahari-devanagari mt-6 text-4xl font-black text-[#f6c75e]">पंजापुतम</div>
+              <div className="prahari-devanagari mt-6 text-4xl font-black text-[#DAF1DE]">पंजापुतम्</div>
             </div>
 
             {showDevTools && (

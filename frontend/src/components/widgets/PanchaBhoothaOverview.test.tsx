@@ -18,6 +18,7 @@ describe('PanchaBhoothaOverview', () => {
     for (const name of ['जल (JALA)', 'अग्नि (AGNI)', 'भूमि (BHUMI)', 'वायु (VAYU)', 'आकाश (AKASHA)']) {
       expect(screen.getByText(name)).toBeInTheDocument();
     }
+    for (const id of ['JALA-01', 'AGNI-02', 'BHUMI-03', 'VAYU-04', 'AKASHA-05']) expect(screen.getByText(id)).toBeInTheDocument();
     for (const mode of ['REAL', 'SIMULATION', 'REPLAY', 'PLANNED', 'EXTERNAL DATA']) {
       expect(screen.getAllByText(mode).length).toBeGreaterThan(0);
     }
